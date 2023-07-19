@@ -1,51 +1,35 @@
-import { css } from "@emotion/react";
+import { createGlobalStyle } from "styled-components";
+import { reset } from "styled-reset";
 
-export const globalStyles = css`
+const GlobalStyles = createGlobalStyle`
+  ${reset}
   * {
+    font-family: Pretendard;
+  }
+  
+  body{
     margin: 0;
-    box-sizing: border-box;
-    font-size: 20px;
-    font-family: "Arita-Medium", "NotoSansKR-Regular";
+    padding: 0;
+    font-family: Pretendard;
+    min-width: 320px;
   }
 
-  @font-face {
-    font-family: "myfont"; //myfont라는 이름은 임의로 정한다.
-    src: url("/fonts/scifibit.ttf");
+  a {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
   }
 
-  // bold
-  @font-face {
-    font-family: "Arita-Bold";
-    src: url("/fonts/arita-dotum-Bold.woff");
-  }
-
-  // semi-bold
-  @font-face {
-    font-family: "Arita-SemiBold";
-    src: url("/fonts/arita-dotum-SemiBold.woff");
-  }
-
-  // medium
-  @font-face {
-    font-family: "Arita-Medium";
-    src: url("/fonts/arita-dotum-Medium.woff");
-  }
-
-  // light
-  @font-face {
-    font-family: "Arita-Light";
-    src: url("/fonts/arita-dotum-Light.woff");
-  }
-
-  // thin
-  @font-face {
-    font-family: "Arita-Thin";
-    src: url("/fonts/arita-dotum-Thin.woff");
-  }
-
-  // alt font
-  @font-face {
-    font-family: "NotoSansKR-Regular";
-    src: url("/fonts/NotoSansKR-Regular.woff");
+  button{
+    background: inherit ;
+    border:none;
+    box-shadow:none;
+    border-radius:0;
+    padding:0;
+    overflow:visible;
+    cursor:pointer;
+    color:inherit;
   }
 `;
+
+export default GlobalStyles;
