@@ -7,7 +7,7 @@ const CalendarPage = () => {
       <Head>
         <title>Calendar</title>
       </Head>
-      {/* <MyCalendar /> */}
+      {/* <MyCalendar />  */}
       <>안녕</>
     </>
   );

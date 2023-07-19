@@ -1,5 +1,16 @@
 {
   "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@fullcalendar/react": ["./node_modules/@fullcalendar/react"],
+      "@fullcalendar/daygrid": ["./node_modules/@fullcalendar/daygrid"],
+      "@fullcalendar/timegrid": ["./node_modules/@fullcalendar/timegrid"],
+      "@fullcalendar/interaction": ["./node_modules/@fullcalendar/interaction"],
+      "@fullcalendar/list": ["./node_modules/@fullcalendar/list"],
+      "@fullcalendar/bootstrap": ["./node_modules/@fullcalendar/bootstrap"],
+      "@fullcalendar/google-calendar": ["./node_modules/@fullcalendar/google-calendar"],
+      "@/*": ["*"]
+    },
     "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": ["ES2020", "DOM", "DOM.Iterable"],

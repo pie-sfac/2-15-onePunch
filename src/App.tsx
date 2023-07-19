@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import CalendarPage from "./pages/CalendarPage";
+import LoginPage from "./pages/LoginPage/login";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/sidebar" element={<SidebarTest />} />
           <Route path="/viewreview" element={<ViewReview />} />
           <Route path="/newreview" element={<NewReview />} /> */}
+          <Route path="/LoginPage"  element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </>
