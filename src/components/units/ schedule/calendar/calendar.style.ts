@@ -2,14 +2,14 @@ import styled from "@emotion/styled";
 import { DatePicker } from "antd";
 
 export const Wrapper = styled.div`
-  background-color: #f4f4f4;
+  padding: 2vw;
 `;
 
 export const Header = styled.header`
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 1vh 0vh;
+  padding: 2vh 0vh;
 `;
 
 export const ViewOptions = styled.div``;
