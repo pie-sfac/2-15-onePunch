@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { RecoilRoot } from "recoil";
 import GlobalStyles from "./commons/styles/global";
 import Calendar from "./pages/ schedulePage/calendar";
@@ -8,6 +9,7 @@ import ConsultingWrite from "./pages/ schedulePage/consultingWrite";
 function App() {
   return (
     <>
+
       <RecoilRoot>
         <GlobalStyles />
         <BrowserRouter>
@@ -19,6 +21,7 @@ function App() {
               element={<ConsultingWrite />}
             />
           </Routes>
+           <Route path="/Tickets" element={<Tickets />} />
         </BrowserRouter>
       </RecoilRoot>
     </>
