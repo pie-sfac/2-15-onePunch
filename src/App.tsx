@@ -1,12 +1,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import CalendarPage from "./pages/CalendarPage";
+import Tickets from "./components/units/TIckets/Tickets";
+// import CalendarPage from "./pages/CalendarPage";
 
 function App() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/CalendarPage" element={<CalendarPage />} />
+          {/* <Route path="/CalendarPage" element={<CalendarPage />} /> */}
           {/* <Route path="/detail" element={<ZipDetail />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
@@ -15,6 +16,8 @@ function App() {
           <Route path="/sidebar" element={<SidebarTest />} />
           <Route path="/viewreview" element={<ViewReview />} />
           <Route path="/newreview" element={<NewReview />} /> */}
+
+          <Route path="/Tickets" element={<Tickets />} />
         </Routes>
       </BrowserRouter>
     </>
