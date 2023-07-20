@@ -6,6 +6,7 @@ import Calendar from "./pages/schedulePage/calendar";
 import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
 import Tickets from "./components/units/TIckets/Tickets";
+import Login from "./components/units/login/login.index";
 import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
               element={<ConsultingWrite />}
             />
             <Route path="/Tickets" element={<Tickets />} />
+            <Route path="/LoginPage"  element={<Login />} />
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
