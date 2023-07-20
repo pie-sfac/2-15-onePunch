@@ -1,4 +1,4 @@
-import ConsultingWrite from "../../../components/units/ schedule/consultingWrite/consultingWrite.index";
+import ConsultingWrite from "../../../components/units/schedule/consultingWrite/consultingWrite.index";
 
 const ConsultingWritePage = () => {
   return (

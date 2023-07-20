@@ -1,4 +1,4 @@
-import ClassWrite from "../../../components/units/ schedule/classWrite/classWrite.index";
+import ClassWrite from "../../../components/units/schedule/classWrite/classWrite.index";
 
 const ClassWritePage = () => {
   return (
