@@ -1,6 +1,9 @@
 import { LeftOutlined, SmileOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
 import { DatePicker, Select, TimePicker } from "antd";
+import { Input } from "antd";
+
+const { TextArea } = Input;
 
 export const Wrapper = styled.div``;
 
@@ -29,7 +32,7 @@ export const Body = styled.body`
   margin-top: 1vh;
 `;
 
-export const ClassTitle = styled.h1``;
+export const ConsultingTitle = styled.h1``;
 
 export const Label = styled.p`
   margin-top: 4vh;
@@ -71,17 +74,6 @@ export const MemberChoiceButton = styled.button`
   color: #799fff;
 `;
 
-export const SelectOut = styled(Select)`
-  width: 100%;
-  margin-top: 3vh;
-  margin-bottom: 3vh;
-  & .ant-select-selector {
-    height: 50px !important; // 원하는 높이로 설정하세요
-    display: flex !important;
-    align-items: center !important; // 가운데 정렬
-  }
-`;
-
 export const BoxWrapper = styled.div`
   display: flex;
 `;
@@ -109,6 +101,24 @@ export const TimeOut = styled(TimePicker)`
   }
 `;
 
+export const Text = styled.input`
+  width: 45vw;
+  padding: 0px 10px;
+  margin-top: 3vh;
+  height: 40px;
+  border-radius: 4px;
+  border: 1px solid #d9d9d9;
+
+  &:focus {
+    border-color: #3f96ff;
+    outline: none;
+  }
+`;
+
+export const TextAreaOut = styled(TextArea)`
+  margin-top: 3vh;
+`;
+
 export const Footer = styled.footer`
   padding: 20px;
 `;
@@ -116,9 +126,9 @@ export const Footer = styled.footer`
 export const Button = styled.button`
   width: 100%;
   height: 8vh;
-  background-color: #2d62ea;
+  background-color: #6691ff;
   color: white;
-  font-size: 16px;
+  font-size: 14px;
   border-radius: 6px;
   border: none;
 `;

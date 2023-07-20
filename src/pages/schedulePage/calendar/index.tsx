@@ -1,4 +1,4 @@
-import Calendar from "../../../components/units/ schedule/calendar/calendar.index";
+import Calendar from "../../../components/units/schedule/calendar/calendar.index";
 
 const CalendarPage = () => {
   return (
