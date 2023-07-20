@@ -7,6 +7,7 @@ import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
 import Tickets from "./components/units/TIckets/Tickets";
 import Login from "./components/units/login/login.index";
+import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <GlobalStyles />
         <BrowserRouter>
           <Routes>
+            <Route path="/TemporaryLogin" element={<TemporaryLogin />} />
             <Route path="/schedulePage/calendar" element={<Calendar />} />
             <Route path="/schedulePage/classWrite" element={<ClassWrite />} />
             <Route
