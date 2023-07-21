@@ -38,15 +38,18 @@ export const Label = styled.p`
 `;
 
 export const Box = styled.div`
-  border: 2px solid #dbdbdb;
+  border: 1px solid #dbdbdb;
+  background-color: #f4f4f4;
   border-radius: 10px;
   display: flex;
-  justify-content: center;
+  width: fit-content;
   align-items: center;
-  padding: 9px 2px;
-  width: 96px;
+  justify-content: center;
+  padding: 9px 8px;
   margin-top: 3vh;
-  margin-right: 3vw;
+  white-space: nowrap;
+  overflow: hidden;
+  cursor: pointer;
 `;
 
 export const SmileOut = styled(SmileOutlined)`
@@ -60,7 +63,7 @@ export const Name = styled.p`
 `;
 
 export const MemberChoiceButton = styled.button`
-  border: 2px solid #c5d6ff;
+  border: 1px solid #c5d6ff;
   border-radius: 10px;
   display: flex;
   justify-content: center;
@@ -76,6 +79,7 @@ export const SelectOut = styled(Select)`
   margin-top: 3vh;
   margin-bottom: 3vh;
   & .ant-select-selector {
+    color: #d9d9d9;
     height: 50px !important; // 원하는 높이로 설정하세요
     display: flex !important;
     align-items: center !important; // 가운데 정렬
@@ -122,3 +126,24 @@ export const Button = styled.button`
   border-radius: 6px;
   border: none;
 `;
+
+export const MemberBox = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 1px solid #d9d9d9;
+`;
+
+export const MemberTag = styled.div`
+  background-color: #f4f4f4;
+  padding: 2px 8px;
+  border-radius: 6px;
+  margin: 0px 2vw;
+`;
+
+export const MemberName = styled.p`
+  margin-right: 10px;
+`;
+
+export const MemberPhone = styled.p``;
