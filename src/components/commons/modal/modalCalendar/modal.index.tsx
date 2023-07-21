@@ -25,7 +25,7 @@ const ModalPage = () => {
 
   return (
     <>
-      <Modal
+      <S.ModalOut
         visible={modalOpen}
         onCancel={handleModalClose}
         footer={null}
@@ -51,7 +51,7 @@ const ModalPage = () => {
             </S.Main>
           </S.Wrapper>
         </S.ModalWrapper>
-      </Modal>
+      </S.ModalOut>
     </>
   );
 };

@@ -2,7 +2,8 @@ import styled from "@emotion/styled";
 import { DatePicker } from "antd";
 
 export const Wrapper = styled.div`
-  padding: 2vw;
+  background-color: #f4f4f4;
+  padding: 7vh 3vw 15vh 3vw;
 `;
 
 export const Header = styled.header`
@@ -26,7 +27,6 @@ export const Select = styled.select`
   padding: 5px;
   outline: none;
   transition: border-color 0.3s ease;
-
   &:hover {
     border-color: #4096ff;
   }

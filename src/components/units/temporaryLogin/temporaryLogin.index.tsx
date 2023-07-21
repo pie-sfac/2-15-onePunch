@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { accessTokenState } from "../../../commons/stores";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginNewPage() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [, setAccessToken] = useRecoilState(accessTokenState);
@@ -34,6 +36,7 @@ export default function LoginNewPage() {
       setAccessToken(response.data.accessToken);
       localStorage.setItem("accessToken", response.data.accessToken);
       alert("로그인에 성공했습니다!");
+      navigate("/schedulePage/calendar");
     } catch (error) {
       console.error(error);
     }
