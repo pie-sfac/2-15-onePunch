@@ -9,6 +9,7 @@ export default function ClassWrite() {
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [day, setDay] = useState(null);
   const [userId, setUserId] = useState("0");
   const [memberId, setMemberId] = useState("0");
   const [issuedTicketId, setIssuedTicketId] =
@@ -21,25 +22,28 @@ export default function ClassWrite() {
   const [staffs, setStaffs] = useState([]);
   const [select, setSelect] = useState(false);
 
-  const onStartTimeChange = (value: any) => {
-    setStartTime(value);
-    if (value && value.isAfter(endTime)) {
-      setEndTime(value);
-    }
+  const onStartTimeChange = (value: any, date: any) => {
+    setStartTime(date);
+    console.log(date);
   };
 
-  const onEndTimeChange = (value: any) => {
-    setEndTime(value);
+  const onEndTimeChange = (value: any, date: any) => {
+    setEndTime(date);
+    console.log(date);
+  };
+
+  const onDayChange = (value: any, date: any) => {
+    setDay(date);
+    console.log(date);
   };
 
   const disabledEndTimeHours = () => {
     const hours = [];
-    for (let i = 0; i < (startTime ? startTime.hour() : 0); i++) {
+    for (let i = startTime ? startTime.hour() : 0; i < 24; i++) {
       hours.push(i);
     }
     return hours;
   };
-
   const handleOutBoxClick = () => {
     navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
   };
@@ -51,14 +55,15 @@ export default function ClassWrite() {
       const response = await apiInstance.post("/schedules/private-lesson", {
         userId: Number(userId), // 변경할 필요가 있음
         issuedTicketId: Number(issuedTicketId),
-        startAt: startTime?.toISOString(), // Start and end times are assumed to be moment objects
-        endAt: endTime?.toISOString(),
+        startAt: `${day}T${startTime}`,
+        endAt: `${day}T${endTime}`,
       });
       alert("일정을 등록했습니다.");
       navigate("/schedulePage/calendar");
       console.log(response.data); // Here you can handle the response
-    } catch (error) {
-      console.error(error); // Handle error
+    } catch (error: any) {
+      console.error(error.response.data.message); // Handle error
+      alert(error.response.data.message);
     }
   };
 
@@ -89,8 +94,8 @@ export default function ClassWrite() {
       setIssuedTickets(response.data.issuedTickets);
       console.log(response.data.issuedTickets);
       setIsVisible(false);
-    } catch (error) {
-      console.error(error); // Handle error
+    } catch (error: any) {
+      alert(error.response.data.message);
     }
   };
 
@@ -109,8 +114,8 @@ export default function ClassWrite() {
       setUserName(response.data.name);
 
       setIsVisible(false);
-    } catch (error) {
-      console.error(error); // Handle error
+    } catch (error: any) {
+      alert(error.response.data.message);
     }
   };
 
@@ -121,7 +126,8 @@ export default function ClassWrite() {
       .get("/staffs?page=1&sort=createdAt%2CDesc")
       .then((response) => setStaffs(response.data.datas))
       .catch((error) => {
-        console.log(error);
+        alert(error.response.data.message);
+        navigate("/TemporaryLogin");
       });
     setIsVisible(true);
     setSelect(true);
@@ -134,7 +140,8 @@ export default function ClassWrite() {
       .get("/members?page=1&size=10&sort=createdAt%2CDesc")
       .then((response) => setMembers(response.data.datas))
       .catch((error) => {
-        console.log(error);
+        alert(error.response.data.message);
+        navigate("/TemporaryLogin");
       });
     setIsVisible(true);
     setSelect(false);
@@ -240,14 +247,13 @@ export default function ClassWrite() {
             </S.Box>
           </S.BoxWrapper> */}
           <S.Label>일자 선택</S.Label>
-          <S.DateOut />
+          <S.DateOut onChange={onDayChange} />
           <S.Label>시간 선택</S.Label>
           <S.TimeBox>
-            <S.TimeOut onChange={onStartTimeChange} value={startTime} />
+            <S.TimeOut onChange={onStartTimeChange} />
             <S.TimeOut
               onChange={onEndTimeChange}
-              disabledHours={disabledEndTimeHours}
-              value={endTime}
+              // disabledHours={disabledEndTimeHours}
             />
           </S.TimeBox>
         </S.Body>

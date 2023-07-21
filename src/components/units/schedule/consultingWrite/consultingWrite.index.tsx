@@ -10,6 +10,7 @@ import { Phone } from "../../../../commons/libraries/utils";
 export default function ConsultingWrite() {
   const [startTime, setStartTime] = useState(null);
   const [endTime, setEndTime] = useState(null);
+  const [day, setDay] = useState(null);
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [staffs, setStaffs] = useState([]);
@@ -31,23 +32,19 @@ export default function ConsultingWrite() {
     setMemo(event.target.value);
   };
 
-  const onStartTimeChange = (value: any) => {
-    setStartTime(value);
-    if (value && value.isAfter(endTime)) {
-      setEndTime(value);
-    }
+  const onStartTimeChange = (value: any, date: any) => {
+    setStartTime(date);
+    console.log(date);
   };
 
-  const onEndTimeChange = (value: any) => {
-    setEndTime(value);
+  const onEndTimeChange = (value: any, date: any) => {
+    setEndTime(date);
+    console.log(date);
   };
 
-  const disabledEndTimeHours = () => {
-    const hours = [];
-    for (let i = 0; i < (startTime ? startTime.hour() : 0); i++) {
-      hours.push(i);
-    }
-    return hours;
+  const onDayChange = (value: any, date: any) => {
+    setDay(date);
+    console.log(date);
   };
 
   const handleOutBoxClick = () => {
@@ -59,7 +56,8 @@ export default function ConsultingWrite() {
       .get("/staffs?page=1&sort=createdAt%2CDesc")
       .then((response) => setStaffs(response.data.datas))
       .catch((error) => {
-        console.log(error);
+        alert(error.response.data.message);
+        navigate("/TemporaryLogin");
       });
     setIsVisible(true);
   };
@@ -75,14 +73,14 @@ export default function ConsultingWrite() {
         clientName: clientName,
         clientPhone: clientPhone,
         memo: memo,
-        startAt: startTime?.toISOString(), // Start and end times are assumed to be moment objects
-        endAt: endTime?.toISOString(),
+        startAt: `${day}T${startTime}`,
+        endAt: `${day}T${endTime}`,
       });
       alert("일정을 등록했습니다.");
       navigate("/schedulePage/calendar");
       console.log(response.data); // Here you can handle the response
-    } catch (error) {
-      console.error(error); // Handle error
+    } catch (error: any) {
+      alert(error.response.data.message);
     }
   };
 
@@ -97,8 +95,8 @@ export default function ConsultingWrite() {
       setUserName(response.data.name);
 
       setIsVisible(false);
-    } catch (error) {
-      console.error(error); // Handle error
+    } catch (error: any) {
+      alert(error.response.data.message);
     }
   };
 
@@ -142,15 +140,11 @@ export default function ConsultingWrite() {
             </S.Box>
           )}
           <S.Label>일자 선택</S.Label>
-          <S.DateOut />
+          <S.DateOut onChange={onDayChange} />
           <S.Label>시간 선택</S.Label>
           <S.TimeBox>
-            <S.TimeOut onChange={onStartTimeChange} value={startTime} />
-            <S.TimeOut
-              onChange={onEndTimeChange}
-              disabledHours={disabledEndTimeHours}
-              value={endTime}
-            />
+            <S.TimeOut onChange={onStartTimeChange} />
+            <S.TimeOut onChange={onEndTimeChange} />
           </S.TimeBox>
           <S.Label>이름 </S.Label>
           <S.Text onChange={onChangeName} placeholder="ex) 홍길동" />

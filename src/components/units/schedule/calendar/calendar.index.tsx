@@ -6,7 +6,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
 import bootstrapPlugin from "@fullcalendar/bootstrap";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
 import { Button, Modal, Select } from "antd";
 import ModalPage from "../../../commons/modal/modalCalendar/modal.index";
@@ -55,8 +55,6 @@ export default function Calendar() {
     if (date) {
       calendar.gotoDate(date.toDate());
     }
-    console.log(dateString);
-    console.log(date);
 
     let startTime, endTime;
 
@@ -77,9 +75,6 @@ export default function Calendar() {
         break;
     }
 
-    console.log("Start Time:", startTime);
-    console.log("End Time:", endTime);
-
     try {
       const response = await apiInstance.get(
         `/schedules?from=${startTime}&to=${endTime}`
@@ -96,7 +91,6 @@ export default function Calendar() {
 
       // Merge two arrays
       setArr([...counselingSchedules, ...privateSchedules]);
-      console.log(arr);
     } catch (error) {
       console.error(error);
     }
@@ -109,6 +103,38 @@ export default function Calendar() {
   const handleModalClose = () => {
     setModalOpen(false);
   };
+
+  // 페이지 로드 시 실행될 코드를 넣기 위해 useEffect 훅을 추가합니다.
+  useEffect(() => {
+    const fetchSchedules = async () => {
+      // 오늘 날짜를 기준으로 스케줄을 가져오는 API를 호출합니다.
+      const date = dayjs();
+      const startTime = date.startOf("month").format("YYYY-MM-DD");
+      const endTime = date.endOf("month").format("YYYY-MM-DD");
+
+      try {
+        const response = await apiInstance.get(
+          `/schedules?from=${startTime}&to=${endTime}`
+        );
+        const counselingSchedules = response.data.counselingSchedules.map(
+          (event: any) => ({ ...event, type: "counseling" })
+        );
+        const privateSchedules = response.data.privateSchedules.map(
+          (event: any) => ({
+            ...event,
+            type: "private",
+          })
+        );
+
+        // Merge two arrays
+        setArr([...counselingSchedules, ...privateSchedules]);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchSchedules(); // 함수를 바로 호출
+  }, []); // 빈 배열을 의존성으로 전달하여 컴포넌트가 처음 마운트될 때만 실행되도록 합니다.
 
   return (
     <>
@@ -151,10 +177,10 @@ export default function Calendar() {
           }
           .event-counseling {
     
-            background-color: #66FF91;
+            background-color: #47EB74;
             border: none;
             border-radius: 0px;
-            border: 1px solid #50B564;
+            border: 1px solid #47EB74;
           }
           .event-private {
             background-color: #6691FF;
