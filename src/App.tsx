@@ -4,9 +4,10 @@ import GlobalStyles from "./commons/styles/global";
 import Calendar from "./pages/schedulePage/calendar";
 import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
-import Tickets from "./components/units/TIckets/Tickets";
+// import Tickets from "./components/units/tickets/centerTicket/test__centerTicket.index";
 import Login from "./components/units/login/login.index";
 import TemporaryLogin from "./pages/temporaryLoginPage/index";
+
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
 
@@ -59,14 +60,6 @@ function App() {
             }
           />
           <Route
-            path="/Tickets"
-            element={
-              <MainLayout>
-                <Tickets />
-              </MainLayout>
-            }
-          />
-          <Route
             path="/LoginPage"
             element={
               <MainLayout>
@@ -74,6 +67,10 @@ function App() {
               </MainLayout>
             }
           />
+            {/* 센터 티켓 */}
+            <Route path="/centerTicketPage" element={<CenterTicket />} />
+            <Route path="/centerTicketPage/createTicket" element={<CreateTicket />} />
+            
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
