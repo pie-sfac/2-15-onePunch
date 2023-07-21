@@ -1,6 +1,17 @@
 import React, { useState } from "react";
-import { useEffect } from "react";
-
+// import apiInstance from "../../../../commons/apiInstance/apiInstance";
+///////////////////////////
+///////////////////////////
+///////////////////////////
+///////////////////////////
+// firebase 사용해서 임시로 만들었던 파일
+// 참고용으로 삭제하지 않음 ><
+// 여기 있는 거 다 제공된 api에 맞춰서 수정하고 나면
+// 삭제할거예요 ><
+///////////////////////////////
+///////////////////////////////
+///////////////////////////////
+/////////////////////////
 interface TicketData {
   id?: string;
   ticketType: string;
@@ -21,7 +32,7 @@ const initialTicketData: TicketData = {
   serviceTimes: 0,
   ticketPeriodUnit: "",
 };
-const createTicket = () => {
+const Tickets = () => {
   const [TicketData, setTicketData] = useState<TicketData>(initialTicketData);
   const [submittedTickets, setSubmittedTickets] = useState<TicketData[]>([]);
 
@@ -97,44 +108,6 @@ const createTicket = () => {
     }
   };
 
-  useEffect(() => {
-    fetch(
-      "https://ticket-temp-data-default-rtdb.firebaseio.com/TicketData.json"
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const loadedTickets = [];
-        for (const key in data) {
-          loadedTickets.push({
-            id: key,
-            ...data[key],
-          });
-        }
-        setSubmittedTickets(loadedTickets);
-      })
-      .catch((err) => {
-        console.error("Fetching data failed", err);
-      });
-  }, []);
-
-  const addTicketHandler = (TicketData: TicketData) => {
-    fetch(
-      "https://ticket-temp-data-default-rtdb.firebaseio.com/TicketData.json",
-      {
-        method: "POST",
-        body: JSON.stringify(TicketData),
-        headers: { "Content-Type": "application/json" },
-      }
-    )
-      .then((response) => response.json())
-      .then((responseData) => {
-        setTicketData(initialTicketData);
-      })
-      .catch((err) => {
-        console.error("Sending data failed", err);
-      });
-  };
-
   const deleteTicketHandler = (id?: string) => {
     fetch(`https://ticket-temp-data-default-rtdb.firebaseio.com/TicketData/${id}.json`, {
       method: 'DELETE'
@@ -154,7 +127,7 @@ const createTicket = () => {
     console.log(TicketData);
     setSubmittedTickets([...submittedTickets, TicketData]); 
     setTicketData(initialTicketData); 
-    addTicketHandler(TicketData);
+    // addTicketHandler(TicketData);
   };
 
   return (
@@ -285,4 +258,4 @@ const createTicket = () => {
   );
 };
 
-export default createTicket;
+export default Tickets;

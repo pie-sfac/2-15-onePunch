@@ -5,9 +5,11 @@ import GlobalStyles from "./commons/styles/global";
 import Calendar from "./pages/schedulePage/calendar";
 import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
-import Tickets from "./components/units/TIckets/Tickets";
+// import Tickets from "./components/units/tickets/centerTicket/test__centerTicket.index";
 import Login from "./components/units/login/login.index";
 import TemporaryLogin from "./pages/temporaryLoginPage/index";
+import CreateTicket from "./components/units/tickets/centerTicket/createTicket";
+import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.index";
 
 function App() {
   return (
@@ -23,8 +25,12 @@ function App() {
               path="/schedulePage/consultingWrite"
               element={<ConsultingWrite />}
             />
-            <Route path="/Tickets" element={<Tickets />} />
             <Route path="/LoginPage"  element={<Login />} />
+
+            {/* 센터 티켓 */}
+            <Route path="/centerTicketPage" element={<CenterTicket />} />
+            <Route path="/centerTicketPage/createTicket" element={<CreateTicket />} />
+            
           </Routes>
         </BrowserRouter>
       </RecoilRoot>
