@@ -3,7 +3,7 @@ import { DatePicker } from "antd";
 
 export const Wrapper = styled.div`
   background-color: #f4f4f4;
-  padding: 7vh 3vw 15vh 3vw;
+  padding: 7vh 3vw 13vh 3vw;
 `;
 
 export const Header = styled.header`

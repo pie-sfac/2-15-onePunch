@@ -79,7 +79,6 @@ export const SelectOut = styled(Select)`
   margin-top: 3vh;
   margin-bottom: 3vh;
   & .ant-select-selector {
-    color: #d9d9d9;
     height: 50px !important; // 원하는 높이로 설정하세요
     display: flex !important;
     align-items: center !important; // 가운데 정렬

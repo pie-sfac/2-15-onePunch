@@ -7,10 +7,17 @@ export const Wrapper = styled.div`
   height: 50px;
   display: flex;
   align-items: center;
-  justify-content: space-around;
   position: fixed;
   z-index: 9999;
   border-bottom: 2px solid #e6e6e6;
+`;
+
+export const Box = styled.div`
+  width: 91%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto;
 `;
 
 export const ProfileBox = styled.div`
