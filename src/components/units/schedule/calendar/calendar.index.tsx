@@ -13,6 +13,7 @@ import ModalPage from "../../../commons/modal/modalCalendar/modal.index";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { modalState } from "../../../../commons/stores";
 import { useNavigate } from "react-router-dom";
+import apiInstance from "../../../../commons/apiInstance/apiInstance";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -29,6 +30,8 @@ export default function Calendar() {
   const [modalVisible, setModalVisible] = useState(false); // 모달의 가시성 상태
   const modalOpen = useRecoilValue(modalState);
   const setModalOpen = useSetRecoilState(modalState);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   const handleViewChange = (view: any) => {
     const calendar = calendarRef?.current?.getApi();
@@ -46,13 +49,57 @@ export default function Calendar() {
       .endOf("week")
       .format(weekFormat)}`;
 
-  const handleDatePickerChange = (date: any, dateString: any) => {
+  const handleDatePickerChange = async (date: any, dateString: any) => {
     setSelectedDate(date);
     const calendar = calendarRef?.current?.getApi();
     if (date) {
       calendar.gotoDate(date.toDate());
     }
-    setDay(dateString);
+    console.log(dateString);
+    console.log(date);
+
+    let startTime, endTime;
+
+    switch (viewOption) {
+      case "dayGridMonth": // 월간 선택
+        startTime = date.startOf("month").format("YYYY-MM-DD");
+        endTime = date.endOf("month").format("YYYY-MM-DD");
+        break;
+      case "timeGridWeek": // 주간 선택
+        startTime = date.startOf("week").format("YYYY-MM-DD");
+        endTime = date.endOf("week").format("YYYY-MM-DD");
+        break;
+      case "timeGridDay": // 일간 선택
+      default:
+        startTime = date.startOf("day").format("YYYY-MM-DD");
+        endTime = date.startOf("day").format("YYYY-MM-DD");
+        dateString = date.startOf("day").format("YYYY-MM-DD");
+        break;
+    }
+
+    console.log("Start Time:", startTime);
+    console.log("End Time:", endTime);
+
+    try {
+      const response = await apiInstance.get(
+        `/schedules?from=${startTime}&to=${endTime}`
+      );
+      const counselingSchedules = response.data.counselingSchedules.map(
+        (event: any) => ({ ...event, type: "counseling" })
+      );
+      const privateSchedules = response.data.privateSchedules.map(
+        (event: any) => ({
+          ...event,
+          type: "private",
+        })
+      );
+
+      // Merge two arrays
+      setArr([...counselingSchedules, ...privateSchedules]);
+      console.log(arr);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const showModal = () => {
@@ -74,7 +121,7 @@ export default function Calendar() {
           .fc-day a {
             font-size: 12px;
             height: 40px;
-            margin-top: 20px;
+            padding: 4px 3px;
           }
           .fc-timegrid-slots tr:nth-child(n) {
             height: 60px;
@@ -95,6 +142,25 @@ export default function Calendar() {
           }
           .fc-col-header {
             background-color: #FBFBFB;
+          }
+          .fc-event {
+            height: 100% !important;
+          }
+          .fc-col-header-cell-cushion {
+            margin-top: 20px;
+          }
+          .event-counseling {
+    
+            background-color: #66FF91;
+            border: none;
+            border-radius: 0px;
+            border: 1px solid #50B564;
+          }
+          .event-private {
+            background-color: #6691FF;
+            border: none;
+            border-radius: 0px;
+            border: 1px solid #4779FC;
           }
         `}
       </style>
@@ -146,11 +212,23 @@ export default function Calendar() {
           initialView={viewOption} // 변경: 상태에 저장된 옵션으로 초기 뷰 설정
           headerToolbar={false}
           height="100vh"
-          //   events={arr.map((event) => ({
-          //     title: event.title,
-          //     start: event.start,
-          //     end: event.end,
-          //   }))}
+          eventDisplay="block"
+          events={arr.map((event) => ({
+            title: event.tutor ? "수업" : "상담",
+            start: event.startAt,
+            end: event.endAt,
+          }))}
+          eventContent={(args) => {
+            return {
+              html: `<div>${args.event.title}</div>`,
+            };
+          }}
+          eventClassNames={(event) => {
+            // Return a different CSS class based on the event's title
+            return event.event.title === "수업"
+              ? "event-private"
+              : "event-counseling";
+          }}
           slotDuration="01:00:00" // 시간당 1칸으로 설정
           slotLabelFormat={{
             hour: "2-digit",

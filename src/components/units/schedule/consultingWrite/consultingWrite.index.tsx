@@ -79,6 +79,7 @@ export default function ConsultingWrite() {
         endAt: endTime?.toISOString(),
       });
       alert("일정을 등록했습니다.");
+      navigate("/schedulePage/calendar");
       console.log(response.data); // Here you can handle the response
     } catch (error) {
       console.error(error); // Handle error

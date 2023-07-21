@@ -1,4 +1,7 @@
 import styled from "@emotion/styled";
+import { Modal } from "antd";
+
+export const ModalOut = styled(Modal)``;
 
 export const ModalWrapper = styled.div``;
 
