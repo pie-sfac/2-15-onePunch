@@ -91,6 +91,7 @@ export default function Calendar() {
 
       // Merge two arrays
       setArr([...counselingSchedules, ...privateSchedules]);
+      console.log(response.data.privateSchedules);
     } catch (error) {
       console.error(error);
     }
@@ -135,6 +136,17 @@ export default function Calendar() {
 
     fetchSchedules(); // 함수를 바로 호출
   }, []); // 빈 배열을 의존성으로 전달하여 컴포넌트가 처음 마운트될 때만 실행되도록 합니다.
+
+  // <일정 클릭시 일정으로 이동>
+  const handleEventClick = (info: any) => {
+    const path =
+      info.event.title === "수업"
+        ? `/schedulePage/classDetail/${info.event.id}`
+        : `/schedulePage/consultingDetail/${info.event.id}`;
+
+    navigate(path);
+    console.log(info.event.id); // 이벤트의 ID를 콘솔에 출력
+  };
 
   return (
     <>
@@ -239,10 +251,12 @@ export default function Calendar() {
           headerToolbar={false}
           height="100vh"
           eventDisplay="block"
+          eventClick={handleEventClick}
           events={arr.map((event) => ({
             title: event.tutor ? "수업" : "상담",
             start: event.startAt,
             end: event.endAt,
+            id: event.id,
           }))}
           eventContent={(args) => {
             return {
