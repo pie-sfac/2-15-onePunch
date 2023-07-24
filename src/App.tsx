@@ -10,6 +10,11 @@ import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
+import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.index";
+import CreateTicket from "./components/units/tickets/centerTicket/createTicket";
+import ClassDetailPage from "./pages/schedulePage/classDetail";
+import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
+import MemberList from "./pages/memberPage/list/index";
 
 const MainLayout = ({ children }) => (
   <>
@@ -51,6 +56,15 @@ function App() {
               </PlainLayout>
             }
           />
+
+          <Route
+            path="/schedulePage/classDetail/:scheduleId"
+            element={
+              <PlainLayout>
+                <ClassDetailPage />
+              </PlainLayout>
+            }
+          />
           <Route
             path="/schedulePage/consultingWrite"
             element={
@@ -60,6 +74,24 @@ function App() {
             }
           />
           <Route
+            path="/schedulePage/consultingDetail/:scheduleId"
+            element={
+              <PlainLayout>
+                <ConsultingDetailPage />
+              </PlainLayout>
+            }
+          />
+
+          <Route
+            path="/memberPage/list"
+            element={
+              <MainLayout>
+                <MemberList />
+              </MainLayout>
+            }
+          />
+
+          <Route
             path="/LoginPage"
             element={
               <MainLayout>
@@ -67,10 +99,19 @@ function App() {
               </MainLayout>
             }
           />
-            {/* 센터 티켓 */}
-            <Route path="/centerTicketPage" element={<CenterTicket />} />
-            <Route path="/centerTicketPage/createTicket" element={<CreateTicket />} />
-            
+          {/* 센터 티켓 */}
+          <Route
+            path="/centerTicketPage"
+            element={
+              <PlainLayout>
+                <CenterTicket />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/centerTicketPage/createTicket"
+            element={<CreateTicket />}
+          />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
