@@ -10,6 +10,8 @@ import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
+import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.index";
+import CreateTicket from "./components/units/tickets/centerTicket/createTicket";
 
 const MainLayout = ({ children }) => (
   <>
@@ -67,10 +69,16 @@ function App() {
               </MainLayout>
             }
           />
-            {/* 센터 티켓 */}
-            <Route path="/centerTicketPage" element={<CenterTicket />} />
-            <Route path="/centerTicketPage/createTicket" element={<CreateTicket />} />
-            
+          {/* 센터 티켓 */}
+          <Route path="/centerTicketPage" element={<CenterTicket />} />
+          <Route
+            path="/centerTicketPage/createTicket"
+            element={<CreateTicket />}
+          />
+          {/* <Route
+            path="/testTicket"
+            element={<Test__createTicket />}
+          /> */}
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
