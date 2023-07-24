@@ -100,6 +100,7 @@ function App() {
             }
           />
           {/* 센터 티켓 */}
+
           <Route
             path="/centerTicketPage"
             element={

@@ -1,16 +1,28 @@
 import { useEffect, useState } from "react";
+import * as S from "./createTicketForm.style";
+// import { Option } from "antd/es/mentions";
+// import { Select } from 'antd';
+import { Form, Select } from 'antd';
+
+const { Option } = Select;
+
+
+
+// import "./test__createTicket.css"
 
 // enum class 여쭤보기. (아래는 지금까지 알아낸 enum class)
 // termUnit: [MONTH, WEEK, YEAR, DAY]
 // lessonType: [DUET, TRIPLE, GROUP, SINGLE]
 export interface CreateTicketType {
-  lessonType: string;
-  title: string;
-  duration: number;
-  defaultCount: number;
-  maxServiceCount: number;
-  defaultTerm: number;
-  defaultTermUnit: string;
+  lessonType: string; //수업 유형
+  title: string; // 수강권명
+  // defaultTerm: number | null; //수강권 기간
+  defaultTerm: number | null; //수강권 기간
+  defaultTermUnit: string | null; //기간 단위
+  duration: number; // 시간
+  defaultCount: number | null; // 기본 횟수
+  maxServiceCount: number | null; // 서비스 횟수
+
   dailyCountLimit: number;
 }
 
@@ -25,10 +37,18 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     duration: 0,
     defaultCount: 0,
     maxServiceCount: 0,
-    defaultTerm: 0,
-    defaultTermUnit: "",
-    dailyCountLimit: 0,
+    defaultTerm: null,
+    defaultTermUnit: null,
+    dailyCountLimit: 1,
   });
+
+  // Lesson type options
+  const lessonTypeOptions = [
+    { value: "SINGLE", label: "개인 수업 - 1:1" },
+    { value: "DUET", label: "개인 수업 - 2:1" },
+    { value: "TRIPLE", label: "개인 수업 - 3:1" },
+    { value: "GROUP", label: "그룹 수업" },
+  ];
 
   const [isUnlimitedPeriod, setIsUnlimitedPeriod] = useState(false);
   const [isUnlimitedTimes, setIsUnlimitedTimes] = useState(false);
@@ -37,14 +57,20 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     setTicketData({ ...ticketData, [e.target.name]: e.target.value });
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name, value } = event.target;
+  // const handleSelectChange = (value: unknown, option: any) => {
+  //   setTicketData((prevData) => ({
+  //     ...prevData,
+  //     lessonType: value as string,
+  //     defaultTerm: value as number,
+  //     defaultTermUnit: value as string,
+  //   }));
+  // };
+
+  const handleSelectChange = (name: string, value: string) => {
     setTicketData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    // console.log('ticketData')
-    // console.log(ticketData)
   };
 
   //option값 선택시 콘솔찍기
@@ -62,6 +88,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
   /////////////////////////////////////////
   // toggle 버튼 클릭 시(소진시까지, 무제한)
   /////////////////////////////////////////
+  // 소진시까지(기간)
   const handleTogglePeriod = (event: any) => {
     event.preventDefault();
     setIsUnlimitedPeriod(!isUnlimitedPeriod);
@@ -69,12 +96,14 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     if (!isUnlimitedPeriod) {
       setTicketData((prevData) => ({
         ...prevData,
-        ticketPeriod: "소진시까지",
+        defaultTerm: null,
+        defaultTermUnit: null,
       }));
     } else {
       setTicketData((prevData) => ({
         ...prevData,
-        ticketPeriod: 0, // reset to 0 when it's not unlimited
+        defaultTerm: 0, // reset to 0 when it's not unlimited
+        defaultTermUnit: "",
       }));
     }
   };
@@ -87,124 +116,143 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     if (!isUnlimitedTimes) {
       setTicketData((prevData) => ({
         ...prevData,
-        basicTimes: 999,
-        serviceTimes: "무제한",
+        defaultCount: null,
+        maxServiceCount: null,
       }));
     } else {
       setTicketData((prevData) => ({
         ...prevData,
-        basicTimes: 0,
-        serviceTimes: 0,
+        defaultCount: 0,
+        maxServiceCount: 0,
       }));
     }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="lessonType">
-        수업 유형
-        <select
-          id="lessonType"
-          name="lessonType"
-          value={ticketData.lessonType}
-          onChange={handleSelectChange}
-          required
-        >
-          <option value="" disabled>
-            선택해 주세요
-          </option>
-          <option value="SINGLE">개인 수업 - 1:1</option>
-          <option value="DUET">개인 수업 - 2:1</option>
-          <option value="TRIPLE">개인 수업 - 3:1</option>
-          <option value="GROUP">그룹 수업</option>
-        </select>
-      </label>
-      <br />
-      <label>
-        수강권명
-        <input
-          type="text"
-          name="title"
-          value={ticketData.title}
-          onChange={handleChange}
-          placeholder="수강권명을 입력해 주세요(15자이내)"
-        />
-      </label>
-      <br />
-      <label>
-        수강권 기간
-        <input
-          type="number"
-          name="duration"
-          value={ticketData.duration}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        기본횟수
-        <input
-          type="number"
-          name="defaultCount"
-          value={ticketData.defaultCount}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label>
-        Max Service Count:
-        <input
-          type="number"
-          name="maxServiceCount"
-          value={ticketData.maxServiceCount}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <label htmlFor="defaultTerm">
-        수강권 기간
-        <br />
-        <input
-          type="text"
-          id="defaultTerm"
-          name="defaultTerm"
-          value={isUnlimitedPeriod ? "" : ticketData.defaultTerm}
-          onChange={handleChange}
-          disabled={isUnlimitedPeriod}
-        />
-        <select
-          id="defaultTermUnit"
-          name="defaultTermUnit"
-          value={ticketData.defaultTermUnit}
-          onChange={handleSelectChange}
-          disabled={isUnlimitedPeriod}
-          required
-        >
-          <option value="" disabled>
-            기간 선택
-          </option>
-          <option value="DAY">일</option>
-          <option value="WEEK">주</option>
-          <option value="MONTH">개월</option>
-          <option value="YEAR">년</option>
-        </select>
-      </label>
-      <br />
-      {/* 소진시 까지 toggle btn */}
-      <button onClick={handleTogglePeriod}>소진시 까지</button>
-      <br />
-      <label>
-        Daily Count Limit이뭥미..모르겠슴
-        <input
-          type="number"
-          name="dailyCountLimit"
-          value={ticketData.dailyCountLimit}
-          onChange={handleChange}
-        />
-      </label>
-      <br />
-      <button type="submit">Create</button>
-    </form>
+    <>
+      <S.Header>
+        <S.OutBox>
+          <S.LeftOut />
+          <S.Appbar>수강권 생성</S.Appbar>
+        </S.OutBox>
+      </S.Header>
+      <S.Body>
+        <p>센터의 수강권을 생성하세요</p>
+        <form className="create_form" onSubmit={handleSubmit}>
+          <div className="miniwrap">
+            <S.Label>수업 유형 </S.Label>
+            <S.Selector
+              id="lessonType"
+              // name="lessonType"
+              value={ticketData.lessonType}
+              // onChange={handleSelectChange}
+              onChange={(value) => handleSelectChange("lessonType", value)}
+              // required
+            >
+              <Option value="" disabled>
+                선택해 주세요
+              </Option>
+              <Option value="SINGLE">개인 수업 - 1:1</Option>
+              <Option value="DUET">개인 수업 - 2:1</Option>
+              <Option value="TRIPLE">개인 수업 - 3:1</Option>
+              <Option value="GROUP">그룹 수업</Option>
+            </S.Selector>
+          </div>
+          <br />
+          <div className="miniwrap">
+            <S.Label>수강권명</S.Label>
+
+            <S.Input
+              type="text"
+              name="title"
+              value={ticketData.title}
+              onChange={handleChange}
+              placeholder="수강권명을 입력해 주세요(15자이내)"
+              className="text-field2"
+            />
+          </div>
+          <br />
+          <div>
+            <label htmlFor="defaultTerm">수강권 기간</label>
+            <br />
+            <div className="miniwrap">
+            <S.Input
+                type="text"
+                id="defaultTerm"
+                name="defaultTerm"
+                value={isUnlimitedPeriod ? "" : ticketData.defaultTerm || ""}
+                onChange={handleChange}
+                disabled={isUnlimitedPeriod}
+                className="text-field2"
+              />
+              <S.Selector
+                id="defaultTermUnit"
+                // name="lessonType"
+                value={ticketData.defaultTermUnit}
+                // onChange={handleSelectChange}
+                onChange={(value) => handleSelectChange("defaultTermUnit", value)}
+                disabled={isUnlimitedPeriod}
+                // required
+              >
+                <Option value="" disabled>
+                  기간 선택
+                </Option>
+                <Option value="DAY">일</Option>
+                <Option value="WEEK">주</Option>
+                <Option value="MONTH">개월</Option>
+                <Option value="YEAR">년</Option>
+              </S.Selector>
+              <div>
+                {/* 소진시 까지 toggle btn */}
+                <button onClick={handleTogglePeriod}>소진시 까지 </button>
+              </div>
+            </div>
+          </div>
+          <div className="miniwrap">
+            <S.Label>시간</S.Label>
+
+           <S.Input
+              type="number"
+              name="duration"
+              value={ticketData.duration}
+              onChange={handleChange}
+              className="text-field2"
+            />
+          </div>
+          <br />
+          <div className="miniwrap">
+            <S.Label>기본횟수</S.Label>
+
+            <S.Input
+              type="number"
+              name="defaultCount"
+              value={isUnlimitedTimes ? "" : ticketData.defaultCount || ""}
+              onChange={handleChange}
+              className="text-field2"
+              disabled={isUnlimitedTimes}
+            />
+            <button onClick={handleToggleTimes}>무제한</button>
+          </div>
+          <br />
+          <div className="miniwrap">
+            <S.Label>서비스 횟수</S.Label>
+
+            <S.Input
+              type="number"
+              name="maxServiceCount"
+              value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
+              onChange={handleChange}
+              className="text-field2"
+              disabled={isUnlimitedTimes}
+            />
+          </div>
+          <br />
+          <div>
+            <S.Button>저장</S.Button>
+          </div>
+        </form>
+      </S.Body>
+    </>
   );
 };
 
