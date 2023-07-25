@@ -15,6 +15,7 @@ import CreateTicket from "./components/units/tickets/centerTicket/createTicket";
 import ClassDetailPage from "./pages/schedulePage/classDetail";
 import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
 import MemberList from "./pages/memberPage/list/index";
+import MemberAdd from "./pages/memberPage/add/index";
 
 const MainLayout = ({ children }) => (
   <>
@@ -88,6 +89,15 @@ function App() {
               <MainLayout>
                 <MemberList />
               </MainLayout>
+            }
+          />
+
+          <Route
+            path="/memberPage/add"
+            element={
+              <PlainLayout>
+                <MemberAdd />
+              </PlainLayout>
             }
           />
 

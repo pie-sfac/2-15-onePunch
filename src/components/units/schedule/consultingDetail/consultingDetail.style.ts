@@ -1,6 +1,6 @@
 import { LeftOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Avatar } from "antd";
+import { Avatar, Progress } from "antd";
 
 export const Wrapper = styled.div``;
 
@@ -125,4 +125,15 @@ export const PMemoMBox = styled.div`
   border-radius: 10px;
   padding: 20px 10px;
   font-size: 14px;
+`;
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Viewport의 높이를 100%로 설정해 모든 화면을 채우게 합니다 */
+`;
+
+export const Loading = styled(Progress)`
+  width: 300px;
 `;

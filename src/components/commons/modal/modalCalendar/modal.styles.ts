@@ -1,7 +1,9 @@
 import styled from "@emotion/styled";
 import { Modal } from "antd";
 
-export const ModalOut = styled(Modal)``;
+export const ModalOut = styled(Modal)`
+  top: 10%;
+`;
 
 export const ModalWrapper = styled.div``;
 
