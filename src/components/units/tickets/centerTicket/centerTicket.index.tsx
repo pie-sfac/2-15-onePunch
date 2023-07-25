@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-import { Link } from "react-router-dom";
-import "./centerTicket.style.css";
-
-
+import { Link, useNavigate } from "react-router-dom";
+// import "./centerTicket.style.css";
+import * as S from "./centerTicket.style";
 
 //
 interface BookableLesson {
@@ -15,7 +14,7 @@ interface BookableLesson {
 }
 
 //
-interface TicketType {
+export interface TicketType {
   id: number;
   title: string;
   lessonType: string;
@@ -26,6 +25,12 @@ interface TicketType {
   maxServiceCount: number;
   issuedTicketCount: number;
   bookableLessons: BookableLesson[];
+}
+
+//
+interface TicketProps {
+  ticket: TicketType;
+  onClick: () => void;
 }
 
 //////////////////////////////////
@@ -52,42 +57,62 @@ const CenterTicket: React.FC = () => {
     getTickets().then(setTickets);
   }, []);
 
-  const Ticket: React.FC<{ ticket: TicketType }> = ({ ticket }) => (
-    <div className="membership2">
-      <div className="contents">
-        <div className="content">
-          <div className="text3">{ticket.title}</div>
-          <div className="text4">
-            <div className="text7">부여</div>
-            <span className="text6">nn건</span>
-          </div>
-        </div>
-        <div className="content2">
-          <div className="text4">
-            <div className="text7">수강권 횟수</div>
-            <div className="text6">{ticket.defaultCount}회</div>
-          </div>
-          <div className="text4">
-            <div className="text7">수업 시간</div>
-            <div className="text6">{ticket.bookableLessons.length > 0 && ticket.bookableLessons[0].duration}분</div>
-          </div>
-          <div className="text4">
-            <div className="text7">수강권 기간</div>
-            <div className="text6">
+  const navigate = useNavigate();
+
+  // 티켓 상세보기
+  const ticketDetailHandler = async (id: number): Promise<any> => {
+    console.log("id: ", id);
+    try {
+      // const response = await apiInstance.get("/tickets/" + id);
+      // const ticketDetail = response.data;
+      // console.log(ticketDetail);
+      navigate(`/centerTicketPage/ticketDetail/${id}`);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+  // const Ticket: React.FC<{ ticket: TicketType }> = ({ ticket }) => (
+  const Ticket: React.FC<TicketProps> = ({ ticket, onClick }) => (
+    <S.Membership onClick={onClick}>
+      <S.Contents>
+        <S.Content>
+          <S.Title>{ticket.title}</S.Title>
+          <S.Info>
+            <S.Text1>부여</S.Text1>
+            <S.Text2>nn건</S.Text2>
+          </S.Info>
+        </S.Content>
+        <S.Content>
+          <S.Info>
+            <S.Text1>수강권 횟수</S.Text1>
+            <S.Text2>{ticket.defaultCount}회</S.Text2>
+          </S.Info>
+          <S.Info>
+            <S.Text1>수업 시간</S.Text1>
+            <S.Text2>
+              {ticket.bookableLessons.length > 0 &&
+                ticket.bookableLessons[0].duration}
+              분
+            </S.Text2>
+          </S.Info>
+          <S.Info>
+            <S.Text1>수강권 기간</S.Text1>
+            <S.Text2>
               {ticket.defaultTerm}
-              {ticket.defaultTermUnit} 
-            </div>
-          </div>
-        </div>
-      </div>
+              {ticket.defaultTermUnit}
+            </S.Text2>
+          </S.Info>
+        </S.Content>
+      </S.Contents>
 
-      <div className="contents">
-        <div className="label2">
-          <div className="text8">개인 수업 - 1:1</div>
-        </div>
+      <S.Contents>
+        <S.Label2>
+          <S.Text8>개인 수업 - 1:1</S.Text8>
+        </S.Label2>
 
-        <svg
-          className="tiket-ac"
+        <S.TicketImg
           width="40"
           height="40"
           viewBox="0 0 40 40"
@@ -100,54 +125,43 @@ const CenterTicket: React.FC = () => {
             fill="#BFD1FF"
           />
           <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
+            fillRule="evenodd"
+            clipRule="evenodd"
             d="M23.8672 15.8789L25.2812 17.293L21.0391 21.5352L19.625 22.9492L18.2109 21.5352L16.0859 19.4141L17.5 18L19.625 20.1211L23.8672 15.8789Z"
             fill="#BFD1FF"
           />
-        </svg>
-      </div>
-      {/* <div> */}
-      {/* <p>id: {ticket.id}</p> */}
-      {/* <p>title: {ticket.title}</p> */}
-      {/* <p>lessonType: {ticket.lessonType}</p> */}
-      {/* <p>defaultCount: {ticket.defaultCount}</p> */}
-      {/* <p>defaultTerm: {ticket.defaultTerm}</p> */}
-      {/* <p>defaultTermUnit: {ticket.defaultTermUnit}</p> */}
-      {/* <p>isActive: {ticket.isActive && "true"}</p> */}
-      {/* <p>maxServiceCount: {ticket.maxServiceCount}</p> */}
-      {/* <p>issuedTicketCount: {ticket.issuedTicketCount}</p> */}
-      {/* </div> */}
-      </div>
-
-    // ///////////////
+        </S.TicketImg>
+      </S.Contents>
+    </S.Membership>
   );
 
   return (
     <>
-      {/* <NavBar /> */}
-      <div>
-        <div className="ticketheader">
-          <p className="center_title">센터 수강권</p>
-            <Link to="/centerTicketPage/createTicket">
-              <button className="button" >+ 수강권 추가</button>
-            </Link>
-        </div>
-        <div className="tab">
-          <div className="text">
-            <div className="_00">판매중(3)</div>
-          </div>
-
-          <div className="text2">
-            <div className="_002">판매 종료 (2)</div>
-          </div>
-        </div>
-        {/* 티켓리스트 */}
-        <div className="parent">
-          {tickets &&
-            tickets.map((ticket) => <Ticket key={ticket.id} ticket={ticket} />)}
-        </div>
-      </div>
+      <S.Ticketheader>
+        <S.CenterTitle>센터 수강권</S.CenterTitle>
+        <Link to="/centerTicketPage/createTicket">
+          <S.Button>+ 수강권 추가</S.Button>
+        </Link>
+      </S.Ticketheader>
+      <S.Tab>
+        <S.Text>
+          <S.SellState>판매중(3)</S.SellState>
+        </S.Text>
+        <S.Text2>
+          <S.SellState>판매 종료 (2)</S.SellState>
+        </S.Text2>
+      </S.Tab>
+      {/* 티켓리스트 */}
+      <S.TicketList>
+        {tickets &&
+          tickets.map((ticket) => (
+            <Ticket
+              key={ticket.id}
+              ticket={ticket}
+              onClick={() => ticketDetailHandler(ticket.id)}
+            />
+          ))}
+      </S.TicketList>
     </>
   );
 };
