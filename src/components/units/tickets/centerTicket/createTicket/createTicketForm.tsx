@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import * as S from "./createTicketForm.style";
 // import { Option } from "antd/es/mentions";
 // import { Select } from 'antd';
-import { Form, Select } from 'antd';
-
+import { Select } from "antd";
+import { useRecoilState } from "recoil";
+import { maxServiceCountState } from "../../../../../commons/stores/index";
 const { Option } = Select;
-
-
 
 // import "./test__createTicket.css"
 
@@ -16,7 +15,6 @@ const { Option } = Select;
 export interface CreateTicketType {
   lessonType: string; //수업 유형
   title: string; // 수강권명
-  // defaultTerm: number | null; //수강권 기간
   defaultTerm: number | null; //수강권 기간
   defaultTermUnit: string | null; //기간 단위
   duration: number; // 시간
@@ -56,15 +54,6 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTicketData({ ...ticketData, [e.target.name]: e.target.value });
   };
-
-  // const handleSelectChange = (value: unknown, option: any) => {
-  //   setTicketData((prevData) => ({
-  //     ...prevData,
-  //     lessonType: value as string,
-  //     defaultTerm: value as number,
-  //     defaultTermUnit: value as string,
-  //   }));
-  // };
 
   const handleSelectChange = (name: string, value: string) => {
     setTicketData((prevData) => ({
@@ -128,6 +117,40 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     }
   };
 
+  const [maxServiceCount, setMaxServiceCount] =
+    useRecoilState(maxServiceCountState);
+  const increment = () => {
+    const newCount = maxServiceCount + 1;
+    setMaxServiceCount(newCount);
+
+    setTicketData((prevData) => ({
+      ...prevData,
+      maxServiceCount: newCount,
+    }));
+  };
+
+  const decrement = () => {
+    if (maxServiceCount > 0) {
+      const newCount = maxServiceCount - 1;
+      setMaxServiceCount(newCount);
+
+      setTicketData((prevData) => ({
+        ...prevData,
+        maxServiceCount: newCount,
+      }));
+    }
+  };
+
+  const handleCountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCount = Number(e.target.value);
+    setMaxServiceCount(newCount);
+
+    setTicketData((prevData) => ({
+      ...prevData,
+      maxServiceCount: newCount,
+    }));
+    console.log(newCount);
+  };
   return (
     <>
       <S.Header>
@@ -176,7 +199,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
             <label htmlFor="defaultTerm">수강권 기간</label>
             <br />
             <div className="miniwrap">
-            <S.Input
+              <S.Input
                 type="text"
                 id="defaultTerm"
                 name="defaultTerm"
@@ -190,7 +213,9 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
                 // name="lessonType"
                 value={ticketData.defaultTermUnit}
                 // onChange={handleSelectChange}
-                onChange={(value) => handleSelectChange("defaultTermUnit", value)}
+                onChange={(value) =>
+                  handleSelectChange("defaultTermUnit", value)
+                }
                 disabled={isUnlimitedPeriod}
                 // required
               >
@@ -211,7 +236,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           <div className="miniwrap">
             <S.Label>시간</S.Label>
 
-           <S.Input
+            <S.Input
               type="number"
               name="duration"
               value={ticketData.duration}
@@ -236,15 +261,22 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           <br />
           <div className="miniwrap">
             <S.Label>서비스 횟수</S.Label>
-
-            <S.Input
+            <S.ControlWrapper>
+            <S.btnStyles className="btn" onClick={decrement}>
+              -
+            </S.btnStyles>
+            <S.ServiceInput
               type="number"
               name="maxServiceCount"
               value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
-              onChange={handleChange}
+              onChange={handleCountChange}
               className="text-field2"
               disabled={isUnlimitedTimes}
             />
+            <S.btnStyles className="btn" onClick={increment}>
+              +
+            </S.btnStyles>
+            </S.ControlWrapper>
           </div>
           <br />
           <div>

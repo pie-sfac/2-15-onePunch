@@ -11,10 +11,11 @@ import TemporaryLogin from "./pages/temporaryLoginPage/index";
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
 import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.index";
-import CreateTicket from "./components/units/tickets/centerTicket/createTicket";
 import ClassDetailPage from "./pages/schedulePage/classDetail";
 import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
 import MemberList from "./pages/memberPage/list/index";
+import TicketDetailPage from "./pages/ticketPage/centerTicket/ticketDetail";
+import CreateTicketPage from "./pages/ticketPage/centerTicket/createTicket";
 
 const MainLayout = ({ children }) => (
   <>
@@ -99,8 +100,8 @@ function App() {
               </MainLayout>
             }
           />
-          {/* 센터 티켓 */}
 
+          {/* 센터 티켓 */}
           <Route
             path="/centerTicketPage"
             element={
@@ -111,7 +112,11 @@ function App() {
           />
           <Route
             path="/centerTicketPage/createTicket"
-            element={<CreateTicket />}
+            element={<CreateTicketPage />}
+          />
+          <Route
+            path="/centerTicketPage/ticketDetail/:id"
+            element={<TicketDetailPage />}
           />
         </Routes>
       </BrowserRouter>

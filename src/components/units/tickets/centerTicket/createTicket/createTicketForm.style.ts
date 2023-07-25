@@ -82,5 +82,51 @@ export const Input = styled.input`
   padding: 10px 5px;
   border-radius: 6px;
   border: 1px solid #dbdbdb;
-
 `;
+
+export const ServiceInput = styled.input`
+  width: 50%;
+  height: 50px
+  margin-top: 3vh;
+  margin-bottom: 3vh;
+  padding: 10px 5px;
+  border-radius: 6px;
+  border: 1px solid #dbdbdb;
+  text-align:center;
+`;
+
+
+export const btnStyles = styled.div`
+  &,
+  & * {
+    box-sizing: border-box;
+  }
+  background: var(--bg-bg-100, #f4f4f4);
+  border-radius: 99px;
+  padding: 10px; 
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  text-align: center;
+
+  .frame-1707478717 {
+    position: absolute;
+    left: 4px;
+    top: 4px;
+    overflow: visible;
+  }
+`;
+
+// export const MiniWrap = styled.div`
+// display; flex-box;
+// flex-direction: row;
+// `
+
+export const ControlWrapper = styled.div`
+display: flex;
+justify-content: space-between;
+align-items: center;
+text-align: center;
+`
+

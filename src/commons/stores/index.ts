@@ -9,3 +9,8 @@ export const accessTokenState = atom({
   key: "accessTokenState",
   default: "",
 });
+
+export const maxServiceCountState = atom({
+  key: 'maxServiceCountState',
+  default: 0, 
+});
