@@ -1,6 +1,6 @@
 import { LeftOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Avatar } from "antd";
+import { Avatar, Modal, Progress, Skeleton } from "antd";
 
 export const Wrapper = styled.div``;
 
@@ -171,4 +171,57 @@ export const ReportButton = styled.button`
   padding: 8px 12px;
   color: #6691ff;
   border-radius: 10px;
+`;
+
+export const LoadingWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Viewport의 높이를 100%로 설정해 모든 화면을 채우게 합니다 */
+`;
+
+export const Loading = styled(Progress)`
+  width: 300px;
+`;
+
+export const Modals = styled(Modal)`
+  top: 40%;
+`;
+
+export const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+`;
+
+export const ModalTitle = styled.h2`
+  font-size: 16px;
+  font-weight: 700;
+`;
+
+export const ModalText = styled.p`
+  margin: 20px 0px;
+`;
+
+export const ModalButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+`;
+
+export const ModalNegativeButton = styled.button`
+  width: 45%;
+  padding: 12px 0px;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+`;
+
+export const ModalPositiveButton = styled.button`
+  width: 45%;
+  padding: 12px 0px;
+  background-color: #2d62ea;
+  color: white;
+  border-radius: 4px;
 `;

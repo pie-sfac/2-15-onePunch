@@ -14,8 +14,10 @@ import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.i
 import ClassDetailPage from "./pages/schedulePage/classDetail";
 import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
 import MemberList from "./pages/memberPage/list/index";
+import MemberAdd from "./pages/memberPage/add/index";
 import TicketDetailPage from "./pages/ticketPage/centerTicket/ticketDetail";
 import CreateTicketPage from "./pages/ticketPage/centerTicket/createTicket";
+
 
 const MainLayout = ({ children }) => (
   <>
@@ -89,6 +91,15 @@ function App() {
               <MainLayout>
                 <MemberList />
               </MainLayout>
+            }
+          />
+
+          <Route
+            path="/memberPage/add"
+            element={
+              <PlainLayout>
+                <MemberAdd />
+              </PlainLayout>
             }
           />
 

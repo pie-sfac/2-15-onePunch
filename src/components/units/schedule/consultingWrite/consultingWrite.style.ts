@@ -27,7 +27,7 @@ export const CreateScheduleText = styled.p`
 
 export const LeftOut = styled(LeftOutlined)``;
 
-export const Body = styled.body`
+export const Body = styled.div`
   padding: 20px;
   margin-top: 1vh;
 `;
