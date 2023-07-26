@@ -18,6 +18,9 @@ import MemberAdd from "./pages/memberPage/add/index";
 import TicketDetailPage from "./pages/ticketPage/centerTicket/ticketDetail";
 import CreateTicketPage from "./pages/ticketPage/centerTicket/createTicket";
 import MemberDetailPage from "./pages/memberPage/detail/index";
+import Home from "./components/units/home/home.index";
+
+
 
 const MainLayout = ({ children }) => (
   <>
@@ -40,6 +43,14 @@ function App() {
             element={
               <MainLayout>
                 <TemporaryLogin />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/Home"
+            element={
+              <MainLayout>
+                <Home />
               </MainLayout>
             }
           />
