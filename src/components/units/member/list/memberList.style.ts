@@ -4,7 +4,7 @@ import { Avatar } from "antd";
 export const Wrapper = styled.div`
   background-color: #f4f4f4;
   height: calc(100vh - 80px);
-  padding: 80px 3vw 0 3vw;
+  padding: 80px 3vw 160px 3vw; // top, right, bottom, left
 `;
 
 export const AvatarOut = styled(Avatar)``;
@@ -12,6 +12,8 @@ export const AvatarOut = styled(Avatar)``;
 export const MembersWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  height: 530px; // Adjust this as needed
+  overflow-y: auto;
 `;
 
 export const Search = styled.input`
@@ -35,7 +37,7 @@ export const MembersBox = styled.div`
   padding: 10px 15px;
   margin-top: 1vh;
   border-radius: 4px;
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export const Name = styled.p`
@@ -77,4 +79,8 @@ export const AddButton = styled.button`
   background-color: #fbfbfb;
   padding: 5px 10px;
   border-radius: 10px;
+`;
+
+export const PaginationWrapper = styled.div`
+  text-align: center;
 `;
