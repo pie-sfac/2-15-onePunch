@@ -1,12 +1,18 @@
 import React, { useEffect, useState, ChangeEvent } from 'react';
-import axios from '../../../commons/api/axios';
+import axios from 'axios';
 import { Container, Title, Logo, InputField, ButtonContainer, Button, LinkText } from './login.styles';
+import { useRecoilState } from 'recoil';
+import { accessTokenState } from '../../../commons/stores';
 
 const Login: React.FC = () => {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [Username, setUsername] = useState('');
   const [Password, setPassword] = useState('');
-
+  //리코일 사용하기
+  //1. atom.js 파일을 생성하고 저장할 atom을 정의한다.
+  //2. 이제 Login 컴포넌트에서 이 atom을 사용하여 'accessToken' 저장 가능
+  //3. 저장하기 위해 useRecoilState hook 사용
+  const [token, setToken] = useRecoilState(accessTokenState);
   //아이디, 비번 상태값 변경될 때마다 잘 찍히고 있는지 확인
 useEffect(() => {
   console.log('Username: ', Username);
@@ -25,7 +31,7 @@ useEffect(() => {
      // Basic Authentication을 위한 header 설정
       const auth = 'Basic ' + btoa(Username + ':' + Password);
       // 1. POST /api/v1/auth/login 로그인 요청
-      await axios.post('/admins/login', 
+      await axios.post('http://223.130.161.221/api/v1/admins/login', 
       {
         username: Username,
         password: Password,
@@ -43,6 +49,9 @@ useEffect(() => {
 
       localStorage.setItem('token', response.data.accessToken);
       console.log(response.data.accessToken);
+      //token을 localstorage에 저장한 것처럼 위 seToken에 담아줌. 
+      //이제 전역에서 호출해서 사용 가능
+      setToken(response.data.accessToken);
       alert("로그인 성공!")
   })
   .catch((error)=>{
@@ -63,6 +72,8 @@ useEffect(() => {
           <Button onClick={onSubmitHandler}>로그인</Button>
           <LinkText>아이디 찾기 / 비밀번호 찾기</LinkText>
           <LinkText>포인티 계정이 없으세요? 회원가입</LinkText>
+          <p>team15</p>
+          <p>team15!!</p>
         </Container>
       );
     } else {
