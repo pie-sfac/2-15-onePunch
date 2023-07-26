@@ -5,7 +5,7 @@ const container = document.getElementById("root");
 
 container &&
   createRoot(container).render(
-    <StrictMode>
-      <App />
-    </StrictMode>
+    // <StrictMode>
+    <App />
+    // </StrictMode>
   );
