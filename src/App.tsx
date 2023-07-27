@@ -126,9 +126,9 @@ function App() {
           <Route
             path="/LoginPage"
             element={
-              <MainLayout>
+              <PlainLayout>
                 <Login />
-              </MainLayout>
+              </PlainLayout>
             }
           />
 
