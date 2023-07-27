@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import apiLogin from '../../../commons/api/apiLogin';
-import { Container, Title, Logo, InputField, ButtonContainer, Button, LinkText } from './login.styles';
+import * as S from "./login.styles.ts";
 import { useRecoilState } from 'recoil';
 import { accessTokenStateForAdmin, accessTokenStateForStaffs } from '../../../commons/stores';
 
@@ -74,34 +74,34 @@ const Login: React.FC = () => {
     if (isAdmin) {
       return (
         <form onSubmit={handleSubmit(onSubmitHandlerForAdmin)}>
-          <Title>관리자 로그인</Title>
-          <InputField {...register("Username")} type="text" placeholder="아이디" />
-          <InputField {...register("Password")} type="password" placeholder="비밀번호" />
-          <Button type="submit">로그인</Button>
+          <S.Title>관리자 로그인</S.Title>
+          <S.InputField {...register("Username")} type="text" placeholder="아이디" />
+          <S.InputField {...register("Password")} type="password" placeholder="비밀번호" />
+          <S.Button type="submit">로그인</S.Button>
         </form>
       );
     } else {
       return (
         <form onSubmit={handleSubmit(onSubmitHandlerForStaffs)}>
-          <Title>직원 로그인</Title>
-          <InputField {...register("Username")} type="text" placeholder="아이디" />
-          <InputField {...register("Password")} type="password" placeholder="비밀번호" />
-          <InputField {...register("CenterCode")} type="number" placeholder="센터코드" />
-          <Button type="submit">로그인</Button>
+          <S.Title>직원 로그인</S.Title>
+          <S.InputField {...register("Username")} type="text" placeholder="아이디" />
+          <S.InputField {...register("Password")} type="password" placeholder="비밀번호" />
+          <S.InputField {...register("CenterCode")} type="number" placeholder="센터코드" />
+          <S.Button type="submit">로그인</S.Button>
         </form>
       );
     }
   };
 
   return (
-    <Container>
-      <Logo>poinT</Logo>
-      <ButtonContainer>
-        <Button onClick={() => setIsAdmin(true)}>관리자 로그인</Button>
-        <Button onClick={() => setIsAdmin(false)}>직원 로그인</Button>
-      </ButtonContainer>
+    <S.Container>
+      <S.Logo>poinT</S.Logo>
+      <S.ButtonContainer>
+        <S.Button onClick={() => setIsAdmin(true)}>관리자 로그인</S.Button>
+        <S.Button onClick={() => setIsAdmin(false)}>직원 로그인</S.Button>
+      </S.ButtonContainer>
       {renderContent()}
-    </Container>
+    </S.Container>
   );
 };
 
