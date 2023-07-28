@@ -19,8 +19,8 @@ import TicketDetailPage from "./pages/ticketPage/centerTicket/ticketDetail";
 import CreateTicketPage from "./pages/ticketPage/centerTicket/createTicket";
 import MemberDetailPage from "./pages/memberPage/detail/index";
 import Home from "./components/units/home/home.index";
-
-
+import StaffListPage from "./pages/staffPage/list/index";
+import StaffAdd from "./components/units/staff/add/staffAdd.index";
 
 const MainLayout = ({ children }) => (
   <>
@@ -148,6 +148,25 @@ function App() {
           <Route
             path="/centerTicketPage/ticketDetail/:id"
             element={<TicketDetailPage />}
+          />
+
+          {/* 직원 관리 */}
+
+          <Route
+            path="/staffPage/list"
+            element={
+              <MainLayout>
+                <StaffListPage />
+              </MainLayout>
+            }
+          />
+          <Route
+            path="/staffPage/add"
+            element={
+              <PlainLayout>
+                <StaffAdd />
+              </PlainLayout>
+            }
           />
         </Routes>
       </BrowserRouter>
