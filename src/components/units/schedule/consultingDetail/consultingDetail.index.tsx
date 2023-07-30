@@ -45,7 +45,11 @@ export default function ConsultingWrite() {
   };
 
   const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+    navigate("/schedulePage/calendar");
+  };
+
+  const handleAddMemberClick = () => {
+    navigate("/memberPage/add");
   };
 
   useEffect(() => {
@@ -107,7 +111,9 @@ export default function ConsultingWrite() {
                   </S.PMITie>
                   <S.PMSBTie>
                     <S.Button>상담기록</S.Button>
-                    <S.Button>회원 정보 등록</S.Button>
+                    <S.Button onClick={handleAddMemberClick}>
+                      회원 정보 등록
+                    </S.Button>
                   </S.PMSBTie>
                 </S.PMBox>
               </S.PMemoWrapper>
