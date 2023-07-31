@@ -1,40 +1,17 @@
 import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./memberDetail.style";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-
-interface MemberDetails {
-  name: string;
-  phone: string;
-  birthDate: string;
-  job: string;
-}
+import { useGetFetchDetails } from "../../../../commons/hooks/useGets/useGetFetchDetails";
 
 export default function memberDetail() {
   const navigate = useNavigate();
   const { memberId } = useParams();
-  const [memberDetails, setMemberDetails] = useState<MemberDetails>({
-    name: "",
-    phone: "",
-    birthDate: "",
-    job: "",
-  });
   const [loadingProgress, setLoadingProgress] = useState(0);
 
-  useEffect(() => {
-    fetchMemberDetails();
-  }, []);
-
-  const fetchMemberDetails = async () => {
-    try {
-      const response = await apiInstance.get(`/members/${memberId}`);
-      setMemberDetails(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // 회원 상세 조회 _ 커스텀 hooks
+  const { memberDetails, setMemberDetails, fetchMemberDetails } =
+    useGetFetchDetails(memberId);
 
   const handleOutBoxClick = () => {
     navigate("/memberPage/list");
@@ -50,7 +27,6 @@ export default function memberDetail() {
     } else if (loadingProgress >= 100) {
       clearInterval(interval);
     }
-
     return () => clearInterval(interval);
   }, [loadingProgress]);
 
@@ -86,6 +62,11 @@ export default function memberDetail() {
               <S.Notification>알림메시지</S.Notification>
               <S.Album>앨범</S.Album>
             </S.MemberNav>
+            <S.ImageTextWrapper>
+              <S.NoteIcon src="/images/home/Note.png" alt="" />
+              <S.ActionText>기록을 작성해 주세요</S.ActionText>
+            </S.ImageTextWrapper>
+            <S.FixedButton>+ 추가하기</S.FixedButton>
           </S.Body>
         </>
       )}

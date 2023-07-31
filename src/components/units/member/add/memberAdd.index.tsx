@@ -1,17 +1,14 @@
-import React, { useState } from "react";
 import * as S from "./memberAdd.style";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./memberAdd.schema"; // 위에서 정의한 schema를 import합니다.
 import { Select } from "antd";
 import { Controller } from "react-hook-form";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { useNavigate } from "react-router-dom";
+import { usePostMembers } from "../../../../commons/hooks/usePosts/usePostMembers";
 
 export default function MemberAdd() {
   const navigate = useNavigate();
-  const [add, setAdd] = useState(false);
-  const [addName, setAddName] = useState("");
   const {
     register,
     handleSubmit,
@@ -21,25 +18,9 @@ export default function MemberAdd() {
     resolver: yupResolver(schema),
     mode: "onChange",
   });
-  const onSubmit = async (data: any) => {
-    try {
-      await apiInstance.post("/members?page=1&size=10", {
-        name: data.name,
-        birthDate: data.birthDate,
-        phone: data.phone,
-        sex: data.sex,
-        job: data.job,
-        acqusitionFunnel: data.howToVisit,
-        acquisitionFunnel: data.howToVisit,
-      });
-      console.log(data);
-      setAddName(data.name);
-      setAdd(true);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-      alert(error.response.data.message);
-    }
-  };
+
+  // 회원 회원 등록 _ 커스텀 hooks
+  const { onSubmit, add, addName, setAdd } = usePostMembers();
 
   const handleListClick = () => {
     navigate("/memberPage/list");

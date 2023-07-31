@@ -1,11 +1,15 @@
 import * as S from "./consultingWrite.style";
-import { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
+import { ChangeEvent, MouseEventHandler, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Modal, Button } from "antd";
-import axios from "axios";
-import { useRecoilState } from "recoil";
+import { Modal } from "antd";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Phone } from "../../../../commons/libraries/utils";
+
+interface Staff {
+  id: string;
+  name: string;
+  phone: string;
+}
 
 export default function ConsultingWrite() {
   const [startTime, setStartTime] = useState(null);
@@ -13,7 +17,7 @@ export default function ConsultingWrite() {
   const [day, setDay] = useState(null);
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
-  const [staffs, setStaffs] = useState([]);
+  const [staffs, setStaffs] = useState<Staff[]>([]);
   const [userId, setUserId] = useState("0");
   const [clientName, setClientName] = useState("");
   const [clientPhone, setClientPhone] = useState("");

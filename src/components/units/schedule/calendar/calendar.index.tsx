@@ -8,30 +8,36 @@ import bootstrapPlugin from "@fullcalendar/bootstrap";
 import googleCalendarPlugin from "@fullcalendar/google-calendar";
 import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
-import { Button, Modal, Select } from "antd";
 import ModalPage from "../../../commons/modal/modalCalendar/modal.index";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import { modalState } from "../../../../commons/stores";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 
+interface FullCalendarExtended extends FullCalendar {
+  getApi(): any;
+}
+
+interface Event {
+  tutor: boolean;
+  startAt: string;
+  endAt: string;
+  id: string;
+  type?: string; // "counseling" 혹은 "private"
+}
+
 export default function Calendar() {
   const navigate = useNavigate();
-  const calendarRef = useRef(null);
-  const [arr, setArr] = useState([]);
+  const calendarRef = useRef<FullCalendarExtended | null>(null);
+  const [arr, setArr] = useState<Event[]>([]);
   const [showDailyButton, setShowDailyButton] = useState(false);
   const dateFormat = "MM월DD일";
   const weekFormat = "MM/DD";
   const monthFormat = "YYYY년MM월";
   const [viewOption, setViewOption] = useState("dayGridMonth"); // 추가: 현재 선택된 옵션을 상태로 관리
   const [selectedDate, setSelectedDate] = useState(null);
-  const [day, setDay] = useState("");
-  const [open, setOpen] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false); // 모달의 가시성 상태
   const modalOpen = useRecoilValue(modalState);
   const setModalOpen = useSetRecoilState(modalState);
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
 
   const handleViewChange = (view: any) => {
     const calendar = calendarRef?.current?.getApi();
@@ -80,16 +86,15 @@ export default function Calendar() {
         `/schedules?from=${startTime}&to=${endTime}`
       );
       const counselingSchedules = response.data.counselingSchedules.map(
-        (event: any) => ({ ...event, type: "counseling" })
+        (event: Event) => ({ ...event, type: "counseling" })
       );
       const privateSchedules = response.data.privateSchedules.map(
-        (event: any) => ({
+        (event: Event) => ({
           ...event,
           type: "private",
         })
       );
 
-      // Merge two arrays
       setArr([...counselingSchedules, ...privateSchedules]);
       console.log(response.data.privateSchedules);
     } catch (error) {
@@ -252,7 +257,7 @@ export default function Calendar() {
           height="100vh"
           eventDisplay="block"
           eventClick={handleEventClick}
-          events={arr.map((event) => ({
+          events={arr.map((event: Event) => ({
             title: event.tutor ? "수업" : "상담",
             start: event.startAt,
             end: event.endAt,

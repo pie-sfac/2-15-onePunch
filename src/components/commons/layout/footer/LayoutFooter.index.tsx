@@ -4,15 +4,18 @@ import * as S from "./LayoutFooter.styles";
 export default function LayoutFooter(): JSX.Element {
   const navigate = useNavigate();
   const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+    window.scrollTo(0, 0);
+    navigate("/schedulePage/calendar");
   };
 
   const HomeClick = () => {
-    navigate("/TemporaryLogin"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+    window.scrollTo(0, 0);
+    navigate("/Home");
   };
 
   const MemberClick = () => {
-    navigate("/memberPage/list"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+    window.scrollTo(0, 0);
+    navigate("/memberPage/list");
   };
 
   return (
