@@ -21,6 +21,8 @@ import MemberDetailPage from "./pages/memberPage/detail/index";
 import Home from "./components/units/home/home.index";
 import StaffListPage from "./pages/staffPage/list/index";
 import StaffAdd from "./components/units/staff/add/staffAdd.index";
+import StaffDetail from "./components/units/staff/detail/staffDetail.index";
+import StaffEditPage from "./pages/staffPage/edit";
 
 const MainLayout = ({ children }) => (
   <>
@@ -167,6 +169,11 @@ function App() {
                 <StaffAdd />
               </PlainLayout>
             }
+          />
+          <Route path="/staffPage/detail/:id" element={<StaffDetail />} />
+          <Route
+            path="/staffPage/detail/:id/edit"
+            element={<StaffEditPage />}
           />
         </Routes>
       </BrowserRouter>

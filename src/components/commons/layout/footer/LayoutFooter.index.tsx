@@ -14,6 +14,9 @@ export default function LayoutFooter(): JSX.Element {
   const MemberClick = () => {
     navigate("/memberPage/list"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
   };
+  const CenterClick = () => {
+    navigate("/staffPage/list"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+  };
 
   return (
     <>
@@ -30,7 +33,7 @@ export default function LayoutFooter(): JSX.Element {
           <S.Icon src="/images/icons/my.png" />
           <S.Text>회원관리</S.Text>
         </S.Category>
-        <S.Category>
+        <S.Category onClick={CenterClick}>
           <S.Icon src="/images/icons/pro.png" />
           <S.Text>센터관리</S.Text>
         </S.Category>

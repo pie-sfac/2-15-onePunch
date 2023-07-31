@@ -3,7 +3,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../../commons/apiInstance/apiInstance";
 import { TicketType } from "../centerTicket.index";
-import ModalConfirm from "../../../../commons/modal/modalAlert/modalConfirm.index";
+import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
 
 const TicketDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -39,9 +39,9 @@ const TicketDetail: React.FC = () => {
     return <p>Loading...</p>;
   }
 
-  const goToPrev = () => {
-    navigate("/centerTicketPage");
-  };
+  // const goToPrev = () => {
+  //   navigate(-1);
+  // };
 
   // 그 메뉴 관리...
   const moreVertHandler = () => {
@@ -85,7 +85,7 @@ const TicketDetail: React.FC = () => {
     <div>
       <S.Header>
         <S.OutBox>
-          <S.LeftOut onClick={goToPrev} />
+          <S.LeftOut onClick={() =>  navigate(-1)} />
           <S.ticketDetailAppbar>수강권 상세</S.ticketDetailAppbar>
           <svg
             width="24"
