@@ -104,4 +104,8 @@ export const ViewMemberButton = styled.button`
 export const ButtonWrapper = styled.div`
   width: 100%;
   text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;

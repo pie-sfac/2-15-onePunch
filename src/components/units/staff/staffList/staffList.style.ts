@@ -80,3 +80,24 @@ export const MemberCount = styled.p``;
 export const Memo = styled.p`
   margin-left: auto;
 `;
+
+export const emptyWrapper = styled.div`
+  background-color: #f4f4f4;
+  height: calc(100vh - 80px);
+  padding: 80px 3vw 160px 3vw; // top, right, bottom, left
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const emptySquare = styled.div`
+  width: 50px;
+  height: 50px;
+  background: #cfcfcf;
+  border-radius: 4px;
+  margin-bottom: 15px;
+`;
+
+export const emptyText = styled.p``;
