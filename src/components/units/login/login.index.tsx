@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import apiLogin from '../../../commons/api/apiLogin';
+import apiLogin, { apiBasic } from '../../../commons/api/apiLogin';
 import * as S from "./login.styles.ts";
 import { useRecoilState } from 'recoil';
 import { accessTokenStateForAdmin, accessTokenStateForStaffs } from '../../../commons/stores';
@@ -22,11 +22,8 @@ const Login: React.FC = () => {
     // Basic Authentication을 위한 header 설정
     const auth = 'Basic ' + btoa(data.Username + ':' + data.Password);
     // POST /api/v1/auth/login 로그인 요청
-    await apiLogin.post('/admins/login', 
-    {
-      username: data.Username,
-      password: data.Password,
-    }, 
+    // api(false).post
+    await apiBasic.post('/admins/login', {},
     {
       headers: {
         'Authorization': auth
@@ -95,7 +92,7 @@ const Login: React.FC = () => {
 
   return (
     <S.Container>
-      <S.Logo>poinT</S.Logo>
+      <S.Logo  src='/images/icons/Poin T.png' alt='포인티 로고'/>
       <S.ButtonContainer>
         <S.Button onClick={() => setIsAdmin(true)}>관리자 로그인</S.Button>
         <S.Button onClick={() => setIsAdmin(false)}>직원 로그인</S.Button>

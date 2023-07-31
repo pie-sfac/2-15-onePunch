@@ -16,7 +16,7 @@ export const Title = styled.h2`
   margin-bottom: 20px;
 `;
 
-export const Logo = styled.h2`
+export const Logo = styled.img`
   color: #2D62EA;
   margin-bottom: 20px;
 `;
