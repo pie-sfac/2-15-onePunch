@@ -109,3 +109,36 @@ export const LoadingWrapper = styled.div`
 export const Loading = styled(Progress)`
   width: 300px;
 `;
+
+export const FixedButton = styled.button`
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  padding: 16px 32px;
+  background-color: #6691ff;
+  color: white;
+
+  border: none;
+  border-radius: 100px;
+  cursor: pointer;
+`;
+
+export const ImageTextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @media (min-height: 601px) and (max-height: 800px) {
+    margin-top: 30%;
+  }
+
+  @media (min-height: 801px) {
+    margin-top: 50%;
+  }
+`;
+export const NoteIcon = styled.img``;
+
+export const ActionText = styled.p`
+  margin-top: 15px;
+  color: #d9d9d9;
+`;

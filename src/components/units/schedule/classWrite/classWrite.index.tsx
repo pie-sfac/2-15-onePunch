@@ -4,22 +4,40 @@ import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Modal } from "antd";
 import { Phone } from "../../../../commons/libraries/utils";
+import moment from "moment";
+
+interface Member {
+  id: string;
+  name: string;
+  phone: string;
+}
+
+interface Staff {
+  id: string;
+  name: string;
+  phone: string;
+}
+
+interface Ticket {
+  id: string;
+  title: string;
+}
 
 export default function ClassWrite() {
   const navigate = useNavigate();
-  const [startTime, setStartTime] = useState(null);
+  const [startTime, setStartTime] = useState<moment.Moment | null>(null);
   const [endTime, setEndTime] = useState(null);
   const [day, setDay] = useState(null);
   const [userId, setUserId] = useState("0");
   const [memberId, setMemberId] = useState("0");
   const [issuedTicketId, setIssuedTicketId] =
     useState("수업(수강권)을 선택해 주세요.");
-  const [issuedTickets, setIssuedTickets] = useState([]);
+  const [issuedTickets, setIssuedTickets] = useState<Ticket[]>([]);
   const [memberName, setMemberName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-  const [members, setMembers] = useState([]);
+  const [members, setMembers] = useState<Member[]>([]);
   const [userName, setUserName] = useState("");
-  const [staffs, setStaffs] = useState([]);
+  const [staffs, setStaffs] = useState<Staff[]>([]);
   const [select, setSelect] = useState(false);
 
   const onStartTimeChange = (value: any, date: any) => {
@@ -228,7 +246,7 @@ export default function ClassWrite() {
           <S.Label>수업(수강권) 선택 </S.Label>
           <S.SelectOut
             value={issuedTicketId}
-            onChange={(value) => setIssuedTicketId(value)}
+            onChange={(value) => setIssuedTicketId(value as string)}
             options={issuedTickets.map((ticket) => ({
               value: ticket.id,
               label: ticket.title,

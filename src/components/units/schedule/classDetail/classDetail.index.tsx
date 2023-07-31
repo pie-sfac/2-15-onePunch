@@ -122,6 +122,19 @@ export default function ClassDetail() {
     setSelect(false);
   };
 
+  const getAttendanceStatus = (status: any) => {
+    switch (status) {
+      case "ABSENT":
+        return { message: "결석", color: "#FE7B72" };
+      case "PRESENT":
+        return { message: "출석", color: "#6691FF" };
+      case "WAIT":
+        return { message: "대기", color: "#C5C5C5" };
+      default:
+        return { message: "", color: "" };
+    }
+  };
+
   return (
     <S.Wrapper>
       <S.Modals
@@ -234,8 +247,18 @@ export default function ClassDetail() {
                 <S.PMSBox>
                   <S.PMSTie>
                     <S.PMSLabel>출결 상태</S.PMSLabel>
-                    <S.PMS>
-                      {scheduleDetails?.attendanceHistories?.[0]?.status}
+                    <S.PMS
+                      style={{
+                        color: getAttendanceStatus(
+                          scheduleDetails?.attendanceHistories?.[0]?.status
+                        ).color,
+                      }}
+                    >
+                      {
+                        getAttendanceStatus(
+                          scheduleDetails?.attendanceHistories?.[0]?.status
+                        ).message
+                      }
                     </S.PMS>
                   </S.PMSTie>
                   <S.PMSTie>

@@ -27,6 +27,8 @@ export default function ConsultingWrite() {
   const { scheduleId } = useParams();
   const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails>({});
   const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isVisible, setIsVisible] = useState(false);
+  const [memo, setMemo] = useState("");
 
   useEffect(() => {
     fetchScheduleDetails();
@@ -66,6 +68,18 @@ export default function ConsultingWrite() {
     return () => clearInterval(interval);
   }, [loadingProgress]);
 
+  const closeModal = () => {
+    setIsVisible(false);
+  };
+
+  const openModalCounselingRecord = async () => {
+    setIsVisible(true);
+  };
+
+  const onChangeMemo = (event: any) => {
+    setMemo(event.target.value);
+  };
+
   return (
     <>
       <S.Wrapper>
@@ -75,6 +89,28 @@ export default function ConsultingWrite() {
           </S.LoadingWrapper>
         ) : (
           <>
+            <S.Modals
+              visible={isVisible}
+              onOk={closeModal}
+              onCancel={closeModal}
+              footer={null}
+            >
+              <S.ModalTitle>상담 기록</S.ModalTitle>
+              <S.ModalText>
+                회원님과 나눈 내용을 자유롭게 작성해 보세요.
+              </S.ModalText>
+              <S.TextAreaOut
+                showCount
+                maxLength={1000}
+                style={{ height: 280, resize: "none" }}
+                placeholder=""
+                onChange={onChangeMemo}
+              />
+              <S.ButtonContainer>
+                <S.CancelButton onClick={closeModal}>취소</S.CancelButton>
+                <S.SaveButton>저장</S.SaveButton>
+              </S.ButtonContainer>
+            </S.Modals>
             <S.Header>
               <S.OutBox onClick={handleOutBoxClick}>
                 <S.LeftOut />
@@ -110,7 +146,9 @@ export default function ConsultingWrite() {
                     <S.PMPhone>({scheduleDetails?.client?.phone})</S.PMPhone>
                   </S.PMITie>
                   <S.PMSBTie>
-                    <S.Button>상담기록</S.Button>
+                    <S.Button onClick={openModalCounselingRecord}>
+                      상담기록
+                    </S.Button>
                     <S.Button onClick={handleAddMemberClick}>
                       회원 정보 등록
                     </S.Button>

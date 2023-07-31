@@ -5,6 +5,14 @@ export const Wrapper = styled.div`
   background-color: #f4f4f4;
   height: calc(100vh - 80px);
   padding: 80px 3vw 160px 3vw; // top, right, bottom, left
+
+  @media (min-height: 601px) and (max-height: 800px) {
+    padding-bottom: 160px;
+  }
+
+  @media (min-height: 801px) {
+    padding-bottom: 0px;
+  }
 `;
 
 export const AvatarOut = styled(Avatar)``;
