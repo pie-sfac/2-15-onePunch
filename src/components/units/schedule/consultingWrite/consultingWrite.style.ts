@@ -107,7 +107,7 @@ export const TimeOut = styled(TimePicker)`
 
 export const Text = styled.input`
   width: 45vw;
-  padding: 0px 10px;
+  padding: 5px 10px;
   margin-top: 3vh;
   height: 40px;
   border-radius: 4px;

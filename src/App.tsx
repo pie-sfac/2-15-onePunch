@@ -23,8 +23,11 @@ import StaffListPage from "./pages/staffPage/list/index";
 import StaffAdd from "./components/units/staff/add/staffAdd.index";
 import StaffDetail from "./components/units/staff/detail/staffDetail.index";
 import StaffEditPage from "./pages/staffPage/edit";
+import MemberEdit from "./pages/memberPage/edit/index";
+import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
+import ClassEdit from "./pages/schedulePage/classEdit/index";
 
-const MainLayout = ({ children }) => (
+const MainLayout = ({ children }: any) => (
   <>
     <LayoutHeader />
     {children}
@@ -32,7 +35,7 @@ const MainLayout = ({ children }) => (
   </>
 );
 
-const PlainLayout = ({ children }) => <>{children}</>;
+const PlainLayout = ({ children }: any) => <>{children}</>;
 
 function App() {
   return (
@@ -49,7 +52,7 @@ function App() {
             }
           />
           <Route
-            path="/Home"
+            path="/"
             element={
               <MainLayout>
                 <Home />
@@ -72,7 +75,14 @@ function App() {
               </PlainLayout>
             }
           />
-
+          <Route
+            path="/schedulePage/class/:scheduleId/edit"
+            element={
+              <PlainLayout>
+                <ClassEdit />
+              </PlainLayout>
+            }
+          />
           <Route
             path="/schedulePage/classDetail/:scheduleId"
             element={
@@ -86,6 +96,14 @@ function App() {
             element={
               <PlainLayout>
                 <ConsultingWrite />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/schedulePage/counseling/:scheduleId/edit"
+            element={
+              <PlainLayout>
+                <ConsultingEdit />
               </PlainLayout>
             }
           />
@@ -116,6 +134,14 @@ function App() {
             }
           />
 
+          <Route
+            path="/memberPage/:memberId/edit"
+            element={
+              <PlainLayout>
+                <MemberEdit />
+              </PlainLayout>
+            }
+          />
           <Route
             path="/memberPage/memberDetail/:memberId"
             element={

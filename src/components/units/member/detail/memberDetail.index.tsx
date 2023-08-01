@@ -30,6 +30,10 @@ export default function memberDetail() {
     return () => clearInterval(interval);
   }, [loadingProgress]);
 
+  const onClickEdit = async () => {
+    navigate(`/memberPage/${memberId}/edit`);
+  };
+
   return (
     <S.Wrapper>
       {loadingProgress < 100 ? (
@@ -43,6 +47,10 @@ export default function memberDetail() {
               <S.LeftOut />
               <S.OutBoxTitle>회원정보</S.OutBoxTitle>
             </S.OutBox>
+            <S.ActionContainer>
+              <S.Text onClick={onClickEdit}>수정</S.Text>
+              <S.Text>취소</S.Text>
+            </S.ActionContainer>
           </S.Header>
           <S.Body>
             <S.MemberWrapper>
