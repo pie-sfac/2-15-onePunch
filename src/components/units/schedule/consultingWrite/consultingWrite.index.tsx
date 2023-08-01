@@ -1,9 +1,11 @@
 import * as S from "./consultingWrite.style";
-import { ChangeEvent, MouseEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Modal } from "antd";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Phone } from "../../../../commons/libraries/utils";
+import { usePostCounseling } from "../../../../commons/hooks/usePosts/usePostCounseling";
+import { useOnClickGetId } from "../../../../commons/hooks/event/useOnClickGetId";
 
 interface Staff {
   id: string;
@@ -11,48 +13,43 @@ interface Staff {
   phone: string;
 }
 
-export default function ConsultingWrite() {
-  const [startTime, setStartTime] = useState(null);
-  const [endTime, setEndTime] = useState(null);
-  const [day, setDay] = useState(null);
+export default function ConsultingWrite(props: any) {
   const navigate = useNavigate();
   const [isVisible, setIsVisible] = useState(false);
   const [staffs, setStaffs] = useState<Staff[]>([]);
-  const [userId, setUserId] = useState("0");
-  const [clientName, setClientName] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
-  const [memo, setMemo] = useState("");
   const [userName, setUserName] = useState("");
+  const { scheduleId } = useParams();
+  const [info, setInfo] = useState(null);
 
-  const onChangeName = (event: ChangeEvent<HTMLInputElement>) => {
-    setClientName(event.target.value);
-  };
+  // 상담 등록 _ 커스텀 hooks
+  const {
+    userId,
+    setUserId,
+    clientName,
+    clientPhone,
+    memo,
+    startTime,
+    endTime,
+    day,
+    onChangeName,
+    onChangePhone,
+    onChangeMemo,
+    onStartTimeChange,
+    onEndTimeChange,
+    onDayChange,
+    onClickSubmt,
+    onClickEdit,
+  } = usePostCounseling(scheduleId);
 
-  const onChangePhone = (event: ChangeEvent<HTMLInputElement>) => {
-    setClientPhone(event.target.value);
-  };
-
-  const onChangeMemo = (event: any) => {
-    setMemo(event.target.value);
-  };
-
-  const onStartTimeChange = (value: any, date: any) => {
-    setStartTime(date);
-    console.log(date);
-  };
-
-  const onEndTimeChange = (value: any, date: any) => {
-    setEndTime(date);
-    console.log(date);
-  };
-
-  const onDayChange = (value: any, date: any) => {
-    setDay(date);
-    console.log(date);
-  };
+  // 직원 상세 조회 _ 커스텀 hooks
+  const { onClickGetId } = useOnClickGetId(
+    setUserId,
+    setUserName,
+    setIsVisible
+  );
 
   const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
+    navigate("/schedulePage/calendar");
   };
 
   const openModal = async () => {
@@ -70,39 +67,16 @@ export default function ConsultingWrite() {
     setIsVisible(false);
   };
 
-  const onClickSubmt = async () => {
-    try {
-      const response = await apiInstance.post("/schedules/counseling", {
-        userId: Number(userId), // 변경할 필요가 있음
-        clientName: clientName,
-        clientPhone: clientPhone,
-        memo: memo,
-        startAt: `${day}T${startTime}`,
-        endAt: `${day}T${endTime}`,
-      });
-      alert("일정을 등록했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data); // Here you can handle the response
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
-
-  const onClickGetId: MouseEventHandler<HTMLDivElement> = async (event) => {
-    try {
-      const target = event.currentTarget;
-      const postId = target.id;
-      setUserId(postId);
-
-      // 여기서 postId를 사용하여 해당 사용자의 이름을 가져오는 코드
-      const response = await apiInstance.get(`/staffs/${postId}`);
-      setUserName(response.data.name);
-
-      setIsVisible(false);
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
+  useEffect(() => {
+    const getMemberInfo = async () => {
+      const response = await apiInstance.get(
+        `/schedules/counseling/${scheduleId}`
+      );
+      setInfo(response.data);
+      console.log(info);
+    };
+    getMemberInfo();
+  }, [scheduleId]);
 
   return (
     <>
@@ -110,7 +84,9 @@ export default function ConsultingWrite() {
         <S.Header>
           <S.OutBox onClick={handleOutBoxClick}>
             <S.LeftOut />
-            <S.CreateScheduleText>일정 생성</S.CreateScheduleText>
+            <S.CreateScheduleText>
+              일정 {props.isEdit ? "수정" : "생성"}
+            </S.CreateScheduleText>
           </S.OutBox>
         </S.Header>
         <S.Body>
@@ -151,20 +127,22 @@ export default function ConsultingWrite() {
             <S.TimeOut onChange={onEndTimeChange} />
           </S.TimeBox>
           <S.Label>이름 </S.Label>
-          <S.Text onChange={onChangeName} placeholder="ex) 홍길동" />
+          <S.Text onChange={onChangeName} placeholder="홍길동" />
           <S.Label>역락처 </S.Label>
-          <S.Text onChange={onChangePhone} placeholder="ex) 01012341234" />
+          <S.Text onChange={onChangePhone} placeholder="010-1234-1234" />
           <S.Label>일정 메모</S.Label>
           <S.TextAreaOut
             showCount
             maxLength={100}
             style={{ height: 120, resize: "none" }}
-            placeholder="disable resize"
+            placeholder=""
             onChange={onChangeMemo}
           />
         </S.Body>
         <S.Footer>
-          <S.Button onClick={onClickSubmt}>완료</S.Button>
+          <S.Button onClick={props.isEdit ? onClickEdit : onClickSubmt}>
+            완료
+          </S.Button>
         </S.Footer>
       </S.Wrapper>
     </>

@@ -134,6 +134,7 @@ export default function Calendar() {
 
         // Merge two arrays
         setArr([...counselingSchedules, ...privateSchedules]);
+        console.log(arr);
       } catch (error) {
         console.error(error);
       }

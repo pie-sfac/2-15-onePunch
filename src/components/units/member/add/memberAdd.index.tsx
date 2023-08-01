@@ -4,11 +4,13 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { schema } from "./memberAdd.schema"; // 위에서 정의한 schema를 import합니다.
 import { Select } from "antd";
 import { Controller } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { usePostMembers } from "../../../../commons/hooks/usePosts/usePostMembers";
+import apiInstance from "../../../../commons/apiInstance/apiInstance";
 
-export default function MemberAdd() {
+export default function MemberAdd(props: any) {
   const navigate = useNavigate();
+  const { memberId } = useParams();
   const {
     register,
     handleSubmit,
@@ -26,6 +28,25 @@ export default function MemberAdd() {
     navigate("/memberPage/list");
   };
 
+  const onClickEdit = async (data: any) => {
+    try {
+      const response = await apiInstance.put(`/members/${memberId}`, {
+        name: data.name,
+        birthDate: data.birthDate,
+        phone: data.phone,
+        sex: data.sex,
+        job: data.job,
+        acqusitionFunnel: data.howToVisit,
+        acquisitionFunnel: data.howToVisit,
+      });
+      console.log(data);
+      setAdd(true);
+      console.log(response.data); // Here you can handle the response
+    } catch (error: any) {
+      alert(error.response.data.message);
+    }
+  };
+
   return (
     <S.Wrapper>
       {!add ? (
@@ -33,13 +54,19 @@ export default function MemberAdd() {
           <S.Header>
             <S.OutBox onClick={handleListClick}>
               <S.LeftOut />
-              <S.CreateScheduleText>회원등록</S.CreateScheduleText>
+              <S.CreateScheduleText>
+                {props.isEdit ? "회원수정" : "회원등록"}
+              </S.CreateScheduleText>
             </S.OutBox>
           </S.Header>
           <S.Body>
             <S.FormHeading>회원정보</S.FormHeading>
-            <S.FormSubHeading>회원 정보를 등록하세요</S.FormSubHeading>
-            <S.FormBody onSubmit={handleSubmit(onSubmit)}>
+            <S.FormSubHeading>
+              회원 정보를 {props.isEdit ? "수정" : "등록"}하세요
+            </S.FormSubHeading>
+            <S.FormBody
+              onSubmit={handleSubmit(props.isEdit ? onClickEdit : onSubmit)}
+            >
               <S.FormLabel>이름</S.FormLabel>
               <S.FormInput
                 className="input-placeholder"
@@ -128,9 +155,12 @@ export default function MemberAdd() {
         </>
       ) : (
         <S.RegistrationWrapper>
-          <S.RegistrationTitle>등록완료</S.RegistrationTitle>
+          <S.RegistrationTitle>
+            {props.isEdit ? "수정" : "등록"}완료
+          </S.RegistrationTitle>
           <S.RegistrationText>
-            {addName}님의 회원 정보가 생성되었습니다.
+            {addName}님의 회원 정보가 {props.isEdit ? "수정" : "생성"}
+            되었습니다.
           </S.RegistrationText>
           <S.RegistrationImage
             src="/images/icons/Graphic_Member_registered.png"

@@ -15,6 +15,17 @@ export const Header = styled.header`
   display: flex;
   height: 50px;
   border-bottom: 1px solid #e7e7e7;
+  align-items: center;
+  justify-content: space-between;
+`;
+export const ActionContainer = styled.div`
+  display: flex;
+`;
+
+export const ActionText = styled.p`
+  padding: 0px 15px 0px 0px;
+  font-size: 14px;
+  cursor: pointer;
 `;
 
 export const OutBox = styled.div`
@@ -113,7 +124,7 @@ export const PMSBTie = styled.div`
 
 export const Button = styled.button`
   border: 1px solid #e7e7e7;
-  padding: 0px 12px;
+  padding: 0px 11px;
   color: #6691ff;
   border-radius: 10px;
   font-size: 12px;
@@ -151,7 +162,7 @@ export const ModalTitle = styled.h2`
 `;
 
 export const ModalText = styled.p`
-  margin: 5px 0px;
+  margin: 20px 0px;
 `;
 
 export const TextAreaOut = styled(TextArea)`
@@ -184,5 +195,34 @@ export const SaveButton = styled.button`
   padding: 8px 15px;
   cursor: pointer;
   width: 46%;
+  border-radius: 4px;
+`;
+
+export const ModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+`;
+
+export const ModalButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+`;
+
+export const ModalNegativeButton = styled.button`
+  width: 45%;
+  padding: 12px 0px;
+  background-color: #f4f4f4;
+  border-radius: 4px;
+`;
+
+export const ModalPositiveButton = styled.button`
+  width: 45%;
+  padding: 12px 0px;
+  background-color: #2d62ea;
+  color: white;
   border-radius: 4px;
 `;

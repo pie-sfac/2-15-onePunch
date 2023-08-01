@@ -10,8 +10,20 @@ export const AvatarOut = styled(Avatar)``;
 
 export const Header = styled.header`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   height: 50px;
   border-bottom: 1px solid #e7e7e7;
+`;
+
+export const ActionContainer = styled.div`
+  display: flex;
+`;
+
+export const Text = styled.p`
+  padding: 0px 15px 0px 0px;
+  font-size: 14px;
+  cursor: pointer;
 `;
 
 export const OutBox = styled.div`

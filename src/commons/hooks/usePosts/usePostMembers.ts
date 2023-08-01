@@ -26,7 +26,7 @@ export const usePostMembers = () => {
   };
 
   const onSubmit = (data: any) => {
-    postMembers(data); // 이 함수로 data 전송
+    postMembers(data);
   };
 
   return { onSubmit, add, addName, setAdd };

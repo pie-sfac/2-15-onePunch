@@ -1,10 +1,13 @@
 import * as S from "./classWrite.style";
 import { MouseEventHandler, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Modal } from "antd";
 import { Phone } from "../../../../commons/libraries/utils";
 import moment from "moment";
+import { useOnClickGetStaffId } from "../../../../commons/hooks/event/useOnClickGetStaffId";
+import { useOnClickGetMemberId } from "../../../../commons/hooks/event/useOnClickGetMemberId";
+import { usePostClass } from "../../../../commons/hooks/usePosts/usePostClass";
 
 interface Member {
   id: string;
@@ -23,15 +26,9 @@ interface Ticket {
   title: string;
 }
 
-export default function ClassWrite() {
+export default function ClassWrite(props: any) {
   const navigate = useNavigate();
-  const [startTime, setStartTime] = useState<moment.Moment | null>(null);
-  const [endTime, setEndTime] = useState(null);
-  const [day, setDay] = useState(null);
-  const [userId, setUserId] = useState("0");
   const [memberId, setMemberId] = useState("0");
-  const [issuedTicketId, setIssuedTicketId] =
-    useState("수업(수강권)을 선택해 주세요.");
   const [issuedTickets, setIssuedTickets] = useState<Ticket[]>([]);
   const [memberName, setMemberName] = useState("");
   const [isVisible, setIsVisible] = useState(false);
@@ -39,103 +36,39 @@ export default function ClassWrite() {
   const [userName, setUserName] = useState("");
   const [staffs, setStaffs] = useState<Staff[]>([]);
   const [select, setSelect] = useState(false);
+  const { scheduleId } = useParams();
 
-  const onStartTimeChange = (value: any, date: any) => {
-    setStartTime(date);
-    console.log(date);
-  };
+  // 개인 수업 등록 & 수정 _ 커스텀 hooks
+  const {
+    userId,
+    setUserId,
+    issuedTicketId,
+    setIssuedTicketId,
+    startTime,
+    endTime,
+    day,
+    onStartTimeChange,
+    onEndTimeChange,
+    onDayChange,
+    onClickSubmt,
+    onClickEdit,
+  } = usePostClass(scheduleId);
 
-  const onEndTimeChange = (value: any, date: any) => {
-    setEndTime(date);
-    console.log(date);
-  };
+  // 직원 선택 _ 커스텀 hooks
+  const { onClickGetStaffId } = useOnClickGetStaffId(
+    setUserId,
+    setUserName,
+    setIsVisible
+  );
 
-  const onDayChange = (value: any, date: any) => {
-    setDay(date);
-    console.log(date);
-  };
-
-  const disabledEndTimeHours = () => {
-    const hours = [];
-    for (let i = startTime ? startTime.hour() : 0; i < 24; i++) {
-      hours.push(i);
-    }
-    return hours;
-  };
-  const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
-  };
-
-  // <개인 수업 등록>
-
-  const onClickSubmt = async () => {
-    try {
-      const response = await apiInstance.post("/schedules/private-lesson", {
-        userId: Number(userId), // 변경할 필요가 있음
-        issuedTicketId: Number(issuedTicketId),
-        startAt: `${day}T${startTime}`,
-        endAt: `${day}T${endTime}`,
-      });
-      alert("일정을 등록했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data); // Here you can handle the response
-    } catch (error: any) {
-      console.error(error.response.data.message); // Handle error
-      alert(error.response.data.message);
-    }
-  };
-
-  // <회원 선택>
-
-  const onClickGetMemberId: MouseEventHandler<HTMLDivElement> = async (
-    event
-  ) => {
-    try {
-      // 회원 아이디 가지고 오기
-      const target = event.currentTarget;
-      const postId = target.id;
-      setMemberId(postId);
-      console.log(postId);
-
-      // 회원 선택 시, 초기 수업(수강권) 선택값으로 변경
-      setIssuedTicketId("수업(수강권)을 선택해 주세요.");
-
-      // 여기서 postId를 사용하여 해당 사용자의 이름을 가져오는 코드
-      const responsed = await apiInstance.get(`/members/${postId}`);
-      setMemberName(responsed.data.name);
-      console.log(responsed.data.name);
-
-      // 회원 아이디에 해당하는 이슈티켓 목록 가지고 오기
-      const response = await apiInstance.get(
-        `/members/${postId}/issued-tickets`
-      );
-      setIssuedTickets(response.data.issuedTickets);
-      console.log(response.data.issuedTickets);
-      setIsVisible(false);
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
-
-  // <직원 선택>
-
-  const onClickGetStaffId: MouseEventHandler<HTMLDivElement> = async (
-    event
-  ) => {
-    try {
-      const target = event.currentTarget;
-      const postId = target.id;
-      setUserId(postId);
-
-      // 여기서 postId를 사용하여 해당 사용자의 이름을 가져오는 코드
-      const response = await apiInstance.get(`/staffs/${postId}`);
-      setUserName(response.data.name);
-
-      setIsVisible(false);
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
+  // 회원 선택 _ 커스텀 hooks
+  const { onClickGetMemberId } = useOnClickGetMemberId(
+    setMemberId,
+    setIssuedTicketId,
+    setMemberName,
+    setIsVisible,
+    setIssuedTickets
+  );
 
   //< 모달 열기 직원 >
 
@@ -171,13 +104,27 @@ export default function ClassWrite() {
     setIsVisible(false);
   };
 
+  const disabledEndTimeHours = () => {
+    const hours = [];
+    for (let i = startTime ? startTime.hour() : 0; i < 24; i++) {
+      hours.push(i);
+    }
+    return hours;
+  };
+
+  const handleOutBoxClick = () => {
+    navigate("/schedulePage/calendar");
+  };
+
   return (
     <>
       <S.Wrapper>
         <S.Header>
           <S.OutBox onClick={handleOutBoxClick}>
             <S.LeftOut />
-            <S.CreateScheduleText>일정 생성</S.CreateScheduleText>
+            <S.CreateScheduleText>
+              일정 {props.isEdit ? "수정" : "생성"}
+            </S.CreateScheduleText>
           </S.OutBox>
         </S.Header>
         <S.Body>
@@ -252,31 +199,18 @@ export default function ClassWrite() {
               label: ticket.title,
             }))}
           />
-
-          {/* <S.Label>참여 회원</S.Label>
-          <S.BoxWrapper>
-            <S.Box>
-              <S.SmileOut />
-              <S.Name>박회원1</S.Name>
-            </S.Box>
-            <S.Box>
-              <S.SmileOut />
-              <S.Name>김회원2</S.Name>
-            </S.Box>
-          </S.BoxWrapper> */}
           <S.Label>일자 선택</S.Label>
           <S.DateOut onChange={onDayChange} />
           <S.Label>시간 선택</S.Label>
           <S.TimeBox>
             <S.TimeOut onChange={onStartTimeChange} />
-            <S.TimeOut
-              onChange={onEndTimeChange}
-              // disabledHours={disabledEndTimeHours}
-            />
+            <S.TimeOut onChange={onEndTimeChange} />
           </S.TimeBox>
         </S.Body>
         <S.Footer>
-          <S.Button onClick={onClickSubmt}>완료</S.Button>
+          <S.Button onClick={props.isEdit ? onClickEdit : onClickSubmt}>
+            완료
+          </S.Button>
         </S.Footer>
       </S.Wrapper>
     </>

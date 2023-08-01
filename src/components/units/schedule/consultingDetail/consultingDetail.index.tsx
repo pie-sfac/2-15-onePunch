@@ -4,47 +4,19 @@ import * as S from "./consultingDetail.style";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-
-interface ScheduleDetails {
-  startAt?: string;
-  endAt?: string;
-  counselor?: Counselor;
-  client?: Client;
-  memo?: string;
-}
-
-interface Counselor {
-  name: string;
-}
-
-interface Client {
-  name: string;
-  phone: string;
-}
+import { useGetFetchScheduleDetails } from "../../../../commons/hooks/useGets/useGetFetchScheduleDetails";
 
 export default function ConsultingWrite() {
   const navigate = useNavigate();
   const { scheduleId } = useParams();
-  const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails>({});
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [memo, setMemo] = useState("");
+  const [select, setSelect] = useState("");
 
-  useEffect(() => {
-    fetchScheduleDetails();
-  }, []);
-
-  const fetchScheduleDetails = async () => {
-    try {
-      const response = await apiInstance.get(
-        `/schedules/counseling/${scheduleId}`
-      );
-      setScheduleDetails(response.data);
-      console.log(scheduleDetails);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  // 상담 상세 조회 _ 커스텀 hooks
+  const { scheduleDetails, setScheduleDetails, fetchScheduleDetails } =
+    useGetFetchScheduleDetails(scheduleId);
 
   const handleOutBoxClick = () => {
     navigate("/schedulePage/calendar");
@@ -74,10 +46,34 @@ export default function ConsultingWrite() {
 
   const openModalCounselingRecord = async () => {
     setIsVisible(true);
+    setSelect("상담기록");
   };
 
   const onChangeMemo = (event: any) => {
     setMemo(event.target.value);
+  };
+
+  const onClickCancel = async () => {
+    try {
+      const response = await apiInstance.post(
+        `/schedules/${scheduleId}/cancel`
+      );
+      navigate("/schedulePage/calendar");
+      console.log(response);
+      console.log(scheduleId);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+      alert(error.response.data.message);
+    }
+  };
+
+  const onClickEdit = async () => {
+    navigate(`/schedulePage/counseling/${scheduleId}/edit`);
+  };
+
+  const openModalMemberCancel = async () => {
+    setIsVisible(true);
+    setSelect("취소");
   };
 
   return (
@@ -95,21 +91,40 @@ export default function ConsultingWrite() {
               onCancel={closeModal}
               footer={null}
             >
-              <S.ModalTitle>상담 기록</S.ModalTitle>
-              <S.ModalText>
-                회원님과 나눈 내용을 자유롭게 작성해 보세요.
-              </S.ModalText>
-              <S.TextAreaOut
-                showCount
-                maxLength={1000}
-                style={{ height: 280, resize: "none" }}
-                placeholder=""
-                onChange={onChangeMemo}
-              />
-              <S.ButtonContainer>
-                <S.CancelButton onClick={closeModal}>취소</S.CancelButton>
-                <S.SaveButton>저장</S.SaveButton>
-              </S.ButtonContainer>
+              {select === "취소" ? (
+                <>
+                  <S.ModalWrapper>
+                    <S.ModalTitle>수업 일정 취소</S.ModalTitle>
+                    <S.ModalText>취소를 진행하시겠습니까?</S.ModalText>
+                    <S.ModalButtonWrapper>
+                      <S.ModalNegativeButton onClick={closeModal}>
+                        아니요
+                      </S.ModalNegativeButton>{" "}
+                      <S.ModalPositiveButton onClick={onClickCancel}>
+                        예
+                      </S.ModalPositiveButton>
+                    </S.ModalButtonWrapper>
+                  </S.ModalWrapper>
+                </>
+              ) : (
+                <>
+                  <S.ModalTitle>상담 기록</S.ModalTitle>
+                  <S.ModalText>
+                    회원님과 나눈 내용을 자유롭게 작성해 보세요.
+                  </S.ModalText>
+                  <S.TextAreaOut
+                    showCount
+                    maxLength={1000}
+                    style={{ height: 280, resize: "none" }}
+                    placeholder=""
+                    onChange={onChangeMemo}
+                  />
+                  <S.ButtonContainer>
+                    <S.CancelButton onClick={closeModal}>취소</S.CancelButton>
+                    <S.SaveButton>저장</S.SaveButton>
+                  </S.ButtonContainer>
+                </>
+              )}
             </S.Modals>
             <S.Header>
               <S.OutBox onClick={handleOutBoxClick}>
@@ -118,6 +133,12 @@ export default function ConsultingWrite() {
                   {Time(scheduleDetails.startAt)} 상담
                 </S.OutBoxTime>
               </S.OutBox>
+              <S.ActionContainer>
+                <S.ActionText onClick={onClickEdit}>변경</S.ActionText>
+                <S.ActionText onClick={openModalMemberCancel}>
+                  취소
+                </S.ActionText>
+              </S.ActionContainer>
             </S.Header>
             <S.TitleBox>
               <S.Title>상담</S.Title>
