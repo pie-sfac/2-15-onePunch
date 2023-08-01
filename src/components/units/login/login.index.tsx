@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import apiLogin, { apiBasic } from '../../../commons/api/apiLogin';
+import  apiLogin from '../../../commons/api/apiLogin';
 import * as S from "./login.styles.ts";
 import { useRecoilState } from 'recoil';
 import { accessTokenStateForAdmin, accessTokenStateForStaffs } from '../../../commons/stores';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormInput {
   Username: string;
@@ -12,18 +13,21 @@ interface IFormInput {
 }
 
 const Login: React.FC = () => {
+  const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [, setTokenForAdmin] = useRecoilState(accessTokenStateForAdmin);
   const [, setTokenForStaffs] = useRecoilState(accessTokenStateForStaffs);
   const { register, handleSubmit } = useForm<IFormInput>();
 
 //관리자 토큰
+
+  //사용자 로그인
+  //1. 로그인 해서 AccessToken 받아오기
   const onSubmitHandlerForAdmin = async(data: IFormInput) => {
     // Basic Authentication을 위한 header 설정
     const auth = 'Basic ' + btoa(data.Username + ':' + data.Password);
     // POST /api/v1/auth/login 로그인 요청
-    // api(false).post
-    await apiBasic.post('/admins/login', {},
+    await apiLogin.post('/admins/login', {},
     {
       headers: {
         'Authorization': auth
@@ -31,8 +35,10 @@ const Login: React.FC = () => {
     })
     .then ((response)=>{
       localStorage.setItem('tokenForAdmin', response.data.accessToken);
+  //2. accessToken globalState에 저장하기
       setTokenForAdmin(response.data.accessToken);
       alert("로그인 성공!")
+      navigate("/schedulePage/calendar");
     })
     .catch((error)=>{
       console.log('로그인 실패:', error);
