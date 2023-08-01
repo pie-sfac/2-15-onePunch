@@ -23,6 +23,7 @@ import StaffListPage from "./pages/staffPage/list/index";
 import StaffAdd from "./components/units/staff/add/staffAdd.index";
 import StaffDetail from "./components/units/staff/detail/staffDetail.index";
 import StaffEditPage from "./pages/staffPage/edit";
+import StaffRolesPage from "./pages/staffPage/roles";
 import MemberEdit from "./pages/memberPage/edit/index";
 import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
 import ClassEdit from "./pages/schedulePage/classEdit/index";
@@ -201,6 +202,7 @@ function App() {
             path="/staffPage/detail/:id/edit"
             element={<StaffEditPage />}
           />
+          <Route path="/staffPage/roles/:id" element={<StaffRolesPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>

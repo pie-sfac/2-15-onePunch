@@ -1,31 +1,43 @@
 import * as S from "./staffAdd.style";
-import { Select } from "antd";
-import { useState } from "react";
+import { Form, Input, Select, message } from "antd";
+import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
+import "./staffAdd.style.css";
+import { divide } from "lodash";
 
 interface StaffCreateReq {
   loginId: string;
   password: string;
   name: string;
   phone: string;
-  roles: number[];
+  roles: [] | null;
 }
 
+export interface roles {
+  id: string;
+  description: string;
+  name: string;
+  permissions: permissions[];
+}
+export interface permissions {
+  title: string;
+  description: string;
+}
 
-const options = [
-  {
-    label: "일반 직원 (기본): 가장 기존적인 권한만 소유하고 있습니다.",
-    value: "1",
-  },
-  {
-    label:
-      "인포 직원: 직원 관리, 수강권 관리, 일정 관리 권한을 소유하고 있습니다.",
-    value: "5",
-  },
-  { label: "총괄 매니저: 모든 권한을 소유하고 있습니다.", value: "6" },
-];
+// const options = [
+//   {
+//     label: "일반 직원 (기본): 가장 기존적인 권한만 소유하고 있습니다.",
+//     value: "1",
+//   },
+//   {
+//     label:
+//       "인포 직원: 직원 관리, 수강권 관리, 일정 관리 권한을 소유하고 있습니다.",
+//     value: "5",
+//   },
+//   { label: "총괄 매니저: 모든 권한을 소유하고 있습니다.", value: "6" },
+// ];
 
 const StaffAdd = () => {
   const navigate = useNavigate();
@@ -37,25 +49,77 @@ const StaffAdd = () => {
     phone: "",
     roles: [],
   });
+  const [options, setOptions] = useState<roles[]>([]);
+  const [isStaffResignation, setIsStaffResignation] = useState(false);
+
+  const getRoles = () => {
+    apiInstance
+      .get("/roles")
+      .then((response) => {
+        // console.log(response.data);
+        // console.log(response.data.roles);
+        setOptions(response.data.roles);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+      .finally(() => {
+        console.log("끝");
+      });
+  };
+  useEffect(getRoles, []);
+
+  const [form] = Form.useForm();
+  const next = async () => {
+    try {
+      const values = await form.validateFields();
+
+      // If all fields are valid, update staffReq and proceed to next step
+      setStaffReq({ ...staffReq, ...values });
+      setCurrent(current + 1);
+    } catch (error) {
+      console.log(error);
+      // message.error("입력값을 확인해주세요");
+    }
+  };
   const steps = [
     {
       title: "직원 정보 입력",
       content: (
         <>
-          <S.FormLabel>이름</S.FormLabel>
-          <S.FormInput
-            placeholder="이름을 입력해 주세요"
-            value={staffReq.name}
-            onChange={(e) => setStaffReq({ ...staffReq, name: e.target.value })}
-          />
-          <S.FormLabel>휴대폰 번호</S.FormLabel>
-          <S.FormInput
-            placeholder="010-0000-0000"
-            value={staffReq.phone}
-            onChange={(e) =>
-              setStaffReq({ ...staffReq, phone: e.target.value })
-            }
-          />
+          <S.FormLabel>이름*</S.FormLabel>
+          <Form.Item
+            name="name"
+            rules={[{ required: true, message: "이름을 입력해 주세요" }]}
+          >
+            <Input
+              placeholder="이름을 입력해 주세요"
+              value={staffReq.name}
+              onChange={(e) =>
+                setStaffReq({ ...staffReq, name: e.target.value })
+              }
+            />
+          </Form.Item>
+
+          <S.FormLabel>휴대폰 번호*</S.FormLabel>
+          <Form.Item
+            name="phone"
+            rules={[
+              { required: true, message: "핸드폰 번호를 입력해주세요." },
+              {
+                pattern: /^\d{3}-\d{3,4}-\d{4}$/,
+                message: "올바른 핸드폰 번호 형식을 입력해주세요.",
+              },
+            ]}
+          >
+            <Input
+              placeholder="010-0000-0000"
+              value={staffReq.phone}
+              onChange={(e) =>
+                setStaffReq({ ...staffReq, phone: e.target.value })
+              }
+            />
+          </Form.Item>
         </>
       ),
     },
@@ -63,22 +127,43 @@ const StaffAdd = () => {
       title: "직원 계정 생성",
       content: (
         <>
-          <S.FormLabel>아이디</S.FormLabel>
-          <S.FormInput
-            placeholder="3~15자의 영문, 숫자를 사용한 아이디를 입력해 주세요."
-            value={staffReq.loginId}
-            onChange={(e) =>
-              setStaffReq({ ...staffReq, loginId: e.target.value })
-            }
-          />
-          <S.FormLabel>임시 비밀번호(PIN)</S.FormLabel>
-          <S.FormInput
-            placeholder="4~6자리의 숫자로 구성해 주세요."
-            value={staffReq.password}
-            onChange={(e) =>
-              setStaffReq({ ...staffReq, password: e.target.value })
-            }
-          />
+          <S.FormLabel>아이디*</S.FormLabel>
+          <Form.Item
+            name="loginId"
+            rules={[
+              { required: true, message: "아이디를 입력해 주세요." },
+              {
+                pattern: /^[A-Za-z0-9]{3,15}$/,
+                message: "3~15자의 영문, 숫자를 사용한 아이디를 입력해 주세요.",
+              },
+            ]}
+          >
+            <Input
+              value={staffReq.loginId}
+              onChange={(e) =>
+                setStaffReq({ ...staffReq, loginId: e.target.value })
+              }
+            />
+          </Form.Item>
+
+          <S.FormLabel>임시 비밀번호(PIN)*</S.FormLabel>
+          <Form.Item
+            name="password"
+            rules={[
+              { required: true, message: "임시 비밀번호를 입력해 주세요." },
+              {
+                pattern: /^[0-9]{4,6}$/,
+                message: "4~6자리의 숫자로 구성해 주세요.",
+              },
+            ]}
+          >
+            <Input
+              value={staffReq.password}
+              onChange={(e) =>
+                setStaffReq({ ...staffReq, password: e.target.value })
+              }
+            />
+          </Form.Item>
         </>
       ),
     },
@@ -87,22 +172,51 @@ const StaffAdd = () => {
       content: (
         <>
           <S.FormLabel>직원 권한</S.FormLabel>
-          <Select
+          {/* <Select
             mode="tags"
             style={{ width: "100%" }}
             onChange={(value) =>
               setStaffReq({ ...staffReq, roles: value.map(Number) })
             }
             tokenSeparators={[","]}
-            options={options}
-          />
+            options={}
+          /> */}
+          <Select
+            className="my-select"
+            mode="multiple"
+            style={{ width: "100%" }}
+            // 일반 직원 선택 시 빈 배열 넣기
+            onChange={(value) => {
+              console.log(value);
+              {
+                value.includes(0)
+                  ? setStaffReq({ ...staffReq, roles: [] })
+                  : // : console.log(value);
+                    setStaffReq({ ...staffReq, roles: value.map(Number) });
+              }
+            }}
+            tokenSeparators={[","]}
+          >
+            <Select.Option key={0} value={0}>
+              일반 직원 (기본): 가장 기본적인 권한만 소유하고 있습니다.
+            </Select.Option>
+            {options.map((option) => (
+              <Select.Option
+                style={{ height: "auto", whiteSpace: "normal" }}
+                key={option.id}
+                value={option.id}
+              >
+                {option.name}: {option.description}
+              </Select.Option>
+            ))}
+          </Select>
         </>
       ),
     },
   ];
-  const next = () => {
-    setCurrent(current + 1);
-  };
+  // const next = () => {
+  //   setCurrent(current + 1);
+  // };
 
   const prev = () => {
     setCurrent(current - 1);
@@ -131,67 +245,87 @@ const StaffAdd = () => {
   // };
   // console.log(checkboxStatus);
 
-
   // 완료 버튼 클릭 시 전송
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(staffReq); 
-    apiInstance
-    .post(`/staffs`, {
-      loginId: staffReq.loginId,
-      password: staffReq.password,
-      phone: staffReq.phone,
-      name: staffReq.name,
-      roles: staffReq.roles,
-    })
-    .then((response) => {
-      console.log(response.data);
-      console.log(response.data.message);
-      alert(response.data.message);
-      navigate("/staffPage/list")
-      })
-    .catch((error:any) => {
-      console.log(error)
-    });
+    console.log(staffReq);
+    setIsStaffResignation(true);
 
+    apiInstance
+      .post(`/staffs`, {
+        loginId: staffReq.loginId,
+        password: staffReq.password,
+        phone: staffReq.phone,
+        name: staffReq.name,
+        roles: staffReq.roles,
+      })
+      .then((response) => {
+        console.log(response.data);
+        console.log(response.data.message);
+        alert(response.data.message);
+        setIsStaffResignation(true);
+
+        // navigate("/staffPage/list");
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
   return (
-    <S.Wrapper>
-      <S.StaffAddHeader>
-        <S.OutBox>
-          <S.LeftOut onClick={() => navigate(-1)} />
-          <S.Appbar>직원등록</S.Appbar>
-        </S.OutBox>
-      </S.StaffAddHeader>
-      <S.Body>
-        <Steps current={current} items={items} />
-        <div style={contentStyle}>{steps[current].content}</div>
-        <div style={{ marginTop: 24 }}>
-          <S.BtnWrapper>
-            {current > 0 && (
-              <Button
-                onClick={() => prev()}
-              >
-                이전
-              </Button>
-            )}
-            {current < steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={() => next()}
-              >
-                Next
-              </Button>
-            )}
-            {current === steps.length - 1 && (
-              <Button type="primary" onClick={handleSubmit}>
-                완료
-              </Button>
-            )}
-          </S.BtnWrapper>
+    <>
+      {isStaffResignation ? (
+        <div>
+          <div>
+            <h1>직원 등록 완료</h1>
+            <p>
+              직원 등록이 완료되었습니다. 직원에게 아이디를 전달하시겠습니까?
+            </p>
+          </div>
+          <div>
+            <img
+              src="/images/icons/Graphic_Employee_registered.png"
+              alt="Graphic_Employee_registered"
+            />
+          </div>
+          <div>
+            <button onClick={() => navigate("/staffPage/list")}>
+              나중에 할래요
+            </button>
+            <button>연락처로 전달하기</button>
+          </div>
         </div>
-      </S.Body>
-    </S.Wrapper>
+      ) : (
+        <S.Wrapper>
+          <S.StaffAddHeader>
+            <S.OutBox>
+              <S.LeftOut onClick={() => navigate(-1)} />
+              <S.Appbar>직원등록</S.Appbar>
+            </S.OutBox>
+          </S.StaffAddHeader>
+          <S.Body>
+            <Form form={form}>
+              <Steps current={current} items={items} />
+              <div style={contentStyle}>{steps[current].content}</div>
+              <div style={{ marginTop: 24 }}>
+                <S.BtnWrapper>
+                  {current > 0 && <Button onClick={() => prev()}>이전</Button>}
+                  {current < steps.length - 1 && (
+                    <Button type="primary" onClick={() => next()}>
+                      Next
+                    </Button>
+                  )}
+                  {current === steps.length - 1 && (
+                    <Button type="primary" onClick={handleSubmit}>
+                      완료
+                    </Button>
+                  )}
+                </S.BtnWrapper>
+              </div>
+            </Form>
+          </S.Body>
+        </S.Wrapper>
+      )}
+    </>
   );
 };
 
