@@ -3,7 +3,7 @@ import ClassWrite from "../../../components/units/schedule/classWrite/classWrite
 const ClassWritePage = () => {
   return (
     <>
-      <ClassWrite />
+      <ClassWrite isEdit={false} />
     </>
   );
 };

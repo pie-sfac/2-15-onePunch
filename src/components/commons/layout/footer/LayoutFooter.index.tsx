@@ -10,7 +10,7 @@ export default function LayoutFooter(): JSX.Element {
 
   const HomeClick = () => {
     window.scrollTo(0, 0);
-    navigate("/Home");
+    navigate("/");
   };
 
   const MemberClick = () => {

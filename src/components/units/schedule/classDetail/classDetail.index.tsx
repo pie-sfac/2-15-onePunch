@@ -42,7 +42,7 @@ export default function ClassDetail() {
   const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
-  const [select, setSelect] = useState(true);
+  const [select, setSelect] = useState("");
 
   useEffect(() => {
     fetchScheduleDetails();
@@ -114,12 +114,17 @@ export default function ClassDetail() {
 
   const openModalMemberAbsence = async () => {
     setIsVisible(true);
-    setSelect(true);
+    setSelect("결석");
   };
 
   const openModalMemberAttendance = async () => {
     setIsVisible(true);
-    setSelect(false);
+    setSelect("출석");
+  };
+
+  const openModalMemberCancel = async () => {
+    setIsVisible(true);
+    setSelect("취소");
   };
 
   const getAttendanceStatus = (status: any) => {
@@ -135,6 +140,24 @@ export default function ClassDetail() {
     }
   };
 
+  const onClickCancel = async () => {
+    try {
+      const response = await apiInstance.post(
+        `/schedules/${scheduleId}/cancel`
+      );
+      navigate("/schedulePage/calendar");
+      console.log(response);
+      console.log(scheduleId);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+      alert(error.response.data.message);
+    }
+  };
+
+  const onClickEdit = async () => {
+    navigate(`/schedulePage/class/${scheduleId}/edit`);
+  };
+
   return (
     <S.Wrapper>
       <S.Modals
@@ -143,7 +166,7 @@ export default function ClassDetail() {
         onCancel={closeModal}
         footer={null}
       >
-        {select ? (
+        {select === "결석" ? (
           <>
             {" "}
             <S.ModalWrapper>
@@ -159,7 +182,7 @@ export default function ClassDetail() {
               </S.ModalButtonWrapper>
             </S.ModalWrapper>
           </>
-        ) : (
+        ) : select === "출석" ? (
           <>
             <S.ModalWrapper>
               <S.ModalTitle>결석처리</S.ModalTitle>
@@ -170,6 +193,21 @@ export default function ClassDetail() {
                 </S.ModalNegativeButton>{" "}
                 <S.ModalPositiveButton onClick={onClickAttendance}>
                   확인
+                </S.ModalPositiveButton>
+              </S.ModalButtonWrapper>
+            </S.ModalWrapper>
+          </>
+        ) : (
+          <>
+            <S.ModalWrapper>
+              <S.ModalTitle>수업 일정 취소</S.ModalTitle>
+              <S.ModalText>취소를 진행하시겠습니까?</S.ModalText>
+              <S.ModalButtonWrapper>
+                <S.ModalNegativeButton onClick={closeModal}>
+                  아니요
+                </S.ModalNegativeButton>{" "}
+                <S.ModalPositiveButton onClick={onClickCancel}>
+                  예
                 </S.ModalPositiveButton>
               </S.ModalButtonWrapper>
             </S.ModalWrapper>
@@ -190,6 +228,10 @@ export default function ClassDetail() {
                 {scheduleDetails?.attendanceHistories?.[0]?.member.name}
               </S.OutBoxName>
             </S.OutBox>
+            <S.ActionContainer>
+              <S.ActionText onClick={onClickEdit}>변경</S.ActionText>
+              <S.ActionText onClick={openModalMemberCancel}>취소</S.ActionText>
+            </S.ActionContainer>
           </S.Header>
           <S.TitleBox>
             <S.Title>개인 수업 일정</S.Title>

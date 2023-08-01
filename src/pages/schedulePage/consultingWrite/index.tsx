@@ -3,7 +3,7 @@ import ConsultingWrite from "../../../components/units/schedule/consultingWrite/
 const ConsultingWritePage = () => {
   return (
     <>
-      <ConsultingWrite />
+      <ConsultingWrite isEdit={false} />
     </>
   );
 };

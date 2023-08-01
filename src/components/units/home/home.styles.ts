@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import { Avatar } from "antd";
 
 export const Wrapper = styled.div`
   background-color: #f4f4f4;
@@ -8,11 +9,11 @@ export const Wrapper = styled.div`
   flex-direction: column;
 
   @media (min-height: 601px) and (max-height: 800px) {
-    padding-bottom: 300px;
+    padding-bottom: 310px;
   }
 
   @media (min-height: 801px) {
-    padding-bottom: 120px;
+    padding-bottom: 140px;
   }
 `;
 
@@ -26,10 +27,14 @@ export const SearchBox = styled.div`
 
 export const Search = styled.input`
   width: 97%;
-  padding: 7px 16px;
-  border: none;
+  padding: 10px 16px;
+  border: 1px solid white;
   background: #ffffff;
-  border-radius: 4px;
+  border-radius: 10px;
+  &:focus {
+    outline: none;
+    border: 1px solid #4096ff;
+  }
 `;
 
 export const Label = styled.h2`
@@ -86,4 +91,38 @@ export const Number = styled.p`
 export const TextLabel = styled.p`
   font-weight: 700;
   margin-bottom: 10px;
+`;
+
+export const MembersWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 530px; // Adjust this as needed
+  overflow-y: auto;
+`;
+
+export const MembersBox = styled.div`
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding: 10px 15px;
+  margin-top: 1vh;
+  border-radius: 4px;
+  font-size: 13px;
+`;
+
+export const AvatarOut = styled(Avatar)``;
+
+export const Name = styled.p`
+  margin: 0px 10px;
+  font-weight: 700;
+`;
+
+export const Sex = styled.p`
+  margin-right: 10px;
+`;
+
+export const Phone = styled.p``;
+
+export const BirthDate = styled.p`
+  margin-left: auto;
 `;
