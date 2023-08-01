@@ -43,7 +43,7 @@ const StaffEdit: React.FC = () => {
 
   const handleInputChange = (event: any, setter: (val: string) => void) => {
     setter(event.target.value);
-    console.log(event.target.value);
+    // console.log(event.target.value);
   };
 
   // 수정 후 저장

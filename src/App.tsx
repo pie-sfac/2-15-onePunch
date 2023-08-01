@@ -23,6 +23,7 @@ import StaffListPage from "./pages/staffPage/list/index";
 import StaffAdd from "./components/units/staff/add/staffAdd.index";
 import StaffDetail from "./components/units/staff/detail/staffDetail.index";
 import StaffEditPage from "./pages/staffPage/edit";
+import StaffRolesPage from "./pages/staffPage/roles";
 
 const MainLayout = ({ children }) => (
   <>
@@ -175,6 +176,7 @@ function App() {
             path="/staffPage/detail/:id/edit"
             element={<StaffEditPage />}
           />
+          <Route path="/staffPage/roles/:id" element={<StaffRolesPage />} />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
