@@ -38,6 +38,7 @@ const Login: React.FC = () => {
   //2. accessToken globalState에 저장하기
       setTokenForAdmin(response.data.accessToken);
       alert("로그인 성공!")
+      console.log(response.data.accessToken);
       navigate("/schedulePage/calendar");
     })
     .catch((error)=>{
