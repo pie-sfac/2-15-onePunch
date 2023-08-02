@@ -262,7 +262,7 @@ const StaffAdd = () => {
       .then((response) => {
         console.log(response.data);
         console.log(response.data.message);
-        alert(response.data.message);
+        // alert(response.data.message);
         setIsStaffResignation(true);
 
         // navigate("/staffPage/list");
@@ -274,12 +274,13 @@ const StaffAdd = () => {
   return (
     <>
       {isStaffResignation ? (
-        <div>
+        <S.DoneWrapper>
           <div>
-            <h1>직원 등록 완료</h1>
-            <p>
-              직원 등록이 완료되었습니다. 직원에게 아이디를 전달하시겠습니까?
-            </p>
+            <S.DoneTitle>직원 등록 완료</S.DoneTitle>
+            <S.DoneInnerText>
+              직원 등록이 완료되었습니다. <br /> 직원에게 아이디를
+              전달하시겠습니까?
+            </S.DoneInnerText>
           </div>
           <div>
             <img
@@ -287,13 +288,13 @@ const StaffAdd = () => {
               alt="Graphic_Employee_registered"
             />
           </div>
-          <div>
-            <button onClick={() => navigate("/staffPage/list")}>
+          <S.DoneBtnWrapper>
+            <S.NoBtn onClick={() => navigate("/staffPage/list")}>
               나중에 할래요
-            </button>
-            <button>연락처로 전달하기</button>
-          </div>
-        </div>
+            </S.NoBtn>
+            <S.YesBtn>연락처로 전달하기</S.YesBtn>
+          </S.DoneBtnWrapper>
+        </S.DoneWrapper>
       ) : (
         <S.Wrapper>
           <S.StaffAddHeader>

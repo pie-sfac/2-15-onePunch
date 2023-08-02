@@ -3,6 +3,7 @@ import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Link, useNavigate } from "react-router-dom";
 // import "./centerTicket.style.css";
 import * as S from "./centerTicket.style";
+import { Tabs, TabsProps } from "antd";
 
 //
 interface BookableLesson {
@@ -135,33 +136,55 @@ const CenterTicket: React.FC = () => {
     </S.Membership>
   );
 
+  // const items: TabsProps["items"] = [
+  //   {
+  //     key: "1",
+  //     label: `Tab 1`,
+  //     children: `Content of Tab Pane 1`,
+  //   },
+  //   {
+  //     key: "2",
+  //     label: `Tab 2`,
+  //     children: `Content of Tab Pane 2`,
+  //   },
+  //   {
+  //     key: "3",
+  //     label: `Tab 3`,
+  //     children: `Content of Tab Pane 3`,
+  //   },
+  // ];
   return (
     <>
-      <S.Ticketheader>
-        <S.CenterTitle>센터 수강권</S.CenterTitle>
-        <Link to="/centerTicketPage/createTicket">
-          <S.Button>+ 수강권 추가</S.Button>
-        </Link>
-      </S.Ticketheader>
-      <S.Tab>
-        <S.Text>
-          <S.SellState>판매중(3)</S.SellState>
-        </S.Text>
-        <S.Text2>
-          <S.SellState>판매 종료 (2)</S.SellState>
-        </S.Text2>
-      </S.Tab>
-      {/* 티켓리스트 */}
-      <S.TicketList>
-        {tickets &&
-          tickets.map((ticket) => (
-            <Ticket
-              key={ticket.id}
-              ticket={ticket}
-              onClick={() => ticketDetailHandler(ticket.id)}
-            />
-          ))}
-      </S.TicketList>
+      <S.Wrapper>
+        <S.Ticketheader>
+          <S.CenterTitle>센터 수강권</S.CenterTitle>
+          <Link to="/centerTicketPage/createTicket">
+            <S.Button>+ 수강권 추가</S.Button>
+          </Link>
+        </S.Ticketheader>
+        {/*  */}
+        {/* <Tabs defaultActiveKey="1" items={items} /> */}
+        {/*  */}
+        <S.Tab>
+          <S.Text>
+            <S.SellState>판매중(3)</S.SellState>
+          </S.Text>
+          <S.Text2>
+            <S.SellState>판매 종료 (2)</S.SellState>
+          </S.Text2>
+        </S.Tab>
+        {/* 티켓리스트 */}
+        <S.TicketList>
+          {tickets &&
+            tickets.map((ticket) => (
+              <Ticket
+                key={ticket.id}
+                ticket={ticket}
+                onClick={() => ticketDetailHandler(ticket.id)}
+              />
+            ))}
+        </S.TicketList>
+      </S.Wrapper>
     </>
   );
 };
