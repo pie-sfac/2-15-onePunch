@@ -30,10 +30,10 @@ export const Appbar = styled.p`
   font-size: 16px;
 `;
 
-export const Label = styled.p`
-  margin-top: 4vh;
+export const Label = styled.label`
+  margin-top: 20px;
+  margin-bottom: 10px;
   font-size: 14px;
-  font-weight: 700;
 `;
 
 export const Box = styled.div`
@@ -69,17 +69,18 @@ export const Selector = styled(Select)`
 width: 100%;
 margin-top: 3vh;
 margin-bottom: 3vh;
+height: 40px;
+
 & .ant-select-selector {
-  height: 50px !important; // 원하는 높이로 설정하세요
+  height: 40px !important; // 원하는 높이로 설정하세요
   display: flex !important;
   align-items: center !important; // 가운데 정렬`;
 
 export const Input = styled.input`
   width: 100%;
-  height: 50px
+  height: 40px;
   margin-top: 3vh;
   margin-bottom: 3vh;
-  padding: 10px 5px;
   border-radius: 6px;
   border: 1px solid #dbdbdb;
 `;
@@ -88,13 +89,11 @@ export const ServiceInput = styled.input`
   width: 50%;
   height: 50px
   margin-top: 3vh;
-  margin-bottom: 3vh;
   padding: 10px 5px;
   border-radius: 6px;
   border: 1px solid #dbdbdb;
   text-align:center;
 `;
-
 
 export const btnStyles = styled.div`
   &,
@@ -103,7 +102,7 @@ export const btnStyles = styled.div`
   }
   background: var(--bg-bg-100, #f4f4f4);
   border-radius: 99px;
-  padding: 10px; 
+  padding: 10px;
   flex-shrink: 0;
   width: 32px;
   height: 32px;
@@ -124,20 +123,26 @@ export const btnStyles = styled.div`
 // `
 
 export const ControlWrapper = styled.div`
-display: flex;
-justify-content: space-between;
-align-items: center;
-text-align: center;
-`
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  text-align: center;
+`;
 
 export const BtnLabel = styled.p`
-margin-left: 10px;
-`
-
+  margin-left: 10px;
+`;
 
 export const FlexRow = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: right;
+`;
+
+export const TermWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 `;

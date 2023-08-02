@@ -162,7 +162,6 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
         </S.OutBox>
       </S.Header>
       <S.Body>
-        <p>센터의 수강권을 생성하세요</p>
         <form className="create_form" onSubmit={handleSubmit}>
           <div className="miniwrap">
             <S.Label>수업 유형 </S.Label>
@@ -186,7 +185,6 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           <br />
           <div className="miniwrap">
             <S.Label>수강권명</S.Label>
-
             <S.Input
               type="text"
               name="title"
@@ -198,37 +196,38 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           </div>
           <br />
           <div>
-            <label htmlFor="defaultTerm">수강권 기간</label>
-            <br />
+            <S.Label htmlFor="defaultTerm">수강권 기간</S.Label>
             <div className="miniwrap">
-              <S.Input
-                type="text"
-                id="defaultTerm"
-                name="defaultTerm"
-                value={isUnlimitedPeriod ? "" : ticketData.defaultTerm || ""}
-                onChange={handleChange}
-                disabled={isUnlimitedPeriod}
-                className="text-field2"
-              />
-              <S.Selector
-                id="defaultTermUnit"
-                // name="lessonType"
-                value={ticketData.defaultTermUnit}
-                // onChange={handleSelectChange}
-                onChange={(value: any) =>
-                  handleSelectChange("defaultTermUnit", value)
-                }
-                disabled={isUnlimitedPeriod}
-                // required
-              >
-                <Option value="" disabled>
-                  기간 선택
-                </Option>
-                <Option value="DAY">일</Option>
-                <Option value="WEEK">주</Option>
-                <Option value="MONTH">개월</Option>
-                <Option value="YEAR">년</Option>
-              </S.Selector>
+              <S.TermWrapper>
+                <S.Input
+                  type="text"
+                  id="defaultTerm"
+                  name="defaultTerm"
+                  value={isUnlimitedPeriod ? "" : ticketData.defaultTerm || ""}
+                  onChange={handleChange}
+                  disabled={isUnlimitedPeriod}
+                  className="text-field2"
+                />
+                <S.Selector
+                  id="defaultTermUnit"
+                  // name="lessonType"
+                  value={ticketData.defaultTermUnit}
+                  // onChange={handleSelectChange}
+                  onChange={(value: any) =>
+                    handleSelectChange("defaultTermUnit", value)
+                  }
+                  disabled={isUnlimitedPeriod}
+                  // required
+                >
+                  <Option value="" disabled>
+                    기간 선택
+                  </Option>
+                  <Option value="DAY">일</Option>
+                  <Option value="WEEK">주</Option>
+                  <Option value="MONTH">개월</Option>
+                  <Option value="YEAR">년</Option>
+                </S.Selector>
+              </S.TermWrapper>
               <S.FlexRow>
                 <S.BtnLabel>소진시 까지</S.BtnLabel>
                 <Switch

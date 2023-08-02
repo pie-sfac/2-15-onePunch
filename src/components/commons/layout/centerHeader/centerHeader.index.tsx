@@ -35,7 +35,7 @@ const CenterHeader = () => {
             <S.Name>team15</S.Name>
             <S.State>플랜 이용중</S.State>
           </S.ProfileBox>
-
+          <div>
           <MenuOutlined onClick={toggleDrawer} />
           <Drawer
             title="센터 관리"
@@ -59,6 +59,7 @@ const CenterHeader = () => {
               <S.MenuList> 알림 메시지</S.MenuList>
               <S.MenuList> 센터 정보</S.MenuList>
           </Drawer>
+          </div>
         </S.Box>
       </S.Wrapper>
     </>
