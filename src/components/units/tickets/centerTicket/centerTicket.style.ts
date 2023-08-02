@@ -136,7 +136,7 @@ export const Text8 = styled.div`
   font: 400 10px/128% "Pretendard", sans-serif;
   position: relative;
 `;
-export const TicketImg = styled.svg`
+export const TicketImg = styled.img`
   padding: 10px;
   left: 237px;
   top: 128px;
@@ -167,6 +167,8 @@ export const TicketImg2 = styled.svg`
 `;
 export const TicketList = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 20px;
 `;
@@ -176,4 +178,5 @@ export const Ticketheader = styled.div`
 `;
 export const Wrapper = styled.div`
   padding-top: 60px;
+  margin-bottom: 90px;
 `;

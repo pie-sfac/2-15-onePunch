@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { StaffType } from "../detail/staffDetail.index";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
+import * as S from "./staffEdit.style";
+import { LeftOutlined } from "@ant-design/icons";
 
 const StaffEdit: React.FC = () => {
   const [staffInfo, setStaffInfo] = useState<StaffType | null>(null);
@@ -11,6 +13,7 @@ const StaffEdit: React.FC = () => {
   const [error, setError] = useState(null);
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     setIsLoading(true);
@@ -77,21 +80,25 @@ const StaffEdit: React.FC = () => {
 
   return (
     <div className="wrapper">
+      <S.StaffEditHeader>
+        <LeftOutlined onClick={() => navigate(-1)} />
+        <S.Appbar>직원 정보</S.Appbar>
+      </S.StaffEditHeader>
       {staffInfo && (
         <>
-          <div style={{ border: "1px solid blue" }}>
+          <S.StaffInfoWrapper>
             <div>
               <img src="/images/icons/Profile_edit.png" alt="profilePic_edit" />
             </div>
-            <div>
+            <S.StaffInfo>
+              <S.FlexRow>
+                <S.Name>{staffInfo.name}</S.Name>
+                <S.Role>권한 {staffInfo.roles.length}</S.Role>
+              </S.FlexRow>
               <div>
-                <p>{staffInfo.name}</p>
-                <p>권한 {staffInfo.roles.length}</p>
+                <S.Center>좋은 관절 센터</S.Center>
               </div>
-              <div>
-                <p>좋은 관절 센터</p>
-              </div>
-              <div>
+              <S.FlexRow>
                 <p>
                   {staffInfo.active ? (
                     "재직중"
@@ -100,44 +107,44 @@ const StaffEdit: React.FC = () => {
                   )}
                 </p>
                 <p>서비스 미이용 중</p>
-                <button>직원 정보 발송</button>
-              </div>
-            </div>
-          </div>
+              </S.FlexRow>
+              <S.SendInfoBtn>직원 정보 발송</S.SendInfoBtn>
+            </S.StaffInfo>
+          </S.StaffInfoWrapper>
 
-          <div style={{ border: "1px solid blue" }}>
+          <div style={{ margin: "10px" }}>
             <div>
-              <p>직원 정보</p>
+              <S.StaffInfoTitle>직원 정보</S.StaffInfoTitle>
             </div>
-            <div>
-              <div>
-                <label htmlFor="">이름</label>
-                <input
+            <S.InfoBody>
+              <S.FlexColumn>
+                <S.InfoLabel>이름</S.InfoLabel>
+                <S.InfoInput
                   type="text"
                   value={name}
                   onChange={(e) => handleInputChange(e, setName)}
                 />
-              </div>
-              <div>
-                <label htmlFor="">휴대폰 번호</label>
-                <input
+              </S.FlexColumn>
+              <S.FlexColumn>
+                <S.InfoLabel>휴대폰 번호</S.InfoLabel>
+                <S.InfoInput
                   type="text"
                   value={phone}
                   onChange={(e) => handleInputChange(e, setPhone)}
                 />
-              </div>
-              <div>
-                <label htmlFor="">아이디</label>
-                <input type="text" value={staffInfo.loginId} disabled />
-              </div>
-              <div>
-                <label htmlFor="">비밀번호</label>
-                <input type="password" disabled />
-              </div>
-            </div>
-            <div>
-              <button onClick={handleSave}>저장</button>
-            </div>
+              </S.FlexColumn>
+              <S.FlexColumn>
+                <S.InfoLabel>아이디</S.InfoLabel>
+                <S.InfoInput type="text" value={staffInfo.loginId} disabled />
+              </S.FlexColumn>
+              <S.FlexColumn>
+                <S.InfoLabel>비밀번호</S.InfoLabel>
+                <S.InfoInput type="password" disabled />
+              </S.FlexColumn>
+            </S.InfoBody>
+            <S.FlexRow>
+              <S.SaveBtn onClick={handleSave}>저장</S.SaveBtn>
+            </S.FlexRow>
           </div>
         </>
       )}

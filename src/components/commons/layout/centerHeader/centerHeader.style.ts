@@ -26,6 +26,8 @@ export const ProfileBox = styled.div`
   border-left: 1px solid #d9d9d9;
   border-right: 1px solid #d9d9d9;
   padding: 0px 6px;
+  margin-left: auto;
+  margin-right: 10px;
 `;
 
 export const AvatarOut = styled(Avatar)``;
