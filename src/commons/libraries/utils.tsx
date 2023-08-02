@@ -14,20 +14,19 @@ export const Time = (timeString: any) => {
 
 export const Time2 = (timeString: any): any => {
   const date = new Date(timeString);
-  const hours = date.getUTCHours();
-  const minutes = date.getUTCMinutes();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
 
-  // 시간과 분을 항상 두 자리로 유지
-  const paddedHours = hours.toString().padStart(2, "0");
-  const paddedMinutes = minutes.toString().padStart(2, "0");
+  const formattedHours = hours < 10 ? `0${hours}` : `${hours}`;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : `${minutes}`;
 
-  return `${paddedHours}:${paddedMinutes}`;
+  return `${formattedHours}:${formattedMinutes}`;
 };
 
 export const Day = (dayString: any) => {
   const date = new Date(dayString);
   const year = date.getFullYear();
-  const month = date.getMonth() + 1; // JavaScript의 getMonth는 0부터 시작하기 때문에 +1 필요
+  const month = date.getMonth() + 1;
   const day = date.getDate();
 
   const dayNames = ["일", "월", "화", "수", "목", "금", "토"];

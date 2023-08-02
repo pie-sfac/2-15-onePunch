@@ -68,15 +68,20 @@ export default function ConsultingWrite(props: any) {
   };
 
   useEffect(() => {
-    const getMemberInfo = async () => {
-      const response = await apiInstance.get(
-        `/schedules/counseling/${scheduleId}`
-      );
-      setInfo(response.data);
-      console.log(info);
-    };
-    getMemberInfo();
-  }, [scheduleId]);
+    if (props.isEdit) {
+      const getMemberInfo = async () => {
+        const response = await apiInstance.get(
+          `/schedules/counseling/${scheduleId}`
+        );
+        setInfo(response.data);
+        setUserId(response.data.counselor.id);
+        setUserName(response.data.counselor.name);
+
+        console.log(info);
+      };
+      getMemberInfo();
+    }
+  }, []);
 
   return (
     <>
