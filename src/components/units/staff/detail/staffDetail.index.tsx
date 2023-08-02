@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { useNavigate, useParams } from "react-router-dom";
-import { UserOutlined } from "@ant-design/icons";
+import { LeftOutlined, MoreOutlined, UserOutlined } from "@ant-design/icons";
 import * as S from "./staffDetail.style";
 import ModalConfirm from "../../../commons/modal/modalConfirm/modalConfirm.index";
 import ModalAlert from "../../../commons/modal/modalAlert/modalAlert.index";
+import { Dropdown, MenuProps, Space } from "antd";
 
 type RoleType = {
   id: number;
@@ -68,6 +69,7 @@ const StaffDetail: React.FC = () => {
   const [roles, setRoles] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDoneChangePw, setIsDoneChangePw] = useState(false); // 비번 초기화 완료했냐
+  const [isMoreVert, setIsMoreVert] = useState(false);
 
   // 모달 열림 핸들러
   const openModal = () => {
@@ -188,7 +190,7 @@ const StaffDetail: React.FC = () => {
             console.log(role.name);
           }
         });
-        navigate(`/staffPage/roles/${staffId}`)
+        navigate(`/staffPage/roles/${staffId}`);
       })
       .catch((error) => {
         setError(error);
@@ -197,7 +199,42 @@ const StaffDetail: React.FC = () => {
         setIsLoading(false);
       });
   };
+  // more 메뉴 관리
+  const moreVertHandler = () => {
+    setIsMoreVert(!isMoreVert);
+  };
 
+  const items: MenuProps["items"] = [
+    {
+      label: "권한 설정",
+      key: "0",
+      onClick: () => {
+        handleChangeRole();
+      },
+    },
+    {
+      label: "비밀번호 초기화",
+      key: "1",
+      onClick: () => {
+        handleResetPassword();
+      },
+    },
+
+    {
+      label: "직원 퇴사 처리",
+      key: "3",
+      onClick: () => {
+        handleStaffResignation();
+      },
+    },
+  ];
+  function formatDate(dateString: any) {
+    const date = new Date(dateString);
+    const year = String(date.getFullYear()).slice(-2); // 연도의 마지막 두 자리
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 달은 0부터 시작하므로 1을 더해줍니다.
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}.${month}.${day}`;
+  }
   return (
     staffDetail && (
       <>
@@ -239,106 +276,130 @@ const StaffDetail: React.FC = () => {
 
         {/* 직원 정보 */}
         {/* <div style={{ display: isModalOpen ? "none" : "block" }}> */}
-        <div
-          style={{ display: isModalOpen || isDoneChangePw ? "none" : "block" }}
+
+        <S.StaffDetailHeader
+          style={{
+            display: isModalOpen || isDoneChangePw ? "none" : "",
+          }}
+        >
+          <LeftOutlined onClick={() => navigate(-1)} />
+          <S.Appbar>직원 목록 상세</S.Appbar>
+        </S.StaffDetailHeader>
+
+        <S.Wrapper
+          style={{
+            display: isModalOpen || isDoneChangePw ? "none" : "block",
+            padding: "5px 15px",
+          }}
         >
           <div>
-            <div style={{ border: "1px solid blue" }}>
-              <div style={{ border: "1px solid black" }}>
-                <p>직원 정보</p>
-                <p>{staffDetail.createdAt} 등록</p>
-              </div>
-              <div style={{ border: "1px solid black" }}>
-                <p onClick={handleChangeRole}>권한 설정</p>
-                <p onClick={handleResetPassword}>비밀번호 초기화</p>
-                <button onClick={handleStaffResignation}>직원 퇴사 처리</button>
-              </div>
-            </div>
-            <div style={{ border: "1px solid blue" }}>
-              <div>
-                <img
-                  src="/images/icons/Profile_edit.png"
-                  alt="profilePic_edit"
-                />
-              </div>
-              <div>
-                <p>{staffDetail.name}</p>
-                {/* <p>{staffDetail.name}</p> */}
-                <p>알림메세지 관리 권한</p>
-                <p>+3</p>
-              </div>
-              <br />
-              <div>
-                <p>{staffDetail.phone}</p>
-              </div>
-              <br />
-              <div>
-                <p>{staffDetail.loginId}</p>
-              </div>
-              <br />
-              <div>
-                <p>
-                  {staffDetail.active ? (
-                    "재직중"
-                  ) : (
-                    <span style={{ color: "red  " }}>퇴사</span>
-                  )}
-                </p>
-              </div>
-              <br />
-              <div>
-                <img
-                  src="/images/icons/Edit.png"
-                  alt="staff_edit"
-                  onClick={HandleInfoEdit}
-                />
-              </div>
-            </div>
-          </div>
+            {/* <div> */}
+            <S.Label>
+              <S.StaffInfoMenu>
+                <S.FlexRow>
+                  <S.TitleText>직원 정보</S.TitleText>
+                  <S.GreyText>
+                    {formatDate(staffDetail.createdAt)} 등록
+                  </S.GreyText>
+                </S.FlexRow>
+                <Dropdown menu={{ items }} trigger={["click"]}>
+                  <Space>
+                    <MoreOutlined
+                      style={{ marginLeft: "auto" }}
+                      onClick={moreVertHandler}
+                    />
+                  </Space>
+                </Dropdown>
+              </S.StaffInfoMenu>
 
+              <S.StaffInfoWrapper>
+                <S.StaffInfoTop>
+                  <div>
+                    <img
+                      src="/images/icons/Profile_edit.png"
+                      alt="profilePic_edit"
+                    />
+                  </div>
+                  <S.StaffName>{staffDetail.name}</S.StaffName>
+                  <S.Text>알림메세지 관리 권한</S.Text>
+                  <S.Text>+3</S.Text>
+                </S.StaffInfoTop>
+                <br />
+                <div>
+                  <p>{staffDetail.phone}</p>
+                </div>
+                <br />
+                <div>
+                  <p>{staffDetail.loginId}</p>
+                </div>
+                <br />
+                <div>
+                  <p>
+                    {staffDetail.active ? (
+                      "재직중"
+                    ) : (
+                      <span style={{ color: "red  " }}>퇴사</span>
+                    )}
+                  </p>
+                </div>
+                <br />
+                <div>
+                  <img
+                    src="/images/icons/Edit.png"
+                    alt="staff_edit"
+                    onClick={HandleInfoEdit}
+                    style={{ marginLeft: "90%" }}
+                  />
+                </div>
+              </S.StaffInfoWrapper>
+            </S.Label>
+            {/* </div> */}
+          </div>
           {/* 개인 수업 회원 */}
           <div>
-            <div style={{ border: "1px solid blue" }}>
-              <div style={{ border: "1px solid black" }}>
-                <p>개인 수업 회원</p>
-                <p>{staffDetail.members.length}</p>
-              </div>
+            <S.Label>
+              <S.FlexRow>
+                <S.TitleText>개인 수업 회원</S.TitleText>
+                <S.TotalCount>{staffDetail.members.length}</S.TotalCount>
+              </S.FlexRow>
 
               {/* 프로필이미지, 회원명, 성별, 유효기간, 잔여 횟수, 담당자, 최근방문일 */}
+
               {staffDetail.members.length !== 0 ? (
                 <>
                   {staffDetail.members.map((member) => (
-                    <div key={member.id}>
+                    <S.MemberBox key={member.id}>
                       <S.AvatarOut icon={<UserOutlined size={23} />} />
-                      <p>{member.name}</p>
-                      <p>{member.sex}</p>
-                      <p>유효 기간</p>
-                      <p>잔여 횟수</p>
-                      <p>{staffDetail.name}</p>
-                      <p>{member.visitedAt}</p>
-                      <br />
-                    </div>
+                      <S.Name>{member.name}</S.Name>
+                      <S.Sex>{member.sex === "FEMALE" ? "여" : "남"}</S.Sex>
+                      <p>22.00.00 ~ 22.00.00</p>
+                      <S.RightText>80회</S.RightText>
+                      {/* <p>{staffDetail.name}</p> */}
+                      <S.RightText>{formatDate(member.visitedAt)}</S.RightText>
+                    </S.MemberBox>
                   ))}
-                  <div>
-                    <button>더 보기 &gt; </button>
+                  <div style={{ textAlign: "center" }}>
+                    <S.MoreBtn>더보기 &gt; </S.MoreBtn>
                   </div>
                 </>
               ) : (
-                <div>
-                  <img
+                <S.EmptyWrapper>
+                  <S.EmptyIcon
                     src="../../../../../public/images/icons/Empty_person.png"
                     alt="empty_person"
                   />
                   <p>배정된 회원이 없습니다.</p>
-                </div>
+                </S.EmptyWrapper>
               )}
-            </div>
+            </S.Label>
 
-            <div style={{ border: "1px solid blue" }}>
-              <div style={{ border: "1px solid black" }}>
-                <p>만족도 후기</p>
-                <p>{staffDetail.prescriptionReviews.length}</p>
-              </div>
+            <S.Label>
+              <S.FlexRow>
+                <S.TitleText>만족도 후기</S.TitleText>
+                <S.TotalCount>
+                  {staffDetail.prescriptionReviews.length}
+                </S.TotalCount>
+              </S.FlexRow>
 
               {staffDetail.prescriptionReviews.length !== 0 ? (
                 <>
@@ -354,31 +415,31 @@ const StaffDetail: React.FC = () => {
                       <br />
                     </div>
                   ))}
-                  <div>
-                    <button>더 보기 &gt; </button>
+                  <div style={{ textAlign: "center" }}>
+                    <S.MoreBtn>더보기 &gt; </S.MoreBtn>
                   </div>
                 </>
               ) : (
-                <div>
-                  <img
+                <S.EmptyWrapper>
+                  <S.EmptyIcon
                     src="../../../../../public/images/icons/Empty_person.png"
                     alt="empty_person"
                   />
                   <p>아직 받은 후기가 없습니다 </p>
-                </div>
+                </S.EmptyWrapper>
               )}
-            </div>
+            </S.Label>
 
-            <div style={{ border: "1px solid blue" }}>
-              <div style={{ border: "1px solid black" }}>
-                <p>메모</p>
+            <S.Label>
+              <S.FlexRow>
+                <S.TitleText>메모</S.TitleText>
+              </S.FlexRow>
+              <div style={{ textAlign: "center" }}>
+                <S.Memo name="" id="" placeholder="권한 설정 필요"></S.Memo>
               </div>
-              <div>
-                <textarea name="" id="" placeholder="권한 설정 필요"></textarea>
-              </div>
-            </div>
+            </S.Label>
           </div>
-        </div>
+        </S.Wrapper>
       </>
     )
   );

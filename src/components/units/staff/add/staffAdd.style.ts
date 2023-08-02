@@ -6,8 +6,7 @@ import { FormCheckboxLabel } from "../../member/add/memberAdd.style";
 import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 import { CheckList } from "antd-mobile";
 
-export const Wrapper = styled.div`
-`;
+export const Wrapper = styled.div``;
 
 export const StaffAddHeader = styled.header`
   display: flex;
@@ -36,32 +35,30 @@ export const Appbar = styled.div`
   font-size: 16px;
 `;
 
-
 export const ContentStyle = styled.div`
-lineHeight: "260px";
-text-align: "center";
-color: token.colorTextTertiary;
-background: token.colorFillAlter; 
-// background: black;
-// borderRadius: token.borderRadiusLG;
-border: 1px dashed;
-margin-top: 16;
-`
+  lineheight: "260px";
+  text-align: "center";
+  color: token.colorTextTertiary;
+  background: token.colorFillAlter;
+  // background: black;
+  // borderRadius: token.borderRadiusLG;
+  border: 1px dashed;
+  margin-top: 16;
+`;
 export const BtnWrapper = styled.div`
-margin-top: 24;
-`
+  margin-top: 24;
+`;
 
-export const FormInput = styled(Input)`
-`
+export const FormInput = styled(Input)``;
 
 export const FormLabel = styled(Label)`
-color: #1d1d1d;
-font: var(
+  color: #1d1d1d;
+  font: var(
     --pretendard-pt-body-4-regular-14,
     400 14px/144% "Pretendard",
     sans-serif
   );
-`
+`;
 
 export const RegistrationWrapper = styled.div`
   display: flex;
@@ -113,4 +110,52 @@ export const ButtonWrapper = styled.div`
   justify-content: center;
 `;
 
-export const FormCheckbox = styled(CheckList)``
+export const FormCheckbox = styled(CheckList)``;
+
+export const DoneWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 50px 0;
+`;
+
+export const DoneTitle = styled.p`
+  font-size: 26px;
+  font-weight: bold;
+  margin: 10px;
+`;
+export const DoneInnerText = styled.p`
+  font-size: 14px;
+  margin: 10px;
+  color: #1d1d1d;
+  line-height: 20px;
+`;
+
+export const DoneBtnWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const NoBtn = styled.button`
+  background: #f4f4f4;
+  border-radius: 4px;
+  padding: 12px 16px 12px 16px;
+  text-align: center;
+  margin: 10px;
+  width: 150px;
+  font-size: 14px;
+`;
+
+export const YesBtn = styled.button`
+  background: #2d62ea;
+  color: #ffffff;
+  border-radius: 4px;
+  padding: 12px 16px 12px 16px;
+  text-align: center;
+  width: 150px;
+  font-size: 14px;
+`;

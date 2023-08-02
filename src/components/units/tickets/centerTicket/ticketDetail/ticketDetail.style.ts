@@ -11,26 +11,25 @@ export const Wrapper = styled.div`
   flex-direction: column;
 `;
 
-export const Header = styled.header`
+// export const OutBox = styled.header`
+//   display: flex;
+//   height: 50px;
+//   border-bottom: 1px solid #e7e7e7;
+//   align-items: center;
+// `;
+
+export const TicketDetailHeader = styled.div`
   display: flex;
   height: 50px;
   border-bottom: 1px solid #e7e7e7;
   align-items: center;
+  padding: 0 15px;
 `;
 
-export const OutBox = styled.div`
-  // cursor: pointer;
-  display: flex;
-  flex-direction: row;
-  padding: 0px 10px;
-  justify-content: space-between;
-  // align-items: center;
-  
-`;
-
-export const ticketDetailAppbar = styled.p`
-  margin-left: 2vw;
+export const Appbar = styled.p`
+  // margin-left: auto;
   font-size: 16px;
+  margin-right: auto;
 `;
 
 export const LeftOut = styled(LeftOutlined)``;
@@ -166,4 +165,17 @@ export const IssuedBtn = styled.button`
     sans-serif
   );
   position: relative;
+`;
+
+export const Menu = styled.div`
+  position: fixed;
+  right: 0;
+  width: 0;
+  height: 100%;
+  overflow: hidden;
+  transition: width 0.5s;
+
+  &.open {
+    width: 200px;
+  }
 `;

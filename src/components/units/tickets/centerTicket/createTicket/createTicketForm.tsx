@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as S from "./createTicketForm.style";
 // import { Option } from "antd/es/mentions";
 // import { Select } from 'antd';
-import { Select } from "antd";
+import { Button, Select, Space, Switch } from "antd";
 import { useRecoilState } from "recoil";
 import { maxServiceCountState } from "../../../../../commons/stores/index";
 import { useNavigate } from "react-router-dom";
@@ -81,7 +81,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
   /////////////////////////////////////////
   // 소진시까지(기간)
   const handleTogglePeriod = (event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
     setIsUnlimitedPeriod(!isUnlimitedPeriod);
 
     if (!isUnlimitedPeriod) {
@@ -101,7 +101,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
 
   ///handleToggleTimes는 아직 연결 안함
   const handleToggleTimes = (event: any) => {
-    event.preventDefault();
+    // event.preventDefault();
     setIsUnlimitedTimes(!isUnlimitedTimes);
 
     if (!isUnlimitedTimes) {
@@ -157,7 +157,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     <>
       <S.Header>
         <S.OutBox>
-          <S.LeftOut onClick={() =>  navigate(-1)}/>
+          <S.LeftOut onClick={() => navigate(-1)} />
           <S.Appbar>수강권 생성</S.Appbar>
         </S.OutBox>
       </S.Header>
@@ -171,7 +171,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
               // name="lessonType"
               value={ticketData.lessonType}
               // onChange={handleSelectChange}
-              onChange={(value) => handleSelectChange("lessonType", value)}
+              onChange={(value: any) => handleSelectChange("lessonType", value)}
               // required
             >
               <Option value="" disabled>
@@ -215,7 +215,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
                 // name="lessonType"
                 value={ticketData.defaultTermUnit}
                 // onChange={handleSelectChange}
-                onChange={(value) =>
+                onChange={(value: any) =>
                   handleSelectChange("defaultTermUnit", value)
                 }
                 disabled={isUnlimitedPeriod}
@@ -229,10 +229,13 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
                 <Option value="MONTH">개월</Option>
                 <Option value="YEAR">년</Option>
               </S.Selector>
-              <div>
-                {/* 소진시 까지 toggle btn */}
-                <button onClick={handleTogglePeriod}>소진시 까지 </button>
-              </div>
+              <S.FlexRow>
+                <S.BtnLabel>소진시 까지</S.BtnLabel>
+                <Switch
+                  disabled={isUnlimitedTimes}
+                  onChange={handleTogglePeriod}
+                />
+              </S.FlexRow>
             </div>
           </div>
           <div className="miniwrap">
@@ -249,7 +252,6 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           <br />
           <div className="miniwrap">
             <S.Label>기본횟수</S.Label>
-
             <S.Input
               type="number"
               name="defaultCount"
@@ -258,26 +260,32 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
               className="text-field2"
               disabled={isUnlimitedTimes}
             />
-            <button onClick={handleToggleTimes}>무제한</button>
+            <S.FlexRow>
+              <S.BtnLabel>무제한</S.BtnLabel>
+              <Switch
+                disabled={isUnlimitedPeriod}
+                onChange={handleToggleTimes}
+              />
+            </S.FlexRow>
           </div>
           <br />
           <div className="miniwrap">
             <S.Label>서비스 횟수</S.Label>
             <S.ControlWrapper>
-            <S.btnStyles className="btn" onClick={decrement}>
-              -
-            </S.btnStyles>
-            <S.ServiceInput
-              type="number"
-              name="maxServiceCount"
-              value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
-              onChange={handleCountChange}
-              className="text-field2"
-              disabled={isUnlimitedTimes}
-            />
-            <S.btnStyles className="btn" onClick={increment}>
-              +
-            </S.btnStyles>
+              <S.btnStyles className="btn" onClick={decrement}>
+                -
+              </S.btnStyles>
+              <S.ServiceInput
+                type="number"
+                name="maxServiceCount"
+                value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
+                onChange={handleCountChange}
+                className="text-field2"
+                disabled={isUnlimitedTimes}
+              />
+              <S.btnStyles className="btn" onClick={increment}>
+                +
+              </S.btnStyles>
             </S.ControlWrapper>
           </div>
           <br />

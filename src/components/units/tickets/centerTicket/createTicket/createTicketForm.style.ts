@@ -130,3 +130,14 @@ align-items: center;
 text-align: center;
 `
 
+export const BtnLabel = styled.p`
+margin-left: 10px;
+`
+
+
+export const FlexRow = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+`;

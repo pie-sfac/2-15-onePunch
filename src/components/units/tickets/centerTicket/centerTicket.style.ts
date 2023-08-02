@@ -12,18 +12,15 @@ export const Button = styled.button`
   width: 146px;
   left: 224px;
   top: 66px;
-  color: #FFFFFF
+  color: #ffffff;
 `;
 
 export const CenterTitle = styled.p`
     color: var(--text-text-900, #1d1d1d);
     text-align: left;
-    font: 400 italic 20px/136% "ABeeZee", sans-serif;
-    left: 24px;
-    top: 74px;
+   font-size: 20px;
     display: flex;
     align-items: center;
-    justify-content: flex-start;
   }
   `;
 export const Tab = styled.div`
@@ -176,4 +173,7 @@ export const TicketList = styled.div`
 export const Ticketheader = styled.div`
   display: flex;
   justify-content: space-around;
+`;
+export const Wrapper = styled.div`
+  padding-top: 60px;
 `;

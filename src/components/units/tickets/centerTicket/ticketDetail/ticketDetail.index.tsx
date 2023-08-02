@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../../commons/apiInstance/apiInstance";
 import { TicketType } from "../centerTicket.index";
 import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
+import { MoreOutlined } from "@ant-design/icons";
+import { Dropdown, Menu, MenuProps, Space } from "antd";
 
 const TicketDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -43,11 +45,6 @@ const TicketDetail: React.FC = () => {
   //   navigate(-1);
   // };
 
-  // 그 메뉴 관리...
-  const moreVertHandler = () => {
-    setIsMoreVert(!isMoreVert);
-  };
-
   // 수강권 판매 중지
   const handleConfirm = async () => {
     // alert("확인버튼");
@@ -73,7 +70,7 @@ const TicketDetail: React.FC = () => {
 
     try {
       await apiInstance.delete("/tickets/" + ticketId);
-      navigate("/centerTicketPage")
+      navigate("/centerTicketPage");
     } catch (error) {
       console.error(error);
     }
@@ -81,58 +78,40 @@ const TicketDetail: React.FC = () => {
     alert("삭제되었습니다");
     setShowDeleteModal(false);
   };
+
+  // more 메뉴 관리
+  const moreVertHandler = () => {
+    setIsMoreVert(!isMoreVert);
+  };
+
+  const items: MenuProps["items"] = [
+    {
+      label: "편집",
+      key: "0",
+      onClick: () => {
+        console.log("편집");
+      },
+    },
+    {
+      label: "판매 종료",
+      key: "1",
+      onClick: () => {
+        setShowModal(true);
+      },
+    },
+
+    {
+      label: "수강권 삭제",
+      key: "3",
+      onClick: () => {
+        setShowDeleteModal(true);
+      },
+    },
+  ];
+
   return (
-    <div>
-      <S.Header>
-        <S.OutBox>
-          <S.LeftOut onClick={() =>  navigate(-1)} />
-          <S.ticketDetailAppbar>수강권 상세</S.ticketDetailAppbar>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            onClick={moreVertHandler}
-          >
-            <path
-              d="M14 6C14 7.10457 13.1046 8 12 8C10.8954 8 10 7.10457 10 6C10 4.89543 10.8954 4 12 4C13.1046 4 14 4.89543 14 6Z"
-              fill="#505050"
-            />
-            <path
-              d="M14 12C14 13.1046 13.1046 14 12 14C10.8954 14 10 13.1046 10 12C10 10.8954 10.8954 10 12 10C13.1046 10 14 10.8954 14 12Z"
-              fill="#505050"
-            />
-            <path
-              d="M12 20C13.1046 20 14 19.1046 14 18C14 16.8954 13.1046 16 12 16C10.8954 16 10 16.8954 10 18C10 19.1046 10.8954 20 12 20Z"
-              fill="#505050"
-            />
-          </svg>
-          {isMoreVert && (
-            <div className="menu">
-              <div className="menu2">
-                <div className="text">편집</div>
-              </div>
-
-              <div className="menu2">
-                <button className="text" onClick={() => setShowModal(true)}>
-                  판매 종료
-                </button>
-              </div>
-
-              <div className="menu2">
-                <button
-                  className="text"
-                  onClick={() => setShowDeleteModal(true)}
-                >
-                  수강권 삭제
-                </button>
-              </div>
-            </div>
-          )}
-        </S.OutBox>
-      </S.Header>
-      <S.Wrapper>
+    <>
+      <>
         {showModal && (
           <ModalConfirm
             title="수강권 판매 종료"
@@ -143,6 +122,8 @@ const TicketDetail: React.FC = () => {
             onCancel={handleCancel}
           />
         )}
+      </>
+      <>
         {showDeleteModal && (
           <ModalConfirm
             title="수강권 삭제"
@@ -153,52 +134,68 @@ const TicketDetail: React.FC = () => {
             onCancel={handleCancel}
           />
         )}
-        <S.SecondBar>
-          <S.TicketTitle>{ticketDetail.title}</S.TicketTitle>
-          <S.Label>
-            <S.LabelText>개인 수업 - 1:1</S.LabelText>
-          </S.Label>
-        </S.SecondBar>
-        <S.Div>
-          <S.Title>수강권 내용</S.Title>
-          <S.IssuedBtn>수강권 부여내역</S.IssuedBtn>
-        </S.Div>
-        <S.Membership>
-          <S.Content>
-            <S.Info>
-              <S.Text1>시간</S.Text1>
-              <S.Text2>
-                {ticketDetail &&
-                  ticketDetail.bookableLessons &&
-                  ticketDetail.bookableLessons.length > 0 &&
-                  ticketDetail.bookableLessons[0].duration}
-                분
-              </S.Text2>
-            </S.Info>
-            <S.Info>
-              <S.Text1>기본 횟수</S.Text1>
-              <S.Text2>{ticketDetail.defaultCount}회</S.Text2>
-            </S.Info>
-            <S.Info>
-              <S.Text1>수강권 기간</S.Text1>
-              <S.Text2>
-                {ticketDetail.defaultTerm} {ticketDetail.defaultTermUnit}
-              </S.Text2>
-            </S.Info>
-            <S.Info>
-              <S.Text1>수강권 상태</S.Text1>
-              <S.Text2>
-                {ticketDetail.isActive ? (
-                  "판매중"
-                ) : (
-                  <span style={{ color: "red" }}>판매 종료</span>
-                )}
-              </S.Text2>
-            </S.Info>
-          </S.Content>
-        </S.Membership>
-      </S.Wrapper>
-    </div>
+      </>
+      <div style={{ display: showDeleteModal || showModal ? "none" : "block" }}>
+        <S.TicketDetailHeader>
+          <S.LeftOut onClick={() => navigate(-1)} />
+          <S.Appbar>수강권 상세</S.Appbar>
+          <Dropdown menu={{ items }} trigger={["click"]}>
+            <Space>
+              <MoreOutlined
+                style={{ marginLeft: "auto" }}
+                onClick={moreVertHandler}
+              />
+            </Space>
+          </Dropdown>
+        </S.TicketDetailHeader>
+        <S.Wrapper>
+          <S.SecondBar>
+            <S.TicketTitle>{ticketDetail.title}</S.TicketTitle>
+            <S.Label>
+              <S.LabelText>개인 수업 - 1:1</S.LabelText>
+            </S.Label>
+          </S.SecondBar>
+          <S.Div>
+            <S.Title>수강권 내용</S.Title>
+            <S.IssuedBtn>수강권 부여내역</S.IssuedBtn>
+          </S.Div>
+          <S.Membership>
+            <S.Content>
+              <S.Info>
+                <S.Text1>시간</S.Text1>
+                <S.Text2>
+                  {ticketDetail &&
+                    ticketDetail.bookableLessons &&
+                    ticketDetail.bookableLessons.length > 0 &&
+                    ticketDetail.bookableLessons[0].duration}
+                  분
+                </S.Text2>
+              </S.Info>
+              <S.Info>
+                <S.Text1>기본 횟수</S.Text1>
+                <S.Text2>{ticketDetail.defaultCount}회</S.Text2>
+              </S.Info>
+              <S.Info>
+                <S.Text1>수강권 기간</S.Text1>
+                <S.Text2>
+                  {ticketDetail.defaultTerm} {ticketDetail.defaultTermUnit}
+                </S.Text2>
+              </S.Info>
+              <S.Info>
+                <S.Text1>수강권 상태</S.Text1>
+                <S.Text2>
+                  {ticketDetail.isActive ? (
+                    "판매중"
+                  ) : (
+                    <span style={{ color: "red" }}>판매 종료</span>
+                  )}
+                </S.Text2>
+              </S.Info>
+            </S.Content>
+          </S.Membership>
+        </S.Wrapper>
+      </div>
+    </>
   );
 };
 

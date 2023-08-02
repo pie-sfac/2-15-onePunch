@@ -27,6 +27,7 @@ import StaffRolesPage from "./pages/staffPage/roles";
 import MemberEdit from "./pages/memberPage/edit/index";
 import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
 import ClassEdit from "./pages/schedulePage/classEdit/index";
+import CenterHeader from "./components/commons/layout/centerMenu/centerHeader.index";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -37,6 +38,13 @@ const MainLayout = ({ children }: any) => (
 );
 
 const PlainLayout = ({ children }: any) => <>{children}</>;
+const CenterLayout = ({ children }: any) => (
+  <>
+    <CenterHeader />
+    {children}
+    <LayoutFooter />
+  </>
+);
 
 function App() {
   return (
@@ -165,9 +173,9 @@ function App() {
           <Route
             path="/centerTicketPage"
             element={
-              <PlainLayout>
+              <CenterLayout>
                 <CenterTicket />
-              </PlainLayout>
+              </CenterLayout>
             }
           />
           <Route
@@ -184,9 +192,9 @@ function App() {
           <Route
             path="/staffPage/list"
             element={
-              <MainLayout>
+              <CenterLayout>
                 <StaffListPage />
-              </MainLayout>
+              </CenterLayout>
             }
           />
           <Route
@@ -197,7 +205,14 @@ function App() {
               </PlainLayout>
             }
           />
-          <Route path="/staffPage/detail/:id" element={<StaffDetail />} />
+          <Route
+            path="/staffPage/detail/:id"
+            element={
+              <PlainLayout>
+                <StaffDetail />
+              </PlainLayout>
+            }
+          />
           <Route
             path="/staffPage/detail/:id/edit"
             element={<StaffEditPage />}
