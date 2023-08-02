@@ -45,15 +45,15 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/TemporaryLogin"
+            path="/"
             element={
-              <MainLayout>
+              <PlainLayout>
                 <TemporaryLogin />
-              </MainLayout>
+              </PlainLayout>
             }
           />
           <Route
-            path="/"
+            path="/Home"
             element={
               <MainLayout>
                 <Home />

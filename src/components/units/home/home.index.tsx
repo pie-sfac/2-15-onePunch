@@ -80,6 +80,21 @@ export default function Home() {
     console.log(memberId);
   };
 
+  const scheduleClick = () => {
+    navigate("/schedulePage/calendar");
+    window.scrollTo(0, 0);
+  };
+
+  const memberClick = () => {
+    navigate("/memberPage/list");
+    window.scrollTo(0, 0);
+  };
+
+  const staffClick = () => {
+    navigate("/staffPage/list");
+    window.scrollTo(0, 0);
+  };
+
   return (
     <>
       <S.Wrapper>
@@ -99,7 +114,7 @@ export default function Home() {
               />
             </S.ImageBox>
             <S.Label>나의 오늘 일정</S.Label>
-            <S.Box>
+            <S.Box onClick={scheduleClick}>
               <S.InnerBox>
                 <S.MySchedule>
                   <S.TextLabel>총 {Total}건의 일정</S.TextLabel>
@@ -118,7 +133,7 @@ export default function Home() {
               </S.InnerBox>
             </S.Box>
             <S.Label>나의 회원</S.Label>
-            <S.Box>
+            <S.Box onClick={memberClick}>
               <S.InnerBox>
                 <S.MySchedule>
                   <S.TextLabel>나의 회원 수</S.TextLabel>
@@ -133,7 +148,7 @@ export default function Home() {
               </S.InnerBox>
             </S.Box>
             <S.Label>전체 직원</S.Label>
-            <S.Box>
+            <S.Box onClick={staffClick}>
               <S.InnerBox>
                 <S.MySchedule>
                   <S.TextLabel>직원 전체 수</S.TextLabel>
