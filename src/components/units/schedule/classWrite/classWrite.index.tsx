@@ -1,5 +1,5 @@
 import * as S from "./classWrite.style";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Modal } from "antd";
@@ -26,6 +26,20 @@ interface Ticket {
   title: string;
 }
 
+interface InfoType {
+  counselor: {
+    id: string;
+    name: string;
+  };
+  client: {
+    name: string;
+    phone: string;
+  };
+  memo: string;
+  startAt: string;
+  endAt: string;
+}
+
 export default function ClassWrite(props: any) {
   const navigate = useNavigate();
   const [memberId, setMemberId] = useState("0");
@@ -37,22 +51,119 @@ export default function ClassWrite(props: any) {
   const [staffs, setStaffs] = useState<Staff[]>([]);
   const [select, setSelect] = useState(false);
   const { scheduleId } = useParams();
+  const [userId, setUserId] = useState("0");
+  const [issuedTicketId, setIssuedTicketId] =
+    useState("수업(수강권)을 선택해 주세요.");
+  const [day, setDay] = useState<string | null>(null);
+  const [startTime, setStartTime] = useState<moment.Moment | null>(null);
+  const [endTime, setEndTime] = useState<string | null>(null);
+  const [info, setInfo] = useState<InfoType | null>(null);
+  const [startAt, setStartAt] = useState("");
+  const [endAt, setEndAt] = useState("");
+  const [issuedTicketName, setIssuedTicketName] = useState("");
+
+  useEffect(() => {
+    if (props.isEdit) {
+      const getMemberInfo = async () => {
+        const response = await apiInstance.get(
+          `/schedules/private-lesson/${scheduleId}`
+        );
+        setInfo(response.data);
+        setUserId(response.data.tutor.id);
+        setUserName(response.data.tutor.name);
+        setMemberId(response.data.attendanceHistories[0]?.member.id);
+        setMemberName(response.data.attendanceHistories[0]?.member.name);
+        setStartAt(response.data.startAt);
+        setEndAt(response.data.endAt);
+        setIssuedTicketName(response.data.issuedTicket.title);
+      };
+      getMemberInfo();
+    }
+  }, []);
+
+  const onStartTimeChange = (value: any, date: any) => {
+    setStartTime(date);
+    console.log(date);
+  };
+
+  const onEndTimeChange = (value: any, date: any) => {
+    setEndTime(date);
+    console.log(date);
+  };
+
+  const onDayChange = (value: any, date: any) => {
+    setDay(date);
+    console.log(date);
+  };
+
+  const onClickSubmt = async () => {
+    try {
+      const response = await apiInstance.post("/schedules/private-lesson", {
+        userId: Number(userId), // 변경할 필요가 있음
+        issuedTicketId: Number(issuedTicketId),
+        startAt: `${day}T${startTime}`,
+        endAt: `${day}T${endTime}`,
+      });
+      alert("일정을 등록했습니다.");
+      navigate("/schedulePage/calendar");
+      console.log(response.data); // Here you can handle the response
+    } catch (error: any) {
+      console.error(error.response.data.message); // Handle error
+      alert(error.response.data.message);
+    }
+  };
+
+  const onClickEdit = async () => {
+    const updateUserInput: {
+      userId?: any;
+      clientName?: any;
+      clientPhone?: any;
+      memo?: any;
+      startAt?: any;
+      endAt?: any;
+      counselingRecordContent?: any;
+    } = {};
+    updateUserInput.memo = "";
+    if (startAt !== "" && day !== null && startTime !== null) {
+      updateUserInput.startAt = `${day}T${startTime}`;
+    } else {
+      updateUserInput.startAt = info?.startAt;
+    }
+    if (endAt !== "" && day !== null && endTime !== null) {
+      updateUserInput.endAt = `${day}T${endTime}`;
+    } else {
+      updateUserInput.endAt = info?.endAt;
+    }
+
+    try {
+      const response = await apiInstance.put(
+        `/schedules/private-lesson/${scheduleId}`,
+        { ...updateUserInput }
+      );
+      alert("일정을 수정했습니다.");
+      navigate("/schedulePage/calendar");
+      console.log(response.data);
+    } catch (error: any) {
+      console.error(error.response.data.message);
+      alert(error.response.data.message);
+    }
+  };
 
   // 개인 수업 등록 & 수정 _ 커스텀 hooks
-  const {
-    userId,
-    setUserId,
-    issuedTicketId,
-    setIssuedTicketId,
-    startTime,
-    endTime,
-    day,
-    onStartTimeChange,
-    onEndTimeChange,
-    onDayChange,
-    onClickSubmt,
-    onClickEdit,
-  } = usePostClass(scheduleId);
+  // const {
+  //   userId,
+  //   setUserId,
+  //   issuedTicketId,
+  //   setIssuedTicketId,
+  //   startTime,
+  //   endTime,
+  //   day,
+  //   onStartTimeChange,
+  //   onEndTimeChange,
+  //   onDayChange,
+  //   onClickSubmt,
+  //   onClickEdit,
+  // } = usePostClass(scheduleId);
 
   // 직원 선택 _ 커스텀 hooks
   const { onClickGetStaffId } = useOnClickGetStaffId(
@@ -174,7 +285,7 @@ export default function ClassWrite(props: any) {
               선택하기 +
             </S.MemberChoiceButton>
           ) : (
-            <S.Box onClick={openModalStaff}>
+            <S.Box onClick={props.isEdit ? undefined : openModalStaff}>
               <S.SmileOut />
               <S.Name>{userName}</S.Name>
             </S.Box>
@@ -185,19 +296,20 @@ export default function ClassWrite(props: any) {
               선택하기 +
             </S.MemberChoiceButton>
           ) : (
-            <S.Box onClick={openModalMember}>
+            <S.Box onClick={props.isEdit ? undefined : openModalMember}>
               <S.SmileOut />
               <S.Name>{memberName}</S.Name>
             </S.Box>
           )}
           <S.Label>수업(수강권) 선택 </S.Label>
           <S.SelectOut
-            value={issuedTicketId}
+            value={props.isEdit ? issuedTicketName : issuedTicketId}
             onChange={(value) => setIssuedTicketId(value as string)}
             options={issuedTickets.map((ticket) => ({
               value: ticket.id,
               label: ticket.title,
             }))}
+            disabled={props.isEdit}
           />
           <S.Label>일자 선택</S.Label>
           <S.DateOut onChange={onDayChange} />

@@ -15,6 +15,7 @@ export const useOnClickGetId = (
       // 여기서 postId를 사용하여 해당 사용자의 이름을 가져오는 코드
       const response = await apiInstance.get(`/staffs/${postId}`);
       setUserName(response.data.name);
+      console.log(postId);
 
       setIsVisible(false);
     } catch (error: any) {

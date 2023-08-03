@@ -12,7 +12,7 @@ const CenterHeader = () => {
 
   const LoginClick = () => {
     window.scrollTo(0, 0);
-    navigate("/TemporaryLogin");
+    navigate("/");
   };
 
   const closeDrawer = () => {
@@ -47,17 +47,17 @@ const CenterHeader = () => {
             style={{ paddingTop: "50px" }}
             onClick={toggleDrawer}
           >
-              <S.MenuList>
-                <Link to="/staffPage/list">직원 관리</Link>
-              </S.MenuList>
-              <S.MenuList>
-                <Link to="/centerTicketPage">수강권 관리</Link>
-              </S.MenuList>
-              <S.MenuList> 기록 관리</S.MenuList>
-              <S.MenuList> 미디어 관리</S.MenuList>
-              <S.MenuList> 운영 데이터</S.MenuList>
-              <S.MenuList> 알림 메시지</S.MenuList>
-              <S.MenuList> 센터 정보</S.MenuList>
+            <S.MenuList>
+              <Link to="/staffPage/list">직원 관리</Link>
+            </S.MenuList>
+            <S.MenuList>
+              <Link to="/centerTicketPage">수강권 관리</Link>
+            </S.MenuList>
+            <S.MenuList> 기록 관리</S.MenuList>
+            <S.MenuList> 미디어 관리</S.MenuList>
+            <S.MenuList> 운영 데이터</S.MenuList>
+            <S.MenuList> 알림 메시지</S.MenuList>
+            <S.MenuList> 센터 정보</S.MenuList>
           </Drawer>
         </S.Box>
       </S.Wrapper>
