@@ -6,6 +6,7 @@ import { TicketType } from "../centerTicket.index";
 import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, MenuProps, Space } from "antd";
+import ConvertTermUnit from "../../../../commons/convertTermUnit/convertTermUnit";
 
 const TicketDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -173,12 +174,20 @@ const TicketDetail: React.FC = () => {
               </S.Info>
               <S.Info>
                 <S.Text1>기본 횟수</S.Text1>
-                <S.Text2>{ticketDetail.defaultCount}회</S.Text2>
+                <S.Text2>
+                  {ticketDetail.defaultCount
+                    ? `${ticketDetail.defaultCount}회`
+                    : "무제한"}
+                </S.Text2>
               </S.Info>
               <S.Info>
                 <S.Text1>수강권 기간</S.Text1>
                 <S.Text2>
-                  {ticketDetail.defaultTerm} {ticketDetail.defaultTermUnit}
+                  {ticketDetail.defaultTerm
+                    ? `${ticketDetail.defaultTerm}${ConvertTermUnit(
+                        ticketDetail.defaultTermUnit
+                      )}`
+                    : "소진시 까지"}
                 </S.Text2>
               </S.Info>
               <S.Info>

@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Tabs } from 'antd';
 import { useForm } from 'react-hook-form';
 import  apiLogin from '../../../commons/api/apiLogin';
 import * as S from "./login.styles.ts";
 import { useRecoilState } from 'recoil';
 import { accessTokenStateForAdmin, accessTokenStateForStaffs } from '../../../commons/stores';
 import { useNavigate } from 'react-router-dom';
+
+const { TabPane } = Tabs;
 
 interface IFormInput {
   Username: string;
@@ -14,11 +17,15 @@ interface IFormInput {
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState<boolean>(false);
   const [, setTokenForAdmin] = useRecoilState(accessTokenStateForAdmin);
   const [, setTokenForStaffs] = useRecoilState(accessTokenStateForStaffs);
-  const { register, handleSubmit } = useForm<IFormInput>();
+  const { register, handleSubmit, watch } = useForm<IFormInput>();
 
+  // 관리자 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
+  const isAdminLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0;
+
+  // 직원 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
+  const isStaffLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0 && watch('CenterCode')?.length > 0;
 //관리자 토큰
 
   //사용자 로그인
@@ -38,7 +45,10 @@ const Login: React.FC = () => {
   //2. accessToken globalState에 저장하기
       setTokenForAdmin(response.data.accessToken);
       alert("로그인 성공!")
-      console.log(response.data.accessToken);
+
+      console.log("==============여기부터 response===========");
+      console.log(response);
+      console.log("==============여기까지 response===========");
       navigate("/schedulePage/calendar");
     })
     .catch((error)=>{
@@ -74,37 +84,33 @@ const Login: React.FC = () => {
     });
   }
 
-  const renderContent = () => {
-    if (isAdmin) {
-      return (
-        <form onSubmit={handleSubmit(onSubmitHandlerForAdmin)}>
-          <S.Title>관리자 로그인</S.Title>
-          <S.InputField {...register("Username")} type="text" placeholder="아이디" />
-          <S.InputField {...register("Password")} type="password" placeholder="비밀번호" />
-          <S.Button type="submit">로그인</S.Button>
-        </form>
-      );
-    } else {
-      return (
-        <form onSubmit={handleSubmit(onSubmitHandlerForStaffs)}>
-          <S.Title>직원 로그인</S.Title>
-          <S.InputField {...register("Username")} type="text" placeholder="아이디" />
-          <S.InputField {...register("Password")} type="password" placeholder="비밀번호" />
-          <S.InputField {...register("CenterCode")} type="number" placeholder="센터코드" />
-          <S.Button type="submit">로그인</S.Button>
-        </form>
-      );
-    }
-  };
+
 
   return (
     <S.Container>
-      <S.Logo  src='/images/icons/Poin T.png' alt='포인티 로고'/>
-      <S.ButtonContainer>
-        <S.Button onClick={() => setIsAdmin(true)}>관리자 로그인</S.Button>
-        <S.Button onClick={() => setIsAdmin(false)}>직원 로그인</S.Button>
-      </S.ButtonContainer>
-      {renderContent()}
+      <S.Logo src='/images/icons/Poin T.png' alt='포인티 로고' />
+      <Tabs defaultActiveKey="1">
+        <TabPane tab="관리자 로그인" key="1">
+          <form onSubmit={handleSubmit(onSubmitHandlerForAdmin)}>
+            <S.InputBox>아이디</S.InputBox>
+            <S.InputField {...register("Username")} type="text" />
+            <S.InputBox>비밀번호</S.InputBox>
+            <S.InputField {...register("Password")} type="password" />
+            <S.Button type="submit" disabled={!isAdminLoginButtonDisabled}>로그인</S.Button>
+          </form>
+        </TabPane>
+        <TabPane tab="직원 로그인" key="2">
+          <form onSubmit={handleSubmit(onSubmitHandlerForStaffs)}>
+            <S.InputBox>아이디</S.InputBox>
+            <S.InputField {...register("Username")} type="text"/>
+            <S.InputBox>비밀번호</S.InputBox>
+            <S.InputField {...register("Password")} type="password" /> 
+            <S.InputBox>센터코드</S.InputBox>
+            <S.InputField {...register("CenterCode")} type="string" />
+            <S.Button type="submit" disabled={!isStaffLoginButtonDisabled}>로그인</S.Button>
+          </form>
+        </TabPane>
+      </Tabs>
     </S.Container>
   );
 };

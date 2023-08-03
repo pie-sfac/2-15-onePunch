@@ -36,17 +36,17 @@ const CenterHeader = () => {
             <S.State>플랜 이용중</S.State>
           </S.ProfileBox>
           <div>
-            <MenuOutlined onClick={toggleDrawer} />
-            <Drawer
-              title="센터 관리"
-              placement="right"
-              closable={true}
-              onClose={closeDrawer}
-              open={isOpen}
-              width={250}
-              style={{ paddingTop: "50px" }}
-              onClick={toggleDrawer}
-            >
+          <MenuOutlined onClick={toggleDrawer} />
+          <Drawer
+            title="센터 관리"
+            placement="right"
+            closable={true}
+            onClose={closeDrawer}
+            open={isOpen}
+            width={250}
+            style={{ paddingTop: "50px" }}
+            onClick={toggleDrawer}
+          >
               <S.MenuList>
                 <Link to="/staffPage/list">직원 관리</Link>
               </S.MenuList>
@@ -58,7 +58,7 @@ const CenterHeader = () => {
               <S.MenuList> 운영 데이터</S.MenuList>
               <S.MenuList> 알림 메시지</S.MenuList>
               <S.MenuList> 센터 정보</S.MenuList>
-            </Drawer>
+          </Drawer>
           </div>
         </S.Box>
       </S.Wrapper>

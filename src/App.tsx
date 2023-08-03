@@ -215,7 +215,11 @@ function App() {
           />
           <Route
             path="/staffPage/detail/:id/edit"
-            element={<StaffEditPage />}
+            element={
+              <PlainLayout>
+                <StaffEditPage />
+              </PlainLayout>
+            }
           />
           <Route path="/staffPage/roles/:id" element={<StaffRolesPage />} />
         </Routes>
