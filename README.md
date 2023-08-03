@@ -8,15 +8,8 @@
 ## 🦷 코드 보기
 - `develop` 브랜치로 확인 가능합니다.
 
-## 🦷 How to run
-
+## 🦷 실행 방법
 ```bash
 npm i
 npm run dev
-```
-
-## 🦷 From empty folder
-
-```bash
-npm create vite [app_name] --template react-ts
 ```
