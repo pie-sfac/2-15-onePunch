@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../apiInstance/apiInstance";
 
@@ -54,41 +54,35 @@ export const usePostCounseling = (scheduleId: string | undefined) => {
     }
   };
 
+  useEffect(() => {
+    const getMemberInfo = async () => {
+      const response = await apiInstance.get(
+        `/schedules/counseling/${scheduleId}`
+      );
+      setUserId(response.data.counselor.id);
+      // Add the below lines
+      setClientName(response.data.clientName);
+      setClientPhone(response.data.clientPhone);
+      setMemo(response.data.memo);
+      setStartTime(response.data.startAt);
+      setEndTime(response.data.endAt);
+      setDay(response.data.day);
+      getMemberInfo();
+    };
+  }, []);
+
   const onClickEdit = async () => {
-    if (
-      clientName === "" &&
-      clientPhone === "" &&
-      memo === "" &&
-      day === null &&
-      startTime === null &&
-      endTime === null
-    ) {
-      alert("수정한 내용이 없습니다.");
-      return;
-    }
-
-    const updateScheduleInput: {
-      userId?: number;
-      clientName?: string;
-      clientPhone?: string;
-      memo?: string;
-      startAt?: string;
-      endAt?: string;
-    } = {};
-
-    if (userId !== "0") updateScheduleInput.userId = Number(userId);
-    if (clientName !== "") updateScheduleInput.clientName = clientName;
-    if (clientPhone !== "") updateScheduleInput.clientPhone = clientPhone;
-    if (memo !== "") updateScheduleInput.memo = memo;
-    if (day !== null && startTime !== null)
-      updateScheduleInput.startAt = `${day}T${startTime}`;
-    if (day !== null && endTime !== null)
-      updateScheduleInput.endAt = `${day}T${endTime}`;
-
     try {
       const response = await apiInstance.put(
         `/schedules/counseling/${scheduleId}`,
-        updateScheduleInput
+        {
+          userId: Number(userId),
+          clientName: clientName,
+          clientPhone: clientPhone,
+          memo: memo,
+          startAt: `${day}T${startTime}`,
+          endAt: `${day}T${endTime}`,
+        }
       );
       alert("일정을 수정했습니다.");
       navigate("/schedulePage/calendar");
