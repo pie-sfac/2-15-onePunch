@@ -26,7 +26,7 @@
 
 # 발표 PPT 자료 링크
 
-> [❤️ 2분류-15팀 원펀치쓰리강냉이 발표 자료](https://www.miricanvas.com/v/12a9y4o)
+> [👩🏻‍💻 2분류-15팀 원펀치쓰리강냉이 발표 자료](https://www.miricanvas.com/v/12a9y4o)
 
 <br/>
 
