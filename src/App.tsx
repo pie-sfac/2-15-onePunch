@@ -27,7 +27,7 @@ import StaffRolesPage from "./pages/staffPage/roles";
 import MemberEdit from "./pages/memberPage/edit/index";
 import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
 import ClassEdit from "./pages/schedulePage/classEdit/index";
-import CenterHeader from "./components/commons/layout/centerMenu/centerHeader.index";
+import CenterHeader from "./components/commons/layout/centerHeader/centerHeader.index";
 
 const MainLayout = ({ children }: any) => (
   <>

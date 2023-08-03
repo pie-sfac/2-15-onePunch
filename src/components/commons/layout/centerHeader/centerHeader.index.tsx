@@ -12,7 +12,7 @@ const CenterHeader = () => {
 
   const LoginClick = () => {
     window.scrollTo(0, 0);
-    navigate("/");
+    navigate("/TemporaryLogin");
   };
 
   const closeDrawer = () => {
@@ -35,30 +35,31 @@ const CenterHeader = () => {
             <S.Name>team15</S.Name>
             <S.State>플랜 이용중</S.State>
           </S.ProfileBox>
-
-          <MenuOutlined onClick={toggleDrawer} />
-          <Drawer
-            title="센터 관리"
-            placement="right"
-            closable={true}
-            onClose={closeDrawer}
-            open={isOpen}
-            width={250}
-            style={{ paddingTop: "50px" }}
-            onClick={toggleDrawer}
-          >
-            <S.MenuList>
-              <Link to="/staffPage/list">직원 관리</Link>
-            </S.MenuList>
-            <S.MenuList>
-              <Link to="/centerTicketPage">수강권 관리</Link>
-            </S.MenuList>
-            <S.MenuList> 기록 관리</S.MenuList>
-            <S.MenuList> 미디어 관리</S.MenuList>
-            <S.MenuList> 운영 데이터</S.MenuList>
-            <S.MenuList> 알림 메시지</S.MenuList>
-            <S.MenuList> 센터 정보</S.MenuList>
-          </Drawer>
+          <div>
+            <MenuOutlined onClick={toggleDrawer} />
+            <Drawer
+              title="센터 관리"
+              placement="right"
+              closable={true}
+              onClose={closeDrawer}
+              open={isOpen}
+              width={250}
+              style={{ paddingTop: "50px" }}
+              onClick={toggleDrawer}
+            >
+              <S.MenuList>
+                <Link to="/staffPage/list">직원 관리</Link>
+              </S.MenuList>
+              <S.MenuList>
+                <Link to="/centerTicketPage">수강권 관리</Link>
+              </S.MenuList>
+              <S.MenuList> 기록 관리</S.MenuList>
+              <S.MenuList> 미디어 관리</S.MenuList>
+              <S.MenuList> 운영 데이터</S.MenuList>
+              <S.MenuList> 알림 메시지</S.MenuList>
+              <S.MenuList> 센터 정보</S.MenuList>
+            </Drawer>
+          </div>
         </S.Box>
       </S.Wrapper>
     </>
