@@ -26,3 +26,22 @@ export const useGetFetchScheduleClass = (
   };
   return { getMemberInfo };
 };
+
+export const useGetFetchScheduleClassDetail = (
+  scheduleId: any,
+  setScheduleDetails: any,
+  setAttendanceHistoryId: any
+) => {
+  const fetchScheduleDetails = async () => {
+    try {
+      const response = await apiInstance.get(
+        `/schedules/private-lesson/${scheduleId}`
+      );
+      setScheduleDetails(response.data);
+      setAttendanceHistoryId(response.data?.attendanceHistories?.[0]?.id);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return { fetchScheduleDetails };
+};
