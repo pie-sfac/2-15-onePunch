@@ -1,5 +1,6 @@
 import { useState } from "react";
 import apiInstance from "../../apiInstance/apiInstance";
+import { useNavigate } from "react-router-dom";
 
 interface Member {
   id: string;
@@ -29,5 +30,28 @@ export const useGetFetchMembers = () => {
     totalMembers,
     fetchMembers,
     setMembers,
+  };
+};
+
+export const useGetFetchClassMembers = (
+  setMembers: any,
+  setIsVisible: any,
+  setSelect: any
+) => {
+  const navigate = useNavigate();
+  const openModalMember = async () => {
+    await apiInstance
+      .get("/members?page=1&size=10&sort=createdAt%2CDesc")
+      .then((response) => setMembers(response.data.datas))
+      .catch((error) => {
+        alert(error.response.data.message);
+        navigate("/TemporaryLogin");
+      });
+    setIsVisible(true);
+    setSelect(false);
+  };
+
+  return {
+    openModalMember,
   };
 };

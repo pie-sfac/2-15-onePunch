@@ -1,13 +1,16 @@
 import * as S from "./classWrite.style";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { Modal } from "antd";
 import { Phone } from "../../../../commons/libraries/utils";
 import moment from "moment";
 import { useOnClickGetStaffId } from "../../../../commons/hooks/event/useOnClickGetStaffId";
 import { useOnClickGetMemberId } from "../../../../commons/hooks/event/useOnClickGetMemberId";
 import { usePostClass } from "../../../../commons/hooks/usePosts/usePostClass";
+import { usePutClass } from "../../../../commons/hooks/usePut/usePutClass";
+import { useGetFetchScheduleClass } from "../../../../commons/hooks/useGets/useGetFetchScheduleClass";
+import { useGetFetchClassStaffs } from "../../../../commons/hooks/useGets/useGetFetchStaffs";
+import { useGetFetchClassMembers } from "../../../../commons/hooks/useGets/useGetFetchMembers";
 
 interface Member {
   id: string;
@@ -64,106 +67,42 @@ export default function ClassWrite(props: any) {
 
   useEffect(() => {
     if (props.isEdit) {
-      const getMemberInfo = async () => {
-        const response = await apiInstance.get(
-          `/schedules/private-lesson/${scheduleId}`
-        );
-        setInfo(response.data);
-        setUserId(response.data.tutor.id);
-        setUserName(response.data.tutor.name);
-        setMemberId(response.data.attendanceHistories[0]?.member.id);
-        setMemberName(response.data.attendanceHistories[0]?.member.name);
-        setStartAt(response.data.startAt);
-        setEndAt(response.data.endAt);
-        setIssuedTicketName(response.data.issuedTicket.title);
-      };
       getMemberInfo();
     }
   }, []);
 
-  const onStartTimeChange = (value: any, date: any) => {
-    setStartTime(date);
-    console.log(date);
-  };
+  // 수업 디테일 조회 _ 커스텀 hooks
+  const { getMemberInfo } = useGetFetchScheduleClass(
+    scheduleId,
+    setInfo,
+    setUserId,
+    setUserName,
+    setMemberId,
+    setMemberName,
+    setIssuedTicketName,
+    setStartAt,
+    setEndAt
+  );
 
-  const onEndTimeChange = (value: any, date: any) => {
-    setEndTime(date);
-    console.log(date);
-  };
+  // 개인 수업 수정 _ 커스텀 hooks
+  const { onClickEdit } = usePutClass(
+    startAt,
+    day,
+    startTime,
+    info,
+    endAt,
+    endTime,
+    scheduleId
+  );
 
-  const onDayChange = (value: any, date: any) => {
-    setDay(date);
-    console.log(date);
-  };
-
-  const onClickSubmt = async () => {
-    try {
-      const response = await apiInstance.post("/schedules/private-lesson", {
-        userId: Number(userId), // 변경할 필요가 있음
-        issuedTicketId: Number(issuedTicketId),
-        startAt: `${day}T${startTime}`,
-        endAt: `${day}T${endTime}`,
-      });
-      alert("일정을 등록했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data); // Here you can handle the response
-    } catch (error: any) {
-      console.error(error.response.data.message); // Handle error
-      alert(error.response.data.message);
-    }
-  };
-
-  const onClickEdit = async () => {
-    const updateUserInput: {
-      userId?: any;
-      clientName?: any;
-      clientPhone?: any;
-      memo?: any;
-      startAt?: any;
-      endAt?: any;
-      counselingRecordContent?: any;
-    } = {};
-    updateUserInput.memo = "";
-    if (startAt !== "" && day !== null && startTime !== null) {
-      updateUserInput.startAt = `${day}T${startTime}`;
-    } else {
-      updateUserInput.startAt = info?.startAt;
-    }
-    if (endAt !== "" && day !== null && endTime !== null) {
-      updateUserInput.endAt = `${day}T${endTime}`;
-    } else {
-      updateUserInput.endAt = info?.endAt;
-    }
-
-    try {
-      const response = await apiInstance.put(
-        `/schedules/private-lesson/${scheduleId}`,
-        { ...updateUserInput }
-      );
-      alert("일정을 수정했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-      alert(error.response.data.message);
-    }
-  };
-
-  // 개인 수업 등록 & 수정 _ 커스텀 hooks
-  // const {
-  //   userId,
-  //   setUserId,
-  //   issuedTicketId,
-  //   setIssuedTicketId,
-  //   startTime,
-  //   endTime,
-  //   day,
-  //   onStartTimeChange,
-  //   onEndTimeChange,
-  //   onDayChange,
-  //   onClickSubmt,
-  //   onClickEdit,
-  // } = usePostClass(scheduleId);
+  // 개인 수업 등록 _ 커스텀 hooks
+  const { onClickSubmit } = usePostClass(
+    userId,
+    issuedTicketId,
+    day,
+    startTime,
+    endTime
+  );
 
   // 직원 선택 _ 커스텀 hooks
   const { onClickGetStaffId } = useOnClickGetStaffId(
@@ -181,57 +120,25 @@ export default function ClassWrite(props: any) {
     setIssuedTickets
   );
 
-  //< 모달 열기 직원 >
+  // 직원 조회 모달 오픈 _ 커스텀 hooks
+  const { openModalStaff } = useGetFetchClassStaffs(
+    setStaffs,
+    setIsVisible,
+    setSelect
+  );
 
-  const openModalStaff = async () => {
-    await apiInstance
-      .get("/staffs?page=1&sort=createdAt%2CDesc")
-      .then((response) => setStaffs(response.data.datas))
-      .catch((error) => {
-        alert(error.response.data.message);
-        navigate("/TemporaryLogin");
-      });
-    setIsVisible(true);
-    setSelect(true);
-  };
-
-  // < 모달 열기 회원 >
-
-  const openModalMember = async () => {
-    await apiInstance
-      .get("/members?page=1&size=10&sort=createdAt%2CDesc")
-      .then((response) => setMembers(response.data.datas))
-      .catch((error) => {
-        alert(error.response.data.message);
-        navigate("/TemporaryLogin");
-      });
-    setIsVisible(true);
-    setSelect(false);
-  };
-
-  // < 모달 닫기 공통 >
-
-  const closeModal = () => {
-    setIsVisible(false);
-  };
-
-  const disabledEndTimeHours = () => {
-    const hours = [];
-    for (let i = startTime ? startTime.hour() : 0; i < 24; i++) {
-      hours.push(i);
-    }
-    return hours;
-  };
-
-  const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar");
-  };
+  // 회원 조회 모달 오픈 _ 커스텀 hooks
+  const { openModalMember } = useGetFetchClassMembers(
+    setMembers,
+    setIsVisible,
+    setSelect
+  );
 
   return (
     <>
       <S.Wrapper>
         <S.Header>
-          <S.OutBox onClick={handleOutBoxClick}>
+          <S.OutBox onClick={() => navigate("/schedulePage/calendar")}>
             <S.LeftOut />
             <S.CreateScheduleText>
               일정 {props.isEdit ? "수정" : "생성"}
@@ -242,8 +149,8 @@ export default function ClassWrite(props: any) {
           <Modal
             title="회원 선택"
             visible={isVisible}
-            onOk={closeModal}
-            onCancel={closeModal}
+            onOk={() => setIsVisible(false)}
+            onCancel={() => setIsVisible(false)}
             footer={null}
           >
             {!select ? (
@@ -312,15 +219,30 @@ export default function ClassWrite(props: any) {
             disabled={props.isEdit}
           />
           <S.Label>일자 선택</S.Label>
-          <S.DateOut onChange={onDayChange} />
+          <S.DateOut
+            onChange={(value, date: any) => {
+              setDay(date);
+              console.log(date);
+            }}
+          />
           <S.Label>시간 선택</S.Label>
           <S.TimeBox>
-            <S.TimeOut onChange={onStartTimeChange} />
-            <S.TimeOut onChange={onEndTimeChange} />
+            <S.TimeOut
+              onChange={(value, date: any) => {
+                setStartTime(date);
+                console.log(date);
+              }}
+            />
+            <S.TimeOut
+              onChange={(value, date: any) => {
+                setEndTime(date);
+                console.log(date);
+              }}
+            />
           </S.TimeBox>
         </S.Body>
         <S.Footer>
-          <S.Button onClick={props.isEdit ? onClickEdit : onClickSubmt}>
+          <S.Button onClick={props.isEdit ? onClickEdit : onClickSubmit}>
             완료
           </S.Button>
         </S.Footer>
