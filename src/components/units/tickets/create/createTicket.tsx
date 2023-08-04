@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import CreateTicketForm, { CreateTicketType } from "./createTicketForm";  // 상대 경로에 따라 경로 수정해야 함.
-import apiInstance from "../../../../../commons/apiInstance/apiInstance";
+import apiInstance from "../../../../commons/apiInstance/apiInstance";
 // import CreateTicketForm from "./createTicket";
 
 const createTicket = async (
