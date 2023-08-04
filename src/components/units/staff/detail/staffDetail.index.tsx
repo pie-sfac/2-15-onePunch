@@ -385,7 +385,7 @@ const StaffDetail: React.FC = () => {
               ) : (
                 <S.EmptyWrapper>
                   <S.EmptyIcon
-                    src="../../../../../public/images/icons/Empty_person.png"
+                    src="/images/icons/Empty_person.png"
                     alt="empty_person"
                   />
                   <p>배정된 회원이 없습니다.</p>
@@ -422,7 +422,7 @@ const StaffDetail: React.FC = () => {
               ) : (
                 <S.EmptyWrapper>
                   <S.EmptyIcon
-                    src="../../../../../public/images/icons/Empty_person.png"
+                    src="/images/icons/Empty_person.png"
                     alt="empty_person"
                   />
                   <p>아직 받은 후기가 없습니다 </p>
