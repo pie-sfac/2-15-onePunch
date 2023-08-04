@@ -1,26 +1,24 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-import { roles } from "../add/staffAdd.index";
-import { Select } from "antd";
+import * as S from "./staffRoles.style";
+import { LeftOutlined } from "@ant-design/icons";
 
 interface AssignableRoles {
   currentRoleIds: number[];
-  roles: roles[];
+  roles: { id: number; name: string; description: string }[];
 }
-// interface Role {
-//     id: number;
-//     name: string;
-//     description: string;
-//     permissions: Permissions[]; // permissions의 타입을 알 수 없으므로 임시로 any 사용
-//   }
 
 const StaffRoles: React.FC = () => {
+
   const { id } = useParams<{ id: string }>();
   console.log(id);
   const staffId = parseInt(id!);
-  const [roles, setRoles] = useState<AssignableRoles | null>(null);
+  const [rolesData, setRolesData] = useState<AssignableRoles | null>(null);
+  const [checkedRoles, setCheckedRoles] = useState<number[]>([]);
+  const navigate = useNavigate();
 
+  // 해당 staff의 역할id 가져옴
   useEffect(() => {
     apiInstance
       .get(`/staffs/${staffId}/change-role`)
@@ -28,17 +26,8 @@ const StaffRoles: React.FC = () => {
         // setStaffDetail(response.data);
         console.log(response.data);
         const data = response.data;
-        // setRoles(data);
-        // console.log("roles:" , roles);
-        // console.log(response.data.message);
-        setRoles(data);
-        data.currentRoleIds.forEach((id: any) => {
-          const role = data.roles.find((role: any) => role.id === id);
-          if (role) {
-            console.log(role.name);
-          }
-        });
-        // navigate("/staffPage/roles");
+        setRolesData(data);
+        setCheckedRoles(data.currentRoleIds);
       })
       .catch((error) => {
         console.log(error);
@@ -48,23 +37,84 @@ const StaffRoles: React.FC = () => {
       });
   }, []);
 
+  // 클릭 시 checkedRoles 업데이트
+  const onCheckHandler = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    roleId: number
+  ) => {
+    if (e.target.checked) {
+      setCheckedRoles([...checkedRoles, roleId]);
+    } else {
+      setCheckedRoles(checkedRoles.filter((id) => id !== roleId));
+    }
+  };
+
+  // 폼 전송
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log(checkedRoles);
+    apiInstance
+      .post(`/staffs/${staffId}/change-role`, { roleIds: checkedRoles })
+      .then((response) => {
+        console.log(response.data);
+      });
+  };
+
   return (
     <>
-      {/* 테스트용 */}
-      <div>직원 현재 역할 조회 및 역할 변경</div>
-      {/* { roles && <p>{roles.currentRoleIds}</p>} */}
-      <p>현재 역할</p>
-      {roles?.currentRoleIds.map((roleId, index) => (
-        <p key={index}>{roleId}</p>
-      ))}
-      <p>변경할 역할</p>
-      <Select>
-        {roles?.roles.map((roles) => (
-          <Select.Option key={roles.id}>
-            {roles.name}: {roles.description}
-          </Select.Option>
-        ))}
-      </Select>
+      <S.RoleHeader>
+        <LeftOutlined onClick={() => navigate(-1)} />
+        <S.Appbar>권한 설정</S.Appbar>
+      </S.RoleHeader>
+      <S.Wrapper>
+        <div>
+          <S.Title>역할 설정</S.Title>
+        </div>
+        <div>
+          <S.SubTitle>역할 선택 (중복선택 가능)</S.SubTitle>
+          <S.Text>
+            센터에서 설정한 역할을 등록하려는 직원에게 부여합니다.
+          </S.Text>
+        </div>
+
+        <form onSubmit={onSubmitHandler}>
+          <S.CheckBoxWrapper >
+            <S.CheckBox id="general" type="checkbox" defaultChecked hidden />
+            <label htmlFor="general">
+              <S.Selected isSelected={true}>
+                <S.Role>일반 직원 (기본)</S.Role>
+                <S.Text>가장 기존적인 권한만 소유하고 있습니다.</S.Text>
+              </S.Selected>
+            </label>
+          </S.CheckBoxWrapper>
+          {rolesData?.roles.map((role) => (
+            <S.CheckBoxWrapper key={role.id}>
+              <S.CheckBox
+                className="hidden peer"
+                id={role.id.toString()}
+                type="checkbox"
+                value={role.id}
+                onChange={(e) => onCheckHandler(e, role.id)}
+                hidden
+              />
+              <label htmlFor={role.id.toString()}>
+                <S.Selected
+                  isSelected={checkedRoles.includes(role.id)} // currentRoleIds에 role.id가 있는지 확인
+                >
+                  <S.Role>{role.name}</S.Role>
+                  <S.Text>{role.description}</S.Text>
+                </S.Selected>
+              </label>
+            </S.CheckBoxWrapper>
+          ))}
+          <S.BtnWrapper>
+            <S.backBtn type="button" onClick={() => navigate(-1)}>
+              뒤로
+            </S.backBtn>
+            <S.submitBtn type="submit">완료</S.submitBtn>
+          </S.BtnWrapper>
+        </form>
+      </S.Wrapper>
     </>
   );
 };

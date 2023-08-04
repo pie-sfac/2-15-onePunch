@@ -26,19 +26,6 @@ export interface permissions {
   description: string;
 }
 
-// const options = [
-//   {
-//     label: "일반 직원 (기본): 가장 기존적인 권한만 소유하고 있습니다.",
-//     value: "1",
-//   },
-//   {
-//     label:
-//       "인포 직원: 직원 관리, 수강권 관리, 일정 관리 권한을 소유하고 있습니다.",
-//     value: "5",
-//   },
-//   { label: "총괄 매니저: 모든 권한을 소유하고 있습니다.", value: "6" },
-// ];
-
 const StaffAdd = () => {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
@@ -172,15 +159,6 @@ const StaffAdd = () => {
       content: (
         <>
           <S.FormLabel>직원 권한</S.FormLabel>
-          {/* <Select
-            mode="tags"
-            style={{ width: "100%" }}
-            onChange={(value) =>
-              setStaffReq({ ...staffReq, roles: value.map(Number) })
-            }
-            tokenSeparators={[","]}
-            options={}
-          /> */}
           <Select
             className="my-select"
             mode="multiple"
@@ -214,10 +192,7 @@ const StaffAdd = () => {
       ),
     },
   ];
-  // const next = () => {
-  //   setCurrent(current + 1);
-  // };
-
+ 
   const prev = () => {
     setCurrent(current - 1);
   };

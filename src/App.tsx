@@ -221,7 +221,14 @@ function App() {
               </PlainLayout>
             }
           />
-          <Route path="/staffPage/roles/:id" element={<StaffRolesPage />} />
+          <Route
+            path="/staffPage/roles/:id"
+            element={
+              <PlainLayout>
+                <StaffRolesPage />
+              </PlainLayout>
+            }
+          />
         </Routes>
       </BrowserRouter>
     </RecoilRoot>
