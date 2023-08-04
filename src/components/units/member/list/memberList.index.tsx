@@ -1,7 +1,7 @@
 import { UserOutlined } from "@ant-design/icons";
 import * as S from "./memberList.style";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-import { MouseEventHandler, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "antd";
 import { useOnClickSearch } from "../../../../commons/hooks/event/useOnClickSearch";
@@ -18,10 +18,6 @@ export default function MemberList() {
   const { members, totalMembers, fetchMembers, setMembers } =
     useGetFetchMembers();
 
-  useEffect(() => {
-    fetchMembers(currentPage);
-  }, [currentPage]);
-
   // 회원 검색 _ 커스텀 hooks
   const { onClickSearch } = useOnClickSearch(
     setSearchExecuted,
@@ -35,23 +31,15 @@ export default function MemberList() {
   // 회원 상세 조회 _ 커스텀 hooks
   const { onClickSubmit } = useOnClickMember();
 
-  const handleAddClick = () => {
-    navigate("/memberPage/add");
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-  };
-
-  const onChangeSearch = (event: any) => {
-    setSearch(event.target.value);
-  };
+  useEffect(() => {
+    fetchMembers(currentPage);
+  }, [currentPage]);
 
   return (
     <S.Wrapper>
       <S.Search
         placeholder="회원/멤버 이름, 연락처로 검색하세요"
-        onChange={onChangeSearch}
+        onChange={(event) => setSearch(event.target.value)}
         onKeyDown={(event) => event.key === "Enter" && onClickSearch()}
       />
       <S.MemberHeader>
@@ -59,7 +47,9 @@ export default function MemberList() {
         <S.MemberCount>
           {searchExecuted ? members.length : totalMembers}
         </S.MemberCount>
-        <S.AddButton onClick={handleAddClick}>등록하기</S.AddButton>
+        <S.AddButton onClick={() => navigate("/memberPage/add")}>
+          등록하기
+        </S.AddButton>
       </S.MemberHeader>
       <S.MembersWrapper>
         {members.map((member) => (
@@ -81,7 +71,7 @@ export default function MemberList() {
         {searchExecuted && members.length <= 9 ? null : (
           <Pagination
             current={currentPage}
-            onChange={handlePageChange}
+            onChange={(page: number) => setCurrentPage(page)}
             total={totalMembers}
           />
         )}

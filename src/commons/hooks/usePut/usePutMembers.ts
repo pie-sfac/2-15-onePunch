@@ -1,10 +1,10 @@
 import { useState } from "react";
 import apiInstance from "../../apiInstance/apiInstance";
 
-export const usePostMembers = (setAddName: any, setAdd: any) => {
-  const postMembers = async (data: any) => {
+export const usePutMembers = (setAdd: any, memberId: any) => {
+  const onClickEdit = async (data: any) => {
     try {
-      await apiInstance.post("/members", {
+      const response = await apiInstance.put(`/members/${memberId}`, {
         name: data.name,
         birthDate: data.birthDate,
         phone: data.phone,
@@ -14,17 +14,12 @@ export const usePostMembers = (setAddName: any, setAdd: any) => {
         acquisitionFunnel: data.howToVisit,
       });
       console.log(data);
-      setAddName(data.name);
       setAdd(true);
+      console.log(response.data); // Here you can handle the response
     } catch (error: any) {
-      console.error(error.response.data.message);
       alert(error.response.data.message);
     }
   };
 
-  const onClickSubmit = (data: any) => {
-    postMembers(data);
-  };
-
-  return { onClickSubmit };
+  return { onClickEdit };
 };

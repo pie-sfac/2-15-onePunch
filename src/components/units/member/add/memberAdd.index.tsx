@@ -6,10 +6,13 @@ import { Select } from "antd";
 import { Controller } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { usePostMembers } from "../../../../commons/hooks/usePosts/usePostMembers";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
+import { useState } from "react";
+import { usePutMembers } from "../../../../commons/hooks/usePut/usePutMembers";
 
 export default function MemberAdd(props: any) {
   const navigate = useNavigate();
+  const [add, setAdd] = useState(false);
+  const [addName, setAddName] = useState("");
   const { memberId } = useParams();
   const {
     register,
@@ -21,38 +24,18 @@ export default function MemberAdd(props: any) {
     mode: "onChange",
   });
 
-  // 회원 회원 등록 _ 커스텀 hooks
-  const { onSubmit, add, addName, setAdd } = usePostMembers();
+  // 회원 등록 _ 커스텀 hooks
+  const { onClickSubmit } = usePostMembers(setAddName, setAdd);
 
-  const handleListClick = () => {
-    navigate("/memberPage/list");
-  };
-
-  const onClickEdit = async (data: any) => {
-    try {
-      const response = await apiInstance.put(`/members/${memberId}`, {
-        name: data.name,
-        birthDate: data.birthDate,
-        phone: data.phone,
-        sex: data.sex,
-        job: data.job,
-        acqusitionFunnel: data.howToVisit,
-        acquisitionFunnel: data.howToVisit,
-      });
-      console.log(data);
-      setAdd(true);
-      console.log(response.data); // Here you can handle the response
-    } catch (error: any) {
-      alert(error.response.data.message);
-    }
-  };
+  // 회원 수정 _ 커스텀 hooks
+  const { onClickEdit } = usePutMembers(setAdd, memberId);
 
   return (
     <S.Wrapper>
       {!add ? (
         <>
           <S.Header>
-            <S.OutBox onClick={handleListClick}>
+            <S.OutBox onClick={() => navigate("/memberPage/list")}>
               <S.LeftOut />
               <S.CreateScheduleText>
                 {props.isEdit ? "회원수정" : "회원등록"}
@@ -65,7 +48,9 @@ export default function MemberAdd(props: any) {
               회원 정보를 {props.isEdit ? "수정" : "등록"}하세요
             </S.FormSubHeading>
             <S.FormBody
-              onSubmit={handleSubmit(props.isEdit ? onClickEdit : onSubmit)}
+              onSubmit={handleSubmit(
+                props.isEdit ? onClickEdit : onClickSubmit
+              )}
             >
               <S.FormLabel>이름</S.FormLabel>
               <S.FormInput
@@ -167,7 +152,9 @@ export default function MemberAdd(props: any) {
             alt=""
           />
           <S.ButtonWrapper>
-            <S.CloseButton onClick={handleListClick}>닫기</S.CloseButton>
+            <S.CloseButton onClick={() => navigate("/memberPage/list")}>
+              닫기
+            </S.CloseButton>
             <S.ViewMemberButton>회원 조회</S.ViewMemberButton>
           </S.ButtonWrapper>
         </S.RegistrationWrapper>

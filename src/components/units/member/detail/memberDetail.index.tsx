@@ -13,13 +13,8 @@ export default function memberDetail() {
   const { memberDetails, setMemberDetails, fetchMemberDetails } =
     useGetFetchDetails(memberId);
 
-  const handleOutBoxClick = () => {
-    navigate("/memberPage/list");
-  };
-
   useEffect(() => {
     let interval: any = null;
-
     if (loadingProgress < 100) {
       interval = setInterval(() => {
         setLoadingProgress((loadingProgress) => loadingProgress + 20); // 10%에서 20%로 증가
@@ -30,10 +25,6 @@ export default function memberDetail() {
     return () => clearInterval(interval);
   }, [loadingProgress]);
 
-  const onClickEdit = async () => {
-    navigate(`/memberPage/${memberId}/edit`);
-  };
-
   return (
     <S.Wrapper>
       {loadingProgress < 100 ? (
@@ -43,12 +34,14 @@ export default function memberDetail() {
       ) : (
         <>
           <S.Header>
-            <S.OutBox onClick={handleOutBoxClick}>
+            <S.OutBox onClick={() => navigate("/memberPage/list")}>
               <S.LeftOut />
               <S.OutBoxTitle>회원정보</S.OutBoxTitle>
             </S.OutBox>
             <S.ActionContainer>
-              <S.Text onClick={onClickEdit}>수정</S.Text>
+              <S.Text onClick={() => navigate(`/memberPage/${memberId}/edit`)}>
+                수정
+              </S.Text>
               <S.Text>취소</S.Text>
             </S.ActionContainer>
           </S.Header>

@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
+import Home from "../../components/units/home/home.index";
 
 const HomePage = () => {
-    return (
-        <div>
-            
-        </div>
-    );
+  return (
+    <>
+      <Home />
+    </>
+  );
 };
 
 export default HomePage;
