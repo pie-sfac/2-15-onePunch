@@ -1,10 +1,14 @@
 import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./classDetail.style";
 import { useState, useEffect } from "react";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { UserOutlined } from "@ant-design/icons";
 import { Day, Phone, Time, Time2 } from "../../../../commons/libraries/utils";
-import { Modal } from "antd";
+import { useGetFetchScheduleClassDetail } from "../../../../commons/hooks/useGets/useGetFetchScheduleClass";
+import { usePostClassAbsence } from "../../../../commons/hooks/usePosts/usePostClassAbsence";
+import { usePostClassAttendance } from "../../../../commons/hooks/usePosts/usePostClassAttendance";
+import { useAttendanceStatus } from "../../../../commons/hooks/status/useAttendanceStatus";
+import { usePostClassCancel } from "../../../../commons/hooks/usePosts/usePostClassCancel";
+import { useLoadingProgress } from "../../../../commons/hooks/status/useLoadingProgress";
 
 interface Member {
   name: string;
@@ -40,130 +44,49 @@ export default function ClassDetail() {
   const { scheduleId } = useParams();
   const [scheduleDetails, setScheduleDetails] = useState<ScheduleDetails>({});
   const [attendanceHistoryId, setAttendanceHistoryId] = useState(0);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [select, setSelect] = useState("");
+
+  // 수업 디테일 조회 _ 커스텀 hooks
+  const { fetchScheduleDetails } = useGetFetchScheduleClassDetail(
+    scheduleId,
+    setScheduleDetails,
+    setAttendanceHistoryId
+  );
+
+  // 수업 출석  _ 커스텀 hooks
+  const { onClickAbsence } = usePostClassAbsence(
+    attendanceHistoryId,
+    fetchScheduleDetails,
+    setIsVisible
+  );
+
+  // 수업 결석  _ 커스텀 hooks
+  const { onClickAttendance } = usePostClassAttendance(
+    attendanceHistoryId,
+    fetchScheduleDetails,
+    setIsVisible
+  );
+
+  // 수업 출결 상태  _ 커스텀 hooks
+  const { attendanceStatus } = useAttendanceStatus();
+
+  // 수업 취소  _ 커스텀 hooks
+  const { onClickCancel } = usePostClassCancel(scheduleId);
+
+  // 로딩  _ 커스텀 hooks
+  const { loadingProgress } = useLoadingProgress();
 
   useEffect(() => {
     fetchScheduleDetails();
   }, []);
 
-  const fetchScheduleDetails = async () => {
-    try {
-      const response = await apiInstance.get(
-        `/schedules/private-lesson/${scheduleId}`
-      );
-      setScheduleDetails(response.data);
-      console.log(scheduleDetails?.attendanceHistories?.[0]?.id);
-      setAttendanceHistoryId(response.data?.attendanceHistories?.[0]?.id);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  // < 출석 >
-
-  const onClickAbsence = async () => {
-    try {
-      await apiInstance.post(
-        `/attendance-histories/${attendanceHistoryId}/check-present`
-      );
-
-      fetchScheduleDetails();
-      setIsVisible(false);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-    }
-  };
-
-  // < 결석 >
-
-  const onClickAttendance = async () => {
-    try {
-      await apiInstance.post(
-        `/attendance-histories/${attendanceHistoryId}/check-absent`
-      );
-      fetchScheduleDetails();
-      setIsVisible(false);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-    }
-  };
-
-  const handleOutBoxClick = () => {
-    navigate("/schedulePage/calendar"); // <-- navigate를 사용하여 '/schedulePage/calendar'로 이동합니다.
-  };
-
-  useEffect(() => {
-    let interval: any = null;
-
-    if (loadingProgress < 100) {
-      interval = setInterval(() => {
-        setLoadingProgress((loadingProgress) => loadingProgress + 20); // 10%에서 20%로 증가
-      }, 100);
-    } else if (loadingProgress >= 100) {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, [loadingProgress]);
-
-  const closeModal = () => {
-    setIsVisible(false);
-  };
-
-  const openModalMemberAbsence = async () => {
-    setIsVisible(true);
-    setSelect("결석");
-  };
-
-  const openModalMemberAttendance = async () => {
-    setIsVisible(true);
-    setSelect("출석");
-  };
-
-  const openModalMemberCancel = async () => {
-    setIsVisible(true);
-    setSelect("취소");
-  };
-
-  const getAttendanceStatus = (status: any) => {
-    switch (status) {
-      case "ABSENT":
-        return { message: "결석", color: "#FE7B72" };
-      case "PRESENT":
-        return { message: "출석", color: "#6691FF" };
-      case "WAIT":
-        return { message: "대기", color: "#C5C5C5" };
-      default:
-        return { message: "", color: "" };
-    }
-  };
-
-  const onClickCancel = async () => {
-    try {
-      const response = await apiInstance.post(
-        `/schedules/${scheduleId}/cancel`
-      );
-      navigate("/schedulePage/calendar");
-      console.log(response);
-      console.log(scheduleId);
-    } catch (error: any) {
-      console.error(error.response.data.message);
-      alert(error.response.data.message);
-    }
-  };
-
-  const onClickEdit = async () => {
-    navigate(`/schedulePage/class/${scheduleId}/edit`);
-  };
-
   return (
     <S.Wrapper>
       <S.Modals
         visible={isVisible}
-        onOk={closeModal}
-        onCancel={closeModal}
+        onOk={() => setIsVisible(false)}
+        onCancel={() => setIsVisible(false)}
         footer={null}
       >
         {select === "결석" ? (
@@ -173,7 +96,7 @@ export default function ClassDetail() {
               <S.ModalTitle>출석 확인</S.ModalTitle>
               <S.ModalText>출석 처리하시겠습니까?</S.ModalText>
               <S.ModalButtonWrapper>
-                <S.ModalNegativeButton onClick={closeModal}>
+                <S.ModalNegativeButton onClick={() => setIsVisible(false)}>
                   아니요
                 </S.ModalNegativeButton>{" "}
                 <S.ModalPositiveButton onClick={onClickAbsence}>
@@ -188,7 +111,7 @@ export default function ClassDetail() {
               <S.ModalTitle>결석처리</S.ModalTitle>
               <S.ModalText>결석 처리를 진행하시겠습니까?</S.ModalText>
               <S.ModalButtonWrapper>
-                <S.ModalNegativeButton onClick={closeModal}>
+                <S.ModalNegativeButton onClick={() => setIsVisible(false)}>
                   취소
                 </S.ModalNegativeButton>{" "}
                 <S.ModalPositiveButton onClick={onClickAttendance}>
@@ -203,7 +126,7 @@ export default function ClassDetail() {
               <S.ModalTitle>수업 일정 취소</S.ModalTitle>
               <S.ModalText>취소를 진행하시겠습니까?</S.ModalText>
               <S.ModalButtonWrapper>
-                <S.ModalNegativeButton onClick={closeModal}>
+                <S.ModalNegativeButton onClick={() => setIsVisible(false)}>
                   아니요
                 </S.ModalNegativeButton>{" "}
                 <S.ModalPositiveButton onClick={onClickCancel}>
@@ -221,7 +144,7 @@ export default function ClassDetail() {
       ) : (
         <>
           <S.Header>
-            <S.OutBox onClick={handleOutBoxClick}>
+            <S.OutBox onClick={() => navigate("/schedulePage/calendar")}>
               <S.LeftOut />
               <S.OutBoxTime>{Time(scheduleDetails.startAt)}</S.OutBoxTime>
               <S.OutBoxName>
@@ -229,8 +152,22 @@ export default function ClassDetail() {
               </S.OutBoxName>
             </S.OutBox>
             <S.ActionContainer>
-              <S.ActionText onClick={onClickEdit}>변경</S.ActionText>
-              <S.ActionText onClick={openModalMemberCancel}>취소</S.ActionText>
+              <S.ActionText
+                onClick={() =>
+                  navigate(`/schedulePage/class/${scheduleId}/edit`)
+                }
+              >
+                변경
+              </S.ActionText>
+
+              <S.ActionText
+                onClick={() => {
+                  setIsVisible(true);
+                  setSelect("취소");
+                }}
+              >
+                취소
+              </S.ActionText>
             </S.ActionContainer>
           </S.Header>
           <S.TitleBox>
@@ -270,7 +207,10 @@ export default function ClassDetail() {
                         scheduleDetails?.attendanceHistories?.[0]?.status ===
                         "PRESENT"
                       }
-                      onClick={openModalMemberAbsence}
+                      onClick={() => {
+                        setIsVisible(true);
+                        setSelect("결석");
+                      }}
                     >
                       출석
                     </S.AbsenceButton>
@@ -279,7 +219,10 @@ export default function ClassDetail() {
                         scheduleDetails?.attendanceHistories?.[0]?.status ===
                         "ABSENT"
                       }
-                      onClick={openModalMemberAttendance}
+                      onClick={() => {
+                        setIsVisible(true);
+                        setSelect("출석");
+                      }}
                     >
                       결석
                     </S.AttendanceButton>
@@ -291,13 +234,13 @@ export default function ClassDetail() {
                     <S.PMSLabel>출결 상태</S.PMSLabel>
                     <S.PMS
                       style={{
-                        color: getAttendanceStatus(
+                        color: attendanceStatus(
                           scheduleDetails?.attendanceHistories?.[0]?.status
                         ).color,
                       }}
                     >
                       {
-                        getAttendanceStatus(
+                        attendanceStatus(
                           scheduleDetails?.attendanceHistories?.[0]?.status
                         ).message
                       }

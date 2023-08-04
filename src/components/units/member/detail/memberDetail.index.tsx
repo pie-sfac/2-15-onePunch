@@ -3,27 +3,18 @@ import * as S from "./memberDetail.style";
 import { useEffect, useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
 import { useGetFetchDetails } from "../../../../commons/hooks/useGets/useGetFetchDetails";
+import { useLoadingProgress } from "../../../../commons/hooks/status/useLoadingProgress";
 
 export default function memberDetail() {
   const navigate = useNavigate();
   const { memberId } = useParams();
-  const [loadingProgress, setLoadingProgress] = useState(0);
 
   // 회원 상세 조회 _ 커스텀 hooks
   const { memberDetails, setMemberDetails, fetchMemberDetails } =
     useGetFetchDetails(memberId);
 
-  useEffect(() => {
-    let interval: any = null;
-    if (loadingProgress < 100) {
-      interval = setInterval(() => {
-        setLoadingProgress((loadingProgress) => loadingProgress + 20); // 10%에서 20%로 증가
-      }, 100);
-    } else if (loadingProgress >= 100) {
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [loadingProgress]);
+  // 로딩  _ 커스텀 hooks
+  const { loadingProgress } = useLoadingProgress();
 
   return (
     <S.Wrapper>

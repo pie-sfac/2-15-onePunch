@@ -5,11 +5,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useGetFetchScheduleDetails } from "../../../../commons/hooks/useGets/useGetFetchScheduleDetails";
 import { usePostSchedulesCancel } from "../../../../commons/hooks/usePosts/usePostSchedulesCancel";
+import { useLoadingProgress } from "../../../../commons/hooks/status/useLoadingProgress";
 
 export default function ConsultingWrite() {
   const navigate = useNavigate();
   const { scheduleId } = useParams();
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [memo, setMemo] = useState("");
   const [select, setSelect] = useState("");
@@ -21,19 +21,8 @@ export default function ConsultingWrite() {
   // 상담 취소 _ 커스텀 hooks
   const { onClickCancel } = usePostSchedulesCancel(scheduleId);
 
-  useEffect(() => {
-    let interval: any = null;
-
-    if (loadingProgress < 100) {
-      interval = setInterval(() => {
-        setLoadingProgress((loadingProgress) => loadingProgress + 20); // 10%에서 20%로 증가
-      }, 100);
-    } else if (loadingProgress >= 100) {
-      clearInterval(interval);
-    }
-
-    return () => clearInterval(interval);
-  }, [loadingProgress]);
+  // 로딩  _ 커스텀 hooks
+  const { loadingProgress } = useLoadingProgress();
 
   return (
     <>
