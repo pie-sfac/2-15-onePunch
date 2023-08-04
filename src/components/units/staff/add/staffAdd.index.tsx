@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-import "./staffAdd.style.css";
 import { divide } from "lodash";
 
 interface StaffCreateReq {
