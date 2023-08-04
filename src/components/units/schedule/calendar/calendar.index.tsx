@@ -23,7 +23,7 @@ interface Event {
   startAt: string;
   endAt: string;
   id: string;
-  type?: string; // "counseling" 혹은 "private"
+  type?: string;
 }
 
 export default function Calendar() {
@@ -47,7 +47,7 @@ export default function Calendar() {
     } else {
       setShowDailyButton(false);
     }
-    setViewOption(view); // 추가: 선택된 옵션을 상태로 저장
+    setViewOption(view);
   };
 
   const customWeekStartEndFormat = (value: any) =>
@@ -102,18 +102,9 @@ export default function Calendar() {
     }
   };
 
-  const showModal = () => {
-    setModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setModalOpen(false);
-  };
-
-  // 페이지 로드 시 실행될 코드를 넣기 위해 useEffect 훅을 추가합니다.
   useEffect(() => {
     const fetchSchedules = async () => {
-      // 오늘 날짜를 기준으로 스케줄을 가져오는 API를 호출합니다.
+      // 오늘 날짜를 기준으로 스케줄을 가져오는 API를 호출
       const date = dayjs();
       const startTime = date.startOf("month").format("YYYY-MM-DD");
       const endTime = date.endOf("month").format("YYYY-MM-DD");
@@ -140,10 +131,9 @@ export default function Calendar() {
       }
     };
 
-    fetchSchedules(); // 함수를 바로 호출
-  }, []); // 빈 배열을 의존성으로 전달하여 컴포넌트가 처음 마운트될 때만 실행되도록 합니다.
+    fetchSchedules();
+  }, []);
 
-  // <일정 클릭시 일정으로 이동>
   const handleEventClick = (info: any) => {
     const path =
       info.event.title === "수업"
@@ -241,7 +231,7 @@ export default function Calendar() {
               <S.Option value="timeGridDay">일</S.Option>
             </S.Select>
           </S.ViewOptions>
-          <S.Button onClick={showModal}>+ 일정 생성</S.Button>
+          <S.Button onClick={() => setModalOpen(true)}>+ 일정 생성</S.Button>
         </S.Header>
         <FullCalendar
           ref={calendarRef}
@@ -270,7 +260,6 @@ export default function Calendar() {
             };
           }}
           eventClassNames={(event) => {
-            // Return a different CSS class based on the event's title
             return event.event.title === "수업"
               ? "event-private"
               : "event-counseling";
@@ -281,7 +270,7 @@ export default function Calendar() {
             minute: "2-digit",
             hour12: false,
           }}
-          allDaySlot={false} // allDaySlot을 false로 설정
+          allDaySlot={false}
           locale="ko" // 한글 로케일 사용
           slotLaneClassNames="hide-divider" // 행을 구분하는 선을 숨기는 클래스 추가
           dayHeaderClassNames="fc-day-header" // 요일 줄의 배경색을 회색으로 변경하는 클래스 추가
