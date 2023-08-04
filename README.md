@@ -37,6 +37,11 @@ npm i
 npm run dev
 ```
 
+```bash
+아이디 : team15
+비밀번호 :team15!!
+```
+
 <br/>
 
 # 기술 스택
