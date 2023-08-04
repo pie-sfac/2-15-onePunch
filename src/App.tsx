@@ -10,7 +10,7 @@ import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
-import CenterTicket from "./components/units/tickets/centerTicket/centerTicket.index";
+import CenterTicket from "./components/units/tickets/list/centerTicket.index";
 import ClassDetailPage from "./pages/schedulePage/classDetail";
 import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
 import MemberList from "./pages/memberPage/list/index";

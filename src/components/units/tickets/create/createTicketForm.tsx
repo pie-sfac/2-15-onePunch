@@ -4,7 +4,7 @@ import * as S from "./createTicketForm.style";
 // import { Select } from 'antd';
 import { Button, Select, Space, Switch } from "antd";
 import { useRecoilState } from "recoil";
-import { maxServiceCountState } from "../../../../../commons/stores/index";
+import { maxServiceCountState } from "../../../../commons/stores/index";
 import { useNavigate } from "react-router-dom";
 const { Option } = Select;
 

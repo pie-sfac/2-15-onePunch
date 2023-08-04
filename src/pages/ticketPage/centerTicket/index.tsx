@@ -1,4 +1,4 @@
-import CenterTicket from '../../../components/units/tickets/centerTicket/centerTicket.index';
+import CenterTicket from '../../../components/units/tickets/list/centerTicket.index';
 
 const centerTicketPage = () => {
     return (
