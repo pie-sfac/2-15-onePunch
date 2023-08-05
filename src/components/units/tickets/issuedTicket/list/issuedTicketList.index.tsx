@@ -4,6 +4,8 @@ import apiInstance from "../../../../../commons/apiInstance/apiInstance";
 import * as S from "./issuedTicketList.style";
 import { Tabs } from "antd";
 import { TabsProps } from "antd";
+import ConvertLessonType from "../../../../commons/converter/convertLessonType";
+import ConvertDate from "../../../../commons/converter/convertDate";
 
 export interface IssuedTicket {
   availableReservationCount: number;
@@ -22,6 +24,19 @@ export interface IssuedTicket {
   startAt: string;
   suspendedAt: string;
   title: String;
+  updatedAt: string;
+  privateTutor: PrivateTutor;
+}
+
+export interface PrivateTutor {
+  createdAt: string;
+  id: number;
+  isActive: boolean;
+  lastLoginedAt: string;
+  loginId:string;
+  name: string;
+  phone: string;
+  type: "STAFF" | "ADMIN";
   updatedAt: string;
 }
 
@@ -55,34 +70,54 @@ const IssuedTicketList = () => {
   }, [issuedTickets]);
 
   // 수강권 메뉴(임시)
-  const handleSuspension = () => {};
-  const handleTransfer = () => {};
-  const handleRefund = () => {};
+  const handleSuspension = () => {
+    console.log("handleSuspension");
+  };
+  const handleTransfer = () => {
+    console.log("handleTransfer");
+  };
+  const handleRefund = () => {
+    console.log("handleRefund");
+  };
+
+  const handleIssuedTicketDetail = (issuedTicketId: any) => {
+    // console.log(issuedTicketId.target.key);
+    navigate(`/issued-tickets/${issuedTicketId}`);
+  };
 
   // 탭 컨텐츠 렌더링
   const renderTickets = (ticketsArray: IssuedTicket[]) => (
     <>
       {ticketsArray.map((ticket) => (
-        <S.TicketBox key={ticket.id}>
-          <S.Ticket_Info>
-            <div>
-              <S.Ticket_Title>{ticket.title}</S.Ticket_Title>
-              <S.Ticket_LessonType>{ticket.lessonType}</S.Ticket_LessonType>
+        <S.TicketBox
+          key={ticket.id}
+          
+        >
+          <S.Ticket_Info onClick={() => handleIssuedTicketDetail(ticket.id)}>
+            <S.Ticket_Info_Top>
+              <div>
+                <S.Ticket_Title>{ticket.title}</S.Ticket_Title>
+                <S.Ticket_LessonType>
+                  {ConvertLessonType(ticket.lessonType)}
+                </S.Ticket_LessonType>
+              </div>
               <S.Ticket_IconWrapper>
                 <S.Ticket_Icon
                   src="/images/icons/Tiket_ac.png"
                   alt="Tiket_ac"
                 />
               </S.Ticket_IconWrapper>
-            </div>
-            <div>
+            </S.Ticket_Info_Top>
+            <S.Ticket_Info_Bottom>
               <S.Ticket_Count>
-                {ticket.availableReservationCount}
+                <S.greyText>잔여 횟수</S.greyText>
+                {ticket.availableReservationCount}회
               </S.Ticket_Count>
               <S.Ticket_Term>
-                {ticket.startAt} - {ticket.endAt}
+                <S.greyText>유효 기간</S.greyText>
+                {ConvertDate(ticket.startAt)} - {ConvertDate(ticket.endAt)}
               </S.Ticket_Term>
-            </div>
+            </S.Ticket_Info_Bottom>
           </S.Ticket_Info>
 
           <S.TicketMenu>
@@ -113,7 +148,7 @@ const IssuedTicketList = () => {
 
   return (
     <>
-      <S.StaffAddHeader>
+      <S.IssuedTicketHeader>
         <S.Appbar>
           <S.FlexRow>
             <S.LeftOut onClick={() => navigate(-1)} />
@@ -121,7 +156,7 @@ const IssuedTicketList = () => {
           </S.FlexRow>
           <S.Issue>부여하기</S.Issue>
         </S.Appbar>
-      </S.StaffAddHeader>
+      </S.IssuedTicketHeader>
       <S.Body>
         <S.Title>수강권</S.Title>
         <Tabs
