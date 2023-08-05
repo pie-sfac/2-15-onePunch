@@ -154,3 +154,21 @@ export const ActionText = styled.p`
   margin-top: 15px;
   color: #d9d9d9;
 `;
+
+export const TicketMsgBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+`;
+export const TicketBox = styled.div``;
+export const MsgBox = styled.div``;
+export const TicketIcon = styled.img``;
+export const MsgIcon = styled.img``;
+export const MemberTitleWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+`;
