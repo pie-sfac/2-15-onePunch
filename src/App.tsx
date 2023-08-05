@@ -28,6 +28,7 @@ import MemberEdit from "./pages/memberPage/edit/index";
 import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
 import ClassEdit from "./pages/schedulePage/classEdit/index";
 import CenterHeader from "./components/commons/layout/centerHeader/centerHeader.index";
+import IssuedTicketListPage from "./pages/ticketPage/issuedTicket";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -187,6 +188,15 @@ function App() {
             element={<TicketDetailPage />}
           />
 
+          {/* IssuedTicket */}
+          <Route
+            path="/members/:memberId/issued"
+            element={
+              <PlainLayout>
+                <IssuedTicketListPage />
+              </PlainLayout>
+            }
+          />
           {/* 직원 관리 */}
 
           <Route

@@ -81,7 +81,7 @@ const CenterTicket: React.FC = () => {
           <S.Title>{ticket.title}</S.Title>
           <S.Info>
             <S.Text1>부여</S.Text1>
-            <S.Text2>nn건</S.Text2>
+            <S.Text2>{ticket.issuedTicketCount}건</S.Text2>
           </S.Info>
         </S.Content>
         <S.Content>
