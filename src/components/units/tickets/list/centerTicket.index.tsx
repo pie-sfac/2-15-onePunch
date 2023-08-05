@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 // import "./centerTicket.style.css";
 import * as S from "./centerTicket.style";
 import { Tabs, TabsProps } from "antd";
-import ConvertTermUnit from "../../../commons/convertTermUnit/convertTermUnit";
+import ConvertTermUnit from "../../../commons/converter/convertTermUnit";
 
 //
 interface BookableLesson {

@@ -1,4 +1,4 @@
-import IssuedTicketList from '../../../components/units/tickets/issuedTicket/list/issuedTicketList.index';
+import IssuedTicketList from '../../../../components/units/tickets/issuedTicket/list/issuedTicketList.index';
 
 const IssuedTicketListPage = () => {
     return (

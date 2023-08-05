@@ -6,7 +6,7 @@ import { TicketType } from "../list/centerTicket.index";
 import ModalConfirm from "../../../commons/modal/modalConfirm/modalConfirm.index";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, MenuProps, Space } from "antd";
-import ConvertTermUnit from "../../../commons/convertTermUnit/convertTermUnit";
+import ConvertTermUnit from "../../../commons/converter/convertTermUnit";
 
 const TicketDetail: React.FC = () => {
   const navigate = useNavigate();
