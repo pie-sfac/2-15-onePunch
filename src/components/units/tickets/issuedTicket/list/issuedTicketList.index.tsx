@@ -146,6 +146,10 @@ const IssuedTicketList = () => {
     },
   ];
 
+  const handleissue = () =>{
+    
+  }
+
   return (
     <>
       <S.IssuedTicketHeader>
@@ -154,7 +158,7 @@ const IssuedTicketList = () => {
             <S.LeftOut onClick={() => navigate(-1)} />
             <S.AppbarTitle>수강권</S.AppbarTitle>
           </S.FlexRow>
-          <S.Issue>부여하기</S.Issue>
+          <S.Issue onClick={handleissue}>부여하기</S.Issue>
         </S.Appbar>
       </S.IssuedTicketHeader>
       <S.Body>

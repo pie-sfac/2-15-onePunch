@@ -1,4 +1,4 @@
-import CreateTicket from '../../../../components/units/tickets/create/createTicket';
+import CreateTicket from '../../../../components/units/tickets/centerTicket/create/createTicket';
 
 const CreateTicketPage = () => {
     return (

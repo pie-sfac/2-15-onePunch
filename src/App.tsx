@@ -10,13 +10,13 @@ import TemporaryLogin from "./pages/temporaryLoginPage/index";
 
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
-import CenterTicket from "./components/units/tickets/list/centerTicket.index";
+import CenterTicket from "./components/units/tickets/centerTicket/list/centerTicket.index";
 import ClassDetailPage from "./pages/schedulePage/classDetail";
 import ConsultingDetailPage from "./pages/schedulePage/consultingDetail/index";
 import MemberList from "./pages/memberPage/list/index";
 import MemberAdd from "./pages/memberPage/add/index";
-import TicketDetailPage from "./pages/ticketPage/centerTicket/ticketDetail";
-import CreateTicketPage from "./pages/ticketPage/centerTicket/createTicket";
+import TicketDetailPage from "./pages/ticketPage/centerTicket/detail";
+import CreateTicketPage from "./pages/ticketPage/centerTicket/create";
 import MemberDetailPage from "./pages/memberPage/detail/index";
 import Home from "./components/units/home/home.index";
 import StaffListPage from "./pages/staffPage/list/index";
