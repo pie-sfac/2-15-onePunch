@@ -118,42 +118,24 @@ export const Text1 = styled.div`
 `;
 
 export const Label2 = styled.div`
-  background: var(--bg-bgc-50, #ebf1ff);
+  background: #ebf1ff;
   border-radius: 4px;
-  padding: 4px 8px 4px 8px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
-  left: 203px;
-  top: 14px;
+  padding: 4px 8px;
 `;
 
 export const Text8 = styled.div`
   color: #2d62ea;
   text-align: right;
   font: 400 10px/128% "Pretendard", sans-serif;
-  position: relative;
 `;
 export const TicketImg = styled.img`
-  padding: 10px;
-  left: 237px;
-  top: 128px;
-  overflow: visible;
 `;
 
 export const Membership = styled.div`
-  background: var(--bg-bg-wh, #ffffff);
   border-radius: 10px;
-  border-style: solid;
-  border-color: var(--borderline-line-200, #e7e7e7);
-  border-width: 1px;
+  border: 1px solid #e7e7e7;
   width: 304px;
   height: 202px;
-  left: 24px;
-  top: 177px;
-  overflow: hidden;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -161,9 +143,6 @@ export const Membership = styled.div`
 
 export const TicketImg2 = styled.svg`
   padding: 10px;
-  left: 237px;
-  top: 128px;
-  overflow: visible;
 `;
 export const TicketList = styled.div`
   display: flex;

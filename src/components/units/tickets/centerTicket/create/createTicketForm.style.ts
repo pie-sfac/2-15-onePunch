@@ -86,7 +86,7 @@ export const Input = styled.input`
 `;
 
 export const ServiceInput = styled.input`
-  width: 50%;
+  width: 90%;
   height: 50px
   margin-top: 3vh;
   padding: 10px 5px;
@@ -100,21 +100,13 @@ export const btnStyles = styled.div`
   & * {
     box-sizing: border-box;
   }
-  background: var(--bg-bg-100, #f4f4f4);
-  border-radius: 99px;
+  background: #f4f4f4;
+  border-radius: 50%;
   padding: 10px;
   flex-shrink: 0;
   width: 32px;
   height: 32px;
-  position: relative;
   text-align: center;
-
-  .frame-1707478717 {
-    position: absolute;
-    left: 4px;
-    top: 4px;
-    overflow: visible;
-  }
 `;
 
 // export const MiniWrap = styled.div`
@@ -124,9 +116,11 @@ export const btnStyles = styled.div`
 
 export const ControlWrapper = styled.div`
   display: flex;
+  flex-direction: row;
   justify-content: space-around;
   align-items: center;
   text-align: center;
+  gap: 10px;
 `;
 
 export const BtnLabel = styled.p`

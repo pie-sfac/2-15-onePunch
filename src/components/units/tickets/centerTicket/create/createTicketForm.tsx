@@ -6,6 +6,7 @@ import { Button, Select, Space, Switch } from "antd";
 import { useRecoilState } from "recoil";
 import { maxServiceCountState } from "../../../../../commons/stores/index";
 import { useNavigate } from "react-router-dom";
+import ServiceCounter from "../serviceCounter/serviceCounter";
 const { Option } = Select;
 
 // import "./test__createTicket.css"
@@ -270,22 +271,13 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           <br />
           <div className="miniwrap">
             <S.Label>서비스 횟수</S.Label>
-            <S.ControlWrapper>
-              <S.btnStyles className="btn" onClick={decrement}>
-                -
-              </S.btnStyles>
-              <S.ServiceInput
-                type="number"
-                name="maxServiceCount"
-                value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
-                onChange={handleCountChange}
-                className="text-field2"
-                disabled={isUnlimitedTimes}
-              />
-              <S.btnStyles className="btn" onClick={increment}>
-                +
-              </S.btnStyles>
-            </S.ControlWrapper>
+            <ServiceCounter
+              onDecrement={decrement}
+              onIncrement={increment}
+              onChange={handleCountChange}
+              value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
+              disabled={isUnlimitedTimes}
+            />
           </div>
           <br />
           <div>

@@ -2,7 +2,7 @@ import * as S from "./ticketDetail.style";
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import apiInstance from "../../../../../commons/apiInstance/apiInstance";
-import { TicketType } from "../list/centerTicket.index";
+import { TicketType } from "../Ticket/Ticket";
 import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
 import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, MenuProps, Space } from "antd";
