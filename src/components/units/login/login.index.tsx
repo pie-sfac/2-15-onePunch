@@ -1,13 +1,11 @@
 import React from 'react';
-import { Tabs } from 'antd';
+import { Tabs, TabsProps } from "antd";
 import { useForm } from 'react-hook-form';
 import  apiLogin from '../../../commons/api/apiLogin';
 import * as S from "./login.styles.ts";
 import { useRecoilState } from 'recoil';
 import { accessTokenStateForAdmin, accessTokenStateForStaffs } from '../../../commons/stores';
 import { useNavigate } from 'react-router-dom';
-
-const { TabPane } = Tabs;
 
 interface IFormInput {
   Username: string;
@@ -26,6 +24,7 @@ const Login: React.FC = () => {
 
   // 직원 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
   const isStaffLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0 && watch('CenterCode')?.length > 0;
+
 //관리자 토큰
 
   //사용자 로그인
@@ -42,14 +41,14 @@ const Login: React.FC = () => {
     })
     .then ((response)=>{
       localStorage.setItem('tokenForAdmin', response.data.accessToken);
+      localStorage.setItem('refreshToken', response.data.refreshToken);
   //2. accessToken globalState에 저장하기
       setTokenForAdmin(response.data.accessToken);
       alert("로그인 성공!")
 
-      console.log("==============여기부터 response===========");
-      console.log(response);
-      console.log("==============여기까지 response===========");
-      navigate("/schedulePage/calendar");
+      console.log("accessToken : ", response.data.accessToken);
+      console.log("refreshToken: ", response.data.refreshToken);
+      // navigate("/schedulePage/calendar");
     })
     .catch((error)=>{
       console.log('로그인 실패:', error);
@@ -84,13 +83,11 @@ const Login: React.FC = () => {
     });
   }
 
-
-
-  return (
-    <S.Container>
-      <S.Logo src='/images/icons/Poin T.png' alt='포인티 로고' />
-      <Tabs defaultActiveKey="1">
-        <TabPane tab="관리자 로그인" key="1">
+  const items: TabsProps['items'] = [
+  {
+    key: '1',
+    label: `관리자 로그인`,
+    children: 
           <form onSubmit={handleSubmit(onSubmitHandlerForAdmin)}>
             <S.InputBox>아이디</S.InputBox>
             <S.InputField {...register("Username")} type="text" />
@@ -98,8 +95,12 @@ const Login: React.FC = () => {
             <S.InputField {...register("Password")} type="password" />
             <S.Button type="submit" disabled={!isAdminLoginButtonDisabled}>로그인</S.Button>
           </form>
-        </TabPane>
-        <TabPane tab="직원 로그인" key="2">
+    ,
+  },
+  {
+    key: '2',
+    label: `직원 로그인`,
+    children: 
           <form onSubmit={handleSubmit(onSubmitHandlerForStaffs)}>
             <S.InputBox>아이디</S.InputBox>
             <S.InputField {...register("Username")} type="text"/>
@@ -109,8 +110,14 @@ const Login: React.FC = () => {
             <S.InputField {...register("CenterCode")} type="string" />
             <S.Button type="submit" disabled={!isStaffLoginButtonDisabled}>로그인</S.Button>
           </form>
-        </TabPane>
-      </Tabs>
+  ,
+  },
+];
+
+  return (
+    <S.Container>
+      <S.Logo src='/images/icons/Poin T.png' alt='포인티 로고' />
+      <Tabs defaultActiveKey="1" items={items} />
     </S.Container>
   );
 };
