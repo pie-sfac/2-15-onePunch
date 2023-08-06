@@ -4,7 +4,7 @@ import apiInstance from "../../../../commons/apiInstance/apiInstance";
 import { UserOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-interface Staff {
+export interface Staff {
   id: number;
   name: string;
   phone: number;

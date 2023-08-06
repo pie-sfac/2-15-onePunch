@@ -30,6 +30,9 @@ import ClassEdit from "./pages/schedulePage/classEdit/index";
 import CenterHeader from "./components/commons/layout/centerHeader/centerHeader.index";
 import IssuedTicketListPage from "./pages/ticketPage/issuedTicket/list";
 import IssuedTicketDetailPage from "./pages/ticketPage/issuedTicket/detail";
+import ActiveTicketListPage from "./pages/ticketPage/centerTicket/activeTicket";
+import IssuePage from "./pages/ticketPage/issuedTicket/issue";
+import StaffsPage from "./pages/ticketPage/issuedTicket/staff";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -203,6 +206,30 @@ function App() {
             element={
               <PlainLayout>
                 <IssuedTicketDetailPage />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/tickets/ActiveTicketList"
+            element={
+              <PlainLayout>
+                <ActiveTicketListPage />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/tickets/:ticketId/issue"
+            element={
+              <PlainLayout>
+                <IssuePage />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/staffs"
+            element={
+              <PlainLayout>
+                <StaffsPage />
               </PlainLayout>
             }
           />
