@@ -1,4 +1,4 @@
-import StaffList from "../../../components/units/staff/staffList/staffList.index";
+import StaffList from "../../../components/units/staff/list/staffList.index";
 
 const StaffListPage = () => {
   return <StaffList />;

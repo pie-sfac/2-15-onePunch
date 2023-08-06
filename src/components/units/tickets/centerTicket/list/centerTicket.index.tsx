@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import apiInstance from "../../../../commons/apiInstance/apiInstance";
+import apiInstance from "../../../../../commons/apiInstance/apiInstance";
 import { Link, useNavigate } from "react-router-dom";
 // import "./centerTicket.style.css";
 import * as S from "./centerTicket.style";
 import { Tabs, TabsProps } from "antd";
-import ConvertTermUnit from "../../../commons/converter/convertTermUnit";
+import ConvertTermUnit from "../../../../commons/converter/convertTermUnit";
 
 //
 interface BookableLesson {

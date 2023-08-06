@@ -1,4 +1,4 @@
-import TicketDetail from '../../../../components/units/tickets/detail/ticketDetail.index';
+import TicketDetail from '../../../../components/units/tickets/centerTicket/detail/ticketDetail.index';
 
 const TicketDetailPage = () => {
     return (
