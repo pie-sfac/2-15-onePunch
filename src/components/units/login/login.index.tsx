@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Tabs, TabsProps } from "antd";
 import { useForm } from 'react-hook-form';
 import  apiLogin from '../../../commons/api/apiLogin';
@@ -18,12 +18,18 @@ const Login: React.FC = () => {
   const [, setTokenForAdmin] = useRecoilState(accessTokenStateForAdmin);
   const [, setTokenForStaffs] = useRecoilState(accessTokenStateForStaffs);
   const { register, handleSubmit, watch } = useForm<IFormInput>();
+  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   // 관리자 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
   const isAdminLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0;
 
   // 직원 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
   const isStaffLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0 && watch('CenterCode')?.length > 0;
+
+  //비밀번호가 보이도록
+  const togglePasswordVisibility = () => {
+    setIsPasswordVisible(!isPasswordVisible);
+  };
 
 //관리자 토큰
 
@@ -48,7 +54,7 @@ const Login: React.FC = () => {
 
       console.log("accessToken : ", response.data.accessToken);
       console.log("refreshToken: ", response.data.refreshToken);
-      // navigate("/schedulePage/calendar");
+      navigate("/Home");
     })
     .catch((error)=>{
       console.log('로그인 실패:', error);
@@ -92,7 +98,12 @@ const Login: React.FC = () => {
             <S.InputBox>아이디</S.InputBox>
             <S.InputField {...register("Username")} type="text" />
             <S.InputBox>비밀번호</S.InputBox>
-            <S.InputField {...register("Password")} type="password" />
+            <S.InputWrapper>
+            <S.InputField {...register("Password")} type={isPasswordVisible ? "text" : "password"} />
+              <S.Icon src={isPasswordVisible ? "/images/icons/Visibility_off.png" : "/images/icons/Visibility_on.png"} 
+                alt="눈 icon" 
+                onClick={togglePasswordVisibility}/>
+            </S.InputWrapper>
             <S.Button type="submit" disabled={!isAdminLoginButtonDisabled}>로그인</S.Button>
           </form>
     ,
@@ -105,7 +116,12 @@ const Login: React.FC = () => {
             <S.InputBox>아이디</S.InputBox>
             <S.InputField {...register("Username")} type="text"/>
             <S.InputBox>비밀번호</S.InputBox>
-            <S.InputField {...register("Password")} type="password" /> 
+            <S.InputWrapper>
+            <S.InputField {...register("Password")} type={isPasswordVisible ? "text" : "password"} />
+              <S.Icon src={isPasswordVisible ? "/images/icons/Visibility_off.png" : "/images/icons/Visibility_on.png"} 
+                alt="눈 icon" 
+                onClick={togglePasswordVisibility}/>
+            </S.InputWrapper> 
             <S.InputBox>센터코드</S.InputBox>
             <S.InputField {...register("CenterCode")} type="string" />
             <S.Button type="submit" disabled={!isStaffLoginButtonDisabled}>로그인</S.Button>

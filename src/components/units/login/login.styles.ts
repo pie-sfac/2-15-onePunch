@@ -1,6 +1,5 @@
 // Login.styles.ts
 import styled from '@emotion/styled';
-import { css } from 'styled-components';
 
 export const Container = styled.div`
   width: 375px;
@@ -10,7 +9,7 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: 50px;
 `;
 
 export const FormContainer = styled.h2`
@@ -29,6 +28,10 @@ export const Logo = styled.img`
   color: #2D62EA;
   margin-bottom: 20px;
 `;
+export const InputWrapper = styled.div`
+  position: relative;
+  display: inline-block;  // 이 부분이 필요하다면 추가하세요.
+`;
 
 export const InputField = styled.input`
   width: 370px;
@@ -36,6 +39,18 @@ export const InputField = styled.input`
   margin-bottom: 10px;
   border: 1px solid #CFCFCF;
   border-radius: 4px;
+  position: relative;
+  padding-right: 40px; /* 아이콘의 크기와 간격에 따라 조정 */
+`;
+
+export const Icon = styled.img`
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  right: 10px; /* 오른쪽 여백 값. 필요에 따라 조정 */
+  top: 20px;
+  transform: translateY(-50%);
+  cursor: pointer;
 `;
 
 export const Form = styled.div`
@@ -63,6 +78,8 @@ export const Button = styled.button`
   cursor: pointer;
   color: ${({ disabled }) => (disabled ? '#AEAEAE' : '#FFFFFF')};
 `;
+
+
 
 export const InputBox = styled.div`
   width: 100%;
