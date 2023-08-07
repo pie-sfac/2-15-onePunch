@@ -33,7 +33,7 @@ export interface PrivateTutor {
   id: number;
   isActive: boolean;
   lastLoginedAt: string;
-  loginId:string;
+  loginId: string;
   name: string;
   phone: string;
   type: "STAFF" | "ADMIN";
@@ -89,10 +89,7 @@ const IssuedTicketList = () => {
   const renderTickets = (ticketsArray: IssuedTicket[]) => (
     <>
       {ticketsArray.map((ticket) => (
-        <S.TicketBox
-          key={ticket.id}
-          
-        >
+        <S.TicketBox key={ticket.id}>
           <S.Ticket_Info onClick={() => handleIssuedTicketDetail(ticket.id)}>
             <S.Ticket_Info_Top>
               <div>
@@ -111,7 +108,12 @@ const IssuedTicketList = () => {
             <S.Ticket_Info_Bottom>
               <S.Ticket_Count>
                 <S.greyText>잔여 횟수</S.greyText>
-                {ticket.availableReservationCount}회
+                {ticket.availableReservationCount ? (
+                  <>{ticket.availableReservationCount}회</>
+                ) : (
+                  "무제한"
+                )}
+                {/* {ticket.availableReservationCount}회 */}
               </S.Ticket_Count>
               <S.Ticket_Term>
                 <S.greyText>유효 기간</S.greyText>
@@ -146,16 +148,18 @@ const IssuedTicketList = () => {
     },
   ];
 
-  const handleShowActiveTicketList = () =>{
-    navigate("/tickets/ActiveTicketList");
-  }
+  const handleShowActiveTicketList = () => {
+    navigate(`/${memberId}/tickets/ActiveTicketList`);
+  };
 
   return (
     <>
       <S.IssuedTicketHeader>
         <S.Appbar>
           <S.FlexRow>
-            <S.LeftOut onClick={() => navigate(-1)} />
+            <S.LeftOut
+              onClick={() => navigate(`/memberPage/memberDetail/${memberId}`)}
+            />
             <S.AppbarTitle>수강권</S.AppbarTitle>
           </S.FlexRow>
           <S.Issue onClick={handleShowActiveTicketList}>부여하기</S.Issue>
