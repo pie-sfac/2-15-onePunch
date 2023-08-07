@@ -1,6 +1,5 @@
 import { LeftOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Tabs } from "antd";
 
 export const IssuedTicketHeader = styled.header`
   display: flex;
@@ -65,23 +64,29 @@ export const Ticket_Info_Top = styled.div`
   align-items: center;
   justify-content: space-between;
 `;
-export const Ticket_Info_Bottom = styled.div`
+export const Ticket_Info_Bottom = styled.div<{ isSuspended?: boolean }>`
   width: 100%;
+
+  color: ${(props) => (props.isSuspended ? "#AEAEAE" : "")};
 `;
 
-export const Ticket_Title = styled.div`
+export const Ticket_Title = styled.div<{ isSuspended?: boolean }>`
   font-size: 16px;
   font-weight: 700;
+
+  color: ${(props) => (props.isSuspended ? "#AEAEAE" : "")};
 `;
-export const Ticket_LessonType = styled.div`
-  color: #2d62ea;
+export const Ticket_LessonType = styled.div<{ isSuspended?: boolean }>`
   text-align: center;
   font-size: 10px;
   font-weight: 400;
   border-radius: 4px;
-  background: #ebf1ff;
+  background: #;
   margin-top: 5px;
   width: 80px;
+
+  color: ${(props) => (props.isSuspended ? "#AEAEAE" : "#2d62ea")};
+  background: ${(props) => (props.isSuspended ? "#F4F4F4" : "#ebf1ff")};
 `;
 export const Ticket_IconWrapper = styled.div`
   margin-right: 10px;
@@ -98,15 +103,16 @@ export const Ticket_Term = styled.div`
   font-weight: 400;
 `;
 
-export const TicketMenu = styled.div`
-  color: #2d62ea;
-  background: #ebf1ff;
-  height: 100%; // 부모 요소의 높이를 상속받음.
+export const TicketMenu = styled.div<{ isSuspended?: boolean }>`
+  height: 100%;
   width: 35%;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+
+  background: ${(props) => (props.isSuspended ? "#F4F4F4" : "#ebf1ff")};
+  color: ${(props) => (props.isSuspended ? "#1D1D1D" : "#2d62ea")};
 `;
 export const Suspension = styled.p`
   margin: 0;

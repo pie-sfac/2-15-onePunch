@@ -6,6 +6,7 @@ import { Tabs } from "antd";
 import { TabsProps } from "antd";
 import ConvertLessonType from "../../../../commons/converter/convertLessonType";
 import ConvertDate from "../../../../commons/converter/convertDate";
+import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
 
 export interface IssuedTicket {
   availableReservationCount: number;
@@ -43,15 +44,16 @@ export interface PrivateTutor {
 const IssuedTicketList = () => {
   const navigate = useNavigate();
   const { memberId } = useParams<{ memberId: string }>();
-  const [isIssuedTicket, setIsIssuedTicket] = useState(false);
   const [issuedTickets, setIssuedTickets] = useState<IssuedTicket[]>([]);
   // 탭 나누기 위한 이용중/종료됨 수강권
   const activeTickets = issuedTickets.filter((ticket) => !ticket.isCanceled);
   const inactiveTickets = issuedTickets.filter((ticket) => ticket.isCanceled);
+  const [showSuspendModal, setShowSuspendModal] = useState(false);
+  const [showUnsuspendModal, setShowUnsuspendModal] = useState(false);
+  const [isSuspended, setIsSuspended] = useState(false);
 
   // issued tickets list 가져오기
   useEffect(() => {
-    // console.log("ID from URL:", memberId);
     apiInstance
       .get(`/members/${memberId}/issued-tickets`)
       .then((response) => {
@@ -62,20 +64,55 @@ const IssuedTicketList = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [isSuspended]);
 
   // issuedTicketInfo가 변경될 때마다 콘솔에 찍어보기
-  useEffect(() => {
-    console.log("issuedTicketInfo", issuedTickets);
-  }, [issuedTickets]);
+  // useEffect(() => {
+  //   console.log("issuedTicketInfo", issuedTickets);
+  // }, [issuedTickets]);
 
-  // 수강권 메뉴(임시)
-  const handleSuspension = () => {
-    console.log("handleSuspension");
+  // 수강권 일시 중단
+  const handleSuspend = (issuedTicketId: number) => {
+    // console.log("handleSuspension");
+    console.log(issuedTicketId);
+    setShowSuspendModal(false);
+
+    apiInstance
+      .post(`/issued-tickets/${issuedTicketId}/suspend`, issuedTicketId)
+      .then((response) => {
+        console.log(response.data);
+        console.log(response.data.message);
+        setIsSuspended(true);
+        setShowSuspendModal(false);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
+
+  // 수강권 재진행
+  const handleUnsuspend = (issuedTicketId: number) => {
+    console.log(issuedTicketId);
+    setShowUnsuspendModal(false);
+    apiInstance
+      .post(`/issued-tickets/${issuedTicketId}/unsuspend`, issuedTicketId)
+      .then((response) => {
+        console.log(response.data);
+        console.log(response.data.message);
+        setIsSuspended(false);
+        setShowUnsuspendModal(false);
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
+  };
+
+  // 수강권 양도
   const handleTransfer = () => {
     console.log("handleTransfer");
   };
+
+  // 수강권 환불
   const handleRefund = () => {
     console.log("handleRefund");
   };
@@ -93,19 +130,39 @@ const IssuedTicketList = () => {
           <S.Ticket_Info onClick={() => handleIssuedTicketDetail(ticket.id)}>
             <S.Ticket_Info_Top>
               <div>
-                <S.Ticket_Title>{ticket.title}</S.Ticket_Title>
-                <S.Ticket_LessonType>
+                <S.Ticket_Title isSuspended={!!ticket.suspendedAt}>
+                  {ticket.title}
+                </S.Ticket_Title>
+                <S.Ticket_LessonType isSuspended={!!ticket.suspendedAt}>
                   {ConvertLessonType(ticket.lessonType)}
                 </S.Ticket_LessonType>
+                {isSuspended && ticket.suspendedAt && (
+                  <>
+                    <span style={{ color: "red" }}>
+                      {ConvertDate(ticket.suspendedAt)} 일시중단
+                    </span>
+                  </>
+                )}
               </div>
               <S.Ticket_IconWrapper>
-                <S.Ticket_Icon
-                  src="/images/icons/Tiket_ac.png"
-                  alt="Tiket_ac"
-                />
+                {ticket.suspendedAt ? (
+                  <>
+                    <S.Ticket_Icon
+                      src="/images/icons/Tiket_in.png"
+                      alt="Tiket_in"
+                    />
+                  </>
+                ) : (
+                  <>
+                    <S.Ticket_Icon
+                      src="/images/icons/Tiket_ac.png"
+                      alt="Tiket_ac"
+                    />
+                  </>
+                )}
               </S.Ticket_IconWrapper>
             </S.Ticket_Info_Top>
-            <S.Ticket_Info_Bottom>
+            <S.Ticket_Info_Bottom isSuspended={!!ticket.suspendedAt}>
               <S.Ticket_Count>
                 <S.greyText>잔여 횟수</S.greyText>
                 {ticket.availableReservationCount ? (
@@ -113,7 +170,6 @@ const IssuedTicketList = () => {
                 ) : (
                   "무제한"
                 )}
-                {/* {ticket.availableReservationCount}회 */}
               </S.Ticket_Count>
               <S.Ticket_Term>
                 <S.greyText>유효 기간</S.greyText>
@@ -122,10 +178,20 @@ const IssuedTicketList = () => {
             </S.Ticket_Info_Bottom>
           </S.Ticket_Info>
 
-          <S.TicketMenu>
-            <S.Suspension onClick={handleSuspension}>
-              수강권 일시중단
-            </S.Suspension>
+          <S.TicketMenu isSuspended={!!ticket.suspendedAt}>
+            {ticket.suspendedAt ? (
+              <>
+                <S.Suspension onClick={() => handleUnsuspend(ticket.id)}>
+                  수강권 재진행
+                </S.Suspension>
+              </>
+            ) : (
+              <>
+                <S.Suspension onClick={() => handleSuspend(ticket.id)}>
+                  수강권 일시중단
+                </S.Suspension>
+              </>
+            )}
             <S.Transfer onClick={handleTransfer}>수강권 양도</S.Transfer>
             <S.Refund onClick={handleRefund}>환불</S.Refund>
           </S.TicketMenu>
@@ -154,25 +220,50 @@ const IssuedTicketList = () => {
 
   return (
     <>
-      <S.IssuedTicketHeader>
-        <S.Appbar>
-          <S.FlexRow>
-            <S.LeftOut
-              onClick={() => navigate(`/memberPage/memberDetail/${memberId}`)}
-            />
-            <S.AppbarTitle>수강권</S.AppbarTitle>
-          </S.FlexRow>
-          <S.Issue onClick={handleShowActiveTicketList}>부여하기</S.Issue>
-        </S.Appbar>
-      </S.IssuedTicketHeader>
-      <S.Body>
-        <S.Title>수강권</S.Title>
-        <Tabs
-          style={{ marginLeft: "10px" }}
-          defaultActiveKey="1"
-          items={items}
+      <>
+        <S.IssuedTicketHeader>
+          <S.Appbar>
+            <S.FlexRow>
+              <S.LeftOut
+                onClick={() => navigate(`/memberPage/memberDetail/${memberId}`)}
+              />
+              <S.AppbarTitle>수강권</S.AppbarTitle>
+            </S.FlexRow>
+            <S.Issue onClick={handleShowActiveTicketList}>부여하기</S.Issue>
+          </S.Appbar>
+        </S.IssuedTicketHeader>
+        <S.Body>
+          <S.Title>수강권</S.Title>
+          <Tabs
+            style={{ marginLeft: "10px" }}
+            defaultActiveKey="1"
+            items={items}
+          />
+        </S.Body>
+      </>
+      {showSuspendModal && (
+        <ModalConfirm
+          title="수강권 일시 중단"
+          message="해당 수강권을 일시 중단하시겠습니까?
+          기존 예약이 취소되고,
+          신규 예약이 제한됩니다."
+          confirmText="예, 일시 중단"
+          cancelText="아니요"
+          onConfirm={(issuedTicketId: any) => handleSuspend(issuedTicketId)}
+          onCancel={() => setShowSuspendModal(false)}
         />
-      </S.Body>
+      )}
+      {showUnsuspendModal && (
+        <ModalConfirm
+          title="수강권 재진행"
+          message="해당 수강권을 재진행하시겠습니까?
+          일시 중단이 해제됩니다."
+          confirmText="예, 재진행"
+          cancelText="아니요"
+          onConfirm={(issuedTicketId: any) => handleUnsuspend(issuedTicketId)}
+          onCancel={() => setShowUnsuspendModal(false)}
+        />
+      )}
     </>
   );
 };
