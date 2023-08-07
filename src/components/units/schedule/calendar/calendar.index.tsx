@@ -96,7 +96,6 @@ export default function Calendar() {
       );
 
       setArr([...counselingSchedules, ...privateSchedules]);
-      console.log(response.data.privateSchedules);
     } catch (error) {
       console.error(error);
     }
@@ -125,7 +124,6 @@ export default function Calendar() {
 
         // Merge two arrays
         setArr([...counselingSchedules, ...privateSchedules]);
-        console.log(arr);
       } catch (error) {
         console.error(error);
       }
@@ -141,7 +139,6 @@ export default function Calendar() {
         : `/schedulePage/consultingDetail/${info.event.id}`;
 
     navigate(path);
-    console.log(info.event.id); // 이벤트의 ID를 콘솔에 출력
   };
 
   return (

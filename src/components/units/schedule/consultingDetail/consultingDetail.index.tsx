@@ -127,7 +127,7 @@ export default function ConsultingWrite() {
                   <S.AvatarOut size={23} icon={<UserOutlined />} />
                   <S.PMITie>
                     <S.PMName>{scheduleDetails?.client?.name}</S.PMName>
-                    <S.PMPhone>({scheduleDetails?.client?.phone})</S.PMPhone>
+                    <S.PMPhone>{scheduleDetails?.client?.phone}</S.PMPhone>
                   </S.PMITie>
                   <S.PMSBTie>
                     <S.Button

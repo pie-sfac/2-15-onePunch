@@ -16,7 +16,6 @@ export const useOnClickSearch = (
         const response = await apiInstance.get(
           `/search?query=${search}&resource=MEMBER`
         );
-        console.log(response.data.members);
         setMembers(response.data.members);
       } catch (error: any) {
         console.error(error.response.data.message);

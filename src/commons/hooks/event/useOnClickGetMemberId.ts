@@ -16,7 +16,6 @@ export const useOnClickGetMemberId = (
       const target = event.currentTarget;
       const postId = target.id;
       setMemberId(postId);
-      console.log(postId);
 
       // 회원 선택 시, 초기 수업(수강권) 선택값으로 변경
       setIssuedTicketId("수업(수강권)을 선택해 주세요.");
@@ -24,14 +23,12 @@ export const useOnClickGetMemberId = (
       // 여기서 postId를 사용하여 해당 사용자의 이름을 가져오는 코드
       const responsed = await apiInstance.get(`/members/${postId}`);
       setMemberName(responsed.data.name);
-      console.log(responsed.data.name);
 
       // 회원 아이디에 해당하는 이슈티켓 목록 가지고 오기
       const response = await apiInstance.get(
         `/members/${postId}/issued-tickets`
       );
       setIssuedTickets(response.data.issuedTickets);
-      console.log(response.data.issuedTickets);
       setIsVisible(false);
     } catch (error: any) {
       alert(error.response.data.message);

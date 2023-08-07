@@ -13,7 +13,6 @@ export const usePostMembers = (setAddName: any, setAdd: any) => {
         acqusitionFunnel: data.howToVisit,
         acquisitionFunnel: data.howToVisit,
       });
-      console.log(data);
       setAddName(data.name);
       setAdd(true);
     } catch (error: any) {

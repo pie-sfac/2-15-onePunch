@@ -117,7 +117,7 @@ export const PMName = styled.p`
 `;
 
 export const PMPhone = styled.p`
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export const PMBTie = styled.div`
@@ -173,7 +173,7 @@ export const PMSBTie = styled.div``;
 export const RecordButton = styled.button`
   border: 1px solid #e7e7e7;
   padding: 8px 12px;
-  color: #6691ff;
+  color: #c5c5c5;
   border-radius: 10px;
   margin-right: 10px;
 `;
@@ -181,7 +181,7 @@ export const RecordButton = styled.button`
 export const ReportButton = styled.button`
   border: 1px solid #e7e7e7;
   padding: 8px 12px;
-  color: #6691ff;
+  color: #c5c5c5;
   border-radius: 10px;
 `;
 

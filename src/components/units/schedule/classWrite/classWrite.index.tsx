@@ -1,8 +1,6 @@
 import * as S from "./classWrite.style";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Modal } from "antd";
-import { Phone } from "../../../../commons/libraries/utils";
 import moment from "moment";
 import { useOnClickGetStaffId } from "../../../../commons/hooks/event/useOnClickGetStaffId";
 import { useOnClickGetMemberId } from "../../../../commons/hooks/event/useOnClickGetMemberId";
@@ -11,6 +9,8 @@ import { usePutClass } from "../../../../commons/hooks/usePut/usePutClass";
 import { useGetFetchScheduleClass } from "../../../../commons/hooks/useGets/useGetFetchScheduleClass";
 import { useGetFetchClassStaffs } from "../../../../commons/hooks/useGets/useGetFetchStaffs";
 import { useGetFetchClassMembers } from "../../../../commons/hooks/useGets/useGetFetchMembers";
+import SelectUserModal from "../../../commons/modal/modalSelectUser/selectUserModal.index";
+import SubmitConfirmationModal from "../../../commons/modal/modalSubmitConfirmation/submitConfirmationModal.index";
 
 interface Member {
   id: string;
@@ -64,6 +64,7 @@ export default function ClassWrite(props: any) {
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
   const [issuedTicketName, setIssuedTicketName] = useState("");
+  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
 
   useEffect(() => {
     if (props.isEdit) {
@@ -101,7 +102,8 @@ export default function ClassWrite(props: any) {
     issuedTicketId,
     day,
     startTime,
-    endTime
+    endTime,
+    setIsSubmitModalVisible
   );
 
   // 직원 선택 _ 커스텀 hooks
@@ -146,45 +148,19 @@ export default function ClassWrite(props: any) {
           </S.OutBox>
         </S.Header>
         <S.Body>
-          <Modal
-            title="회원 선택"
-            visible={isVisible}
-            onOk={() => setIsVisible(false)}
-            onCancel={() => setIsVisible(false)}
-            footer={null}
-          >
-            {!select ? (
-              <>
-                {members.map((member, index) => (
-                  <S.MemberBox
-                    key={index}
-                    id={member.id}
-                    onClick={onClickGetMemberId}
-                  >
-                    <S.SmileOut />
-                    <S.MemberTag>회원</S.MemberTag>
-                    <S.MemberName>{member.name}</S.MemberName>
-                    <S.MemberPhone>{Phone(member.phone)}</S.MemberPhone>
-                  </S.MemberBox>
-                ))}
-              </>
-            ) : (
-              <>
-                {staffs.map((staff, index) => (
-                  <S.StaffBox
-                    key={index}
-                    id={staff.id}
-                    onClick={onClickGetStaffId}
-                  >
-                    <S.SmileOut />
-                    <S.StaffTag>직원</S.StaffTag>
-                    <S.StaffName>{staff.name}</S.StaffName>
-                    <S.StaffPhone>{Phone(staff.phone)}</S.StaffPhone>
-                  </S.StaffBox>
-                ))}
-              </>
-            )}
-          </Modal>
+          <SelectUserModal
+            isVisible={isVisible}
+            onClose={() => setIsVisible(false)}
+            members={members}
+            staffs={staffs}
+            select={select}
+            onClickGetMemberId={onClickGetMemberId}
+            onClickGetStaffId={onClickGetStaffId}
+          />
+          <SubmitConfirmationModal
+            isVisible={isSubmitModalVisible}
+            onClose={() => setIsSubmitModalVisible(false)}
+          />
           <S.ClassTitle>개인 수업</S.ClassTitle>
           <S.Label>담당 강사 선택 </S.Label>
           {userId === "0" ? (
@@ -222,7 +198,6 @@ export default function ClassWrite(props: any) {
           <S.DateOut
             onChange={(value, date: any) => {
               setDay(date);
-              console.log(date);
             }}
           />
           <S.Label>시간 선택</S.Label>
@@ -230,13 +205,11 @@ export default function ClassWrite(props: any) {
             <S.TimeOut
               onChange={(value, date: any) => {
                 setStartTime(date);
-                console.log(date);
               }}
             />
             <S.TimeOut
               onChange={(value, date: any) => {
                 setEndTime(date);
-                console.log(date);
               }}
             />
           </S.TimeBox>

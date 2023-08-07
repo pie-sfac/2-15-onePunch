@@ -9,7 +9,8 @@ export const usePostCounseling = (
   memo: any,
   day: any,
   startTime: any,
-  endTime: any
+  endTime: any,
+  setIsSubmitModalVisible: any
 ) => {
   const navigate = useNavigate();
   const onClickSubmit = async () => {
@@ -22,9 +23,7 @@ export const usePostCounseling = (
         startAt: `${day}T${startTime}`,
         endAt: `${day}T${endTime}`,
       });
-      alert("일정을 등록했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data); // Here you can handle the response
+      setIsSubmitModalVisible(true); // 모달 표시
     } catch (error: any) {
       alert(error.response.data.message);
     }

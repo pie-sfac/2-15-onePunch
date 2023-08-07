@@ -100,7 +100,7 @@ export const Notification = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #505050;
+  color: #dbdbdb;
 `;
 
 export const Album = styled.p`
@@ -108,7 +108,7 @@ export const Album = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #505050;
+  color: #dbdbdb;
 `;
 
 export const LoadingWrapper = styled.div`

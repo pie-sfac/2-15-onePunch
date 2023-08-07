@@ -155,7 +155,9 @@ export default function MemberAdd(props: any) {
             <S.CloseButton onClick={() => navigate("/memberPage/list")}>
               닫기
             </S.CloseButton>
-            <S.ViewMemberButton>회원 조회</S.ViewMemberButton>
+            <S.ViewMemberButton onClick={() => navigate("/memberPage/list")}>
+              회원 조회
+            </S.ViewMemberButton>
           </S.ButtonWrapper>
         </S.RegistrationWrapper>
       )}
