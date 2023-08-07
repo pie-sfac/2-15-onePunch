@@ -89,8 +89,7 @@ export const StrongText = styled.span`
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
-  margin-left: 40px;
+  margin-left: 5px;
   padding: 10px;
-
   width: 50%;
 `;

@@ -1,4 +1,4 @@
-import Issue from "../../../../components/units/tickets/issuedTicket/issue/issue.index";
+import Issue from "../../../../components/units/tickets/centerTicket/issue/issue.index";
 
 const IssuePage = () => {
     return (

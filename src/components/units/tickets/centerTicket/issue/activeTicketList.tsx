@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
-import RenderTickets from "../../centerTicket/renderTickets/renderTickets";
+import RenderTickets from "../renderTickets/renderTickets";
 import apiInstance from "../../../../../commons/apiInstance/apiInstance";
-import { TicketType } from "../../centerTicket/Ticket/Ticket";
-import { useNavigate } from "react-router-dom";
+import { TicketType } from "../Ticket/Ticket";
+import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./activeTicketList.style";
 
 const ActiveTicketList = () => {
   const navigate = useNavigate();
   const [tickets, setTickets] = useState<TicketType[]>([]);
+  const { memberId } = useParams<{ memberId: string }>();
 
   useEffect(() => {
     apiInstance
@@ -24,9 +25,8 @@ const ActiveTicketList = () => {
   // 판매중인 티켓만 필터링
   const activeTickets = tickets.filter((tickets) => tickets.isActive);
 
-
   const handleIssueTicket = async (ticketId: number): Promise<any> => {
-    navigate(`/tickets/${ticketId}/issue`);
+    navigate(`/${memberId}/tickets/${ticketId}/issue`);
   };
 
   return (
