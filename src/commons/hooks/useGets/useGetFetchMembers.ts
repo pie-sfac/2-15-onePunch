@@ -17,7 +17,6 @@ export const useGetFetchMembers = () => {
   const fetchMembers = async (page: number) => {
     try {
       const response = await apiInstance.get(`/members?page=${page}&size=10`);
-      console.log(response.data);
       setMembers(response.data.datas);
       setTotalMembers(response.data.meta.totalCount);
     } catch (error) {

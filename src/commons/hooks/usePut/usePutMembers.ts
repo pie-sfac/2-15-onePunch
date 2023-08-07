@@ -13,9 +13,7 @@ export const usePutMembers = (setAdd: any, memberId: any) => {
         acqusitionFunnel: data.howToVisit,
         acquisitionFunnel: data.howToVisit,
       });
-      console.log(data);
       setAdd(true);
-      console.log(response.data); // Here you can handle the response
     } catch (error: any) {
       alert(error.response.data.message);
     }

@@ -25,7 +25,8 @@ export const usePostClass = (
   issuedTicketId: any,
   day: any,
   startTime: any,
-  endTime: any
+  endTime: any,
+  setIsSubmitModalVisible: any
 ) => {
   const navigate = useNavigate();
   const onClickSubmit = async () => {
@@ -36,9 +37,7 @@ export const usePostClass = (
         startAt: `${day}T${startTime}`,
         endAt: `${day}T${endTime}`,
       });
-      alert("일정을 등록했습니다.");
-      navigate("/schedulePage/calendar");
-      console.log(response.data); // Here you can handle the response
+      setIsSubmitModalVisible(true); // 모달 표시
     } catch (error: any) {
       console.error(error.response.data.message); // Handle error
       alert(error.response.data.message);

@@ -28,9 +28,6 @@ export default function LoginNewPage() {
         }
       );
 
-      console.log(response.data.accessToken);
-      console.log(response.data.refreshToken);
-
       if (
         response.data.accessToken === undefined ||
         response.data.refreshToken === undefined

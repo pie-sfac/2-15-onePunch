@@ -22,7 +22,6 @@ export const useGetFetchDetails = (memberId: string | undefined) => {
     try {
       const response = await apiInstance.get(`/members/${memberId}`);
       setMemberDetails(response.data);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }

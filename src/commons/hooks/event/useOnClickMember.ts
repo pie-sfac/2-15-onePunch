@@ -7,7 +7,6 @@ export const useOnClickMember = () => {
     const target = event.currentTarget;
     const memberId = target.id;
     navigate(`/memberPage/memberDetail/${memberId}`);
-    console.log(memberId);
   };
 
   return {

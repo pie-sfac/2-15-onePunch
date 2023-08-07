@@ -8,6 +8,7 @@ import { useOnClickGetId } from "../../../../commons/hooks/event/useOnClickGetId
 import { usePutCounseling } from "../../../../commons/hooks/usePut/usePutCounseling";
 import { useGetFetchStaffs } from "../../../../commons/hooks/useGets/useGetFetchStaffs";
 import { useGetFetchScheduleCounseling } from "../../../../commons/hooks/useGets/useGetFetchScheduleCounseling";
+import SubmitModal from "../../../commons/modal/modalConsultingSubmit/consultingSubmit.index";
 
 interface Staff {
   id: string;
@@ -44,6 +45,7 @@ export default function ConsultingWrite(props: any) {
   const [memo, setMemo] = useState("");
   const [startAt, setStartAt] = useState("");
   const [endAt, setEndAt] = useState("");
+  const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
 
   useEffect(() => {
     if (props.isEdit) {
@@ -72,7 +74,8 @@ export default function ConsultingWrite(props: any) {
     memo,
     day,
     startTime,
-    endTime
+    endTime,
+    setIsSubmitModalVisible
   );
 
   // 상담 수정 _ 커스텀 hooks
@@ -131,6 +134,10 @@ export default function ConsultingWrite(props: any) {
               </S.StaffBox>
             ))}
           </Modal>
+          <SubmitModal
+            isVisible={isSubmitModalVisible}
+            onClose={() => setIsSubmitModalVisible(false)}
+          />
           <S.ConsultingTitle>상담</S.ConsultingTitle>
           <S.Label>담당 강사 선택 </S.Label>
 

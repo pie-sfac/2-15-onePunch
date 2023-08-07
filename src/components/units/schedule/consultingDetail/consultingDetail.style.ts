@@ -114,7 +114,7 @@ export const PMName = styled.p`
 `;
 
 export const PMPhone = styled.p`
-  font-size: 14px;
+  font-size: 13px;
 `;
 
 export const PMSBTie = styled.div`

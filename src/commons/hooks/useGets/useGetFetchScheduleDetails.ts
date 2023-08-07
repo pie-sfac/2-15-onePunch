@@ -28,7 +28,6 @@ export const useGetFetchScheduleDetails = (scheduleId: string | undefined) => {
         `/schedules/counseling/${scheduleId}`
       );
       setScheduleDetails(response.data);
-      console.log(scheduleDetails);
     } catch (error) {
       console.error(error);
     }

@@ -41,7 +41,6 @@ export const usePutClass = (
       );
       alert("일정을 수정했습니다.");
       navigate("/schedulePage/calendar");
-      console.log(response.data);
     } catch (error: any) {
       console.error(error.response.data.message);
       alert(error.response.data.message);

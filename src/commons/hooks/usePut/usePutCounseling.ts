@@ -49,7 +49,6 @@ export const usePutCounseling = (
       );
       alert("일정을 수정했습니다.");
       navigate("/schedulePage/calendar");
-      console.log(response.data);
     } catch (error: any) {
       alert(error.response.data.message);
     }
