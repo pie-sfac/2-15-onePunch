@@ -12,10 +12,10 @@ apiBasic.interceptors.request.use(
   function (config) { 
     const token = localStorage.getItem("tokenForAdmin");
    if (token) {
-    console.log("여기는 config.headers",config.headers);
+    // console.log("여기는 config.headers",config.headers);
       config.headers["Authorization"] = `Bearer ${token}`;
     }
-    console.log( "config.headers[어써라이제이션]", config.headers["Authorization"])
+    // console.log( "config.headers[어써라이제이션]", config.headers["Authorization"])
 
     return config;
   },
@@ -26,14 +26,24 @@ apiBasic.interceptors.request.use(
 
 async function getNewTokenWithRefreshToken() {
   //local storage에서 refreshToken 읽어와서 변수에 담기
-  const refreshToken = localStorage.getItem("refreshToken");
+  const refreshToken: string | null = localStorage.getItem("refreshToken");
   console.log("여기까지는 잘 왔니?")
   console.log("리프레쉬 토큰입니다",refreshToken);
+
+  // refreshToken이 null이라면 에러를 던지거나 적절한 처리를 수행
+  if (!refreshToken) {
+    console.error("No refresh token found in local storage");
+    throw new Error("No refresh token found");
+  }
+
   try {
     //이 refreshToken으로 새로운 accessToken 받아오기
     const response = await apiBasic.post('/tokens', {
       refreshToken: refreshToken,
-      
+    },{
+      headers: {
+        'Authorization': `Bearer ${refreshToken}`
+      },
     });
     console.log("========response.data.accessToken입니다:",response.data.accessToken);
     return response.data.accessToken;
@@ -88,10 +98,6 @@ apiBasic.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-
-
-
   
   export default apiLogin;
 
