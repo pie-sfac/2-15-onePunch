@@ -20,13 +20,11 @@ const Login: React.FC = () => {
   const { register, handleSubmit, watch } = useForm<IFormInput>();
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
-  // 관리자 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
+  //input에 모든 값이 들어오면 로그인 클릭 가능 함수
   const isAdminLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0;
-
-  // 직원 로그인 버튼이 파란색으로 바뀌는 조건을 체크하는 함수
   const isStaffLoginButtonDisabled = watch('Username')?.length > 0 && watch('Password')?.length > 0 && watch('CenterCode')?.length > 0;
 
-  //비밀번호가 보이도록
+  //눈 icon 클릭 시 비밀번호 text로 변경
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
