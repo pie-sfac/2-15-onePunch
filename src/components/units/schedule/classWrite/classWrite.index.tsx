@@ -8,39 +8,29 @@ import { usePostClass } from "../../../../commons/hooks/usePosts/usePostClass";
 import { usePutClass } from "../../../../commons/hooks/usePut/usePutClass";
 import { useGetFetchScheduleClass } from "../../../../commons/hooks/useGets/useGetFetchScheduleClass";
 import { useGetFetchClassStaffs } from "../../../../commons/hooks/useGets/useGetFetchStaffs";
-import { useGetFetchClassMembers } from "../../../../commons/hooks/useGets/useGetFetchMembers";
+import {
+  useGetFetchClassMembers,
+  useGetFetchMembers,
+} from "../../../../commons/hooks/useGets/useGetFetchMembers";
 import SelectUserModal from "../../../commons/modal/modalSelectUser/selectUserModal.index";
 import SubmitConfirmationModal from "../../../commons/modal/modalSubmitConfirmation/submitConfirmationModal.index";
+import { Phone } from "../../../../commons/libraries/utils";
+import {
+  Member,
+  Staff,
+  Ticket,
+  InfoType,
+} from "../../../../commons/types/types";
+import { Modal, Pagination } from "antd";
 
-interface Member {
-  id: string;
-  name: string;
-  phone: string;
-}
-
-interface Staff {
-  id: string;
-  name: string;
-  phone: string;
-}
-
-interface Ticket {
-  id: string;
-  title: string;
-}
-
-interface InfoType {
-  counselor: {
-    id: string;
-    name: string;
-  };
-  client: {
-    name: string;
-    phone: string;
-  };
-  memo: string;
-  startAt: string;
-  endAt: string;
+interface SelectUserModalProps {
+  isVisible: boolean;
+  onClose: () => void;
+  members: Member[];
+  staffs: Staff[];
+  select: boolean;
+  onClickGetMemberId: (event: any) => void;
+  onClickGetStaffId: (event: any) => void;
 }
 
 export default function ClassWrite(props: any) {
@@ -65,12 +55,16 @@ export default function ClassWrite(props: any) {
   const [endAt, setEndAt] = useState("");
   const [issuedTicketName, setIssuedTicketName] = useState("");
   const [isSubmitModalVisible, setIsSubmitModalVisible] = useState(false);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
   useEffect(() => {
     if (props.isEdit) {
       getMemberInfo();
     }
   }, []);
+
+  useEffect(() => {
+    fetchPage(currentPage);
+  }, [currentPage]);
 
   // 수업 디테일 조회 _ 커스텀 hooks
   const { getMemberInfo } = useGetFetchScheduleClass(
@@ -130,10 +124,11 @@ export default function ClassWrite(props: any) {
   );
 
   // 회원 조회 모달 오픈 _ 커스텀 hooks
-  const { openModalMember } = useGetFetchClassMembers(
+  const { openModalMember, fetchPage, totalMembers } = useGetFetchClassMembers(
     setMembers,
     setIsVisible,
-    setSelect
+    setSelect,
+    currentPage
   );
 
   return (
@@ -148,15 +143,52 @@ export default function ClassWrite(props: any) {
           </S.OutBox>
         </S.Header>
         <S.Body>
-          <SelectUserModal
-            isVisible={isVisible}
-            onClose={() => setIsVisible(false)}
-            members={members}
-            staffs={staffs}
-            select={select}
-            onClickGetMemberId={onClickGetMemberId}
-            onClickGetStaffId={onClickGetStaffId}
-          />
+          <S.ModalOut
+            title={!select ? "회원 선택" : "직원 선택"}
+            visible={isVisible}
+            onOk={() => setIsVisible(false)}
+            onCancel={() => setIsVisible(false)}
+            footer={null}
+          >
+            {!select ? (
+              <>
+                {members.map((member, index) => (
+                  <S.MemberBox
+                    key={index}
+                    id={member.id}
+                    onClick={onClickGetMemberId}
+                  >
+                    <S.SmileOut />
+                    <S.MemberTag>회원</S.MemberTag>
+                    <S.MemberName>{member.name}</S.MemberName>
+                    <S.MemberPhone>{Phone(member.phone)}</S.MemberPhone>
+                  </S.MemberBox>
+                ))}
+                <S.PaginationWrapper>
+                  <Pagination
+                    current={currentPage}
+                    onChange={(page: number) => setCurrentPage(page)}
+                    total={totalMembers}
+                  />
+                </S.PaginationWrapper>
+              </>
+            ) : (
+              <>
+                {staffs.map((staff, index) => (
+                  <S.StaffBox
+                    key={index}
+                    id={staff.id}
+                    onClick={onClickGetStaffId}
+                  >
+                    <S.SmileOut />
+                    <S.StaffTag>직원</S.StaffTag>
+                    <S.StaffName>{staff.name}</S.StaffName>
+                    <S.StaffPhone>{Phone(staff.phone)}</S.StaffPhone>
+                  </S.StaffBox>
+                ))}
+              </>
+            )}
+          </S.ModalOut>
           <SubmitConfirmationModal
             isVisible={isSubmitModalVisible}
             onClose={() => setIsSubmitModalVisible(false)}

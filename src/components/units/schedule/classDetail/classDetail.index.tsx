@@ -9,35 +9,13 @@ import { usePostClassAttendance } from "../../../../commons/hooks/usePosts/usePo
 import { useAttendanceStatus } from "../../../../commons/hooks/status/useAttendanceStatus";
 import { usePostClassCancel } from "../../../../commons/hooks/usePosts/usePostClassCancel";
 import { useLoadingProgress } from "../../../../commons/hooks/status/useLoadingProgress";
-
-interface Member {
-  name: string;
-  phone: number;
-}
-
-interface Tutor {
-  name: string;
-}
-
-interface AttendanceHistory {
-  member: Member;
-  status: string;
-  id: any;
-}
-
-interface IssuedTicket {
-  title: string;
-  availableReservationCount: number;
-  remainingCount: number;
-}
-
-interface ScheduleDetails {
-  startAt?: string;
-  endAt?: string;
-  attendanceHistories?: AttendanceHistory[];
-  issuedTicket?: IssuedTicket;
-  tutor?: Tutor;
-}
+import {
+  Member,
+  Tutor,
+  AttendanceHistory,
+  IssuedTicket,
+  ScheduleDetails,
+} from "../../../../commons/types/types";
 
 export default function ClassDetail() {
   const navigate = useNavigate();
