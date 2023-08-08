@@ -169,7 +169,7 @@ export const StaffName = styled.p`
 export const StaffPhone = styled.p``;
 
 export const ModalOut = styled(Modal)`
-  top: 30%;
+  top: 10%;
   text-align: center;
 `;
 
@@ -188,4 +188,9 @@ export const ConfirmButton = styled.button`
   border-radius: 4px;
   padding: 10px 50px;
   margin-top: 30px;
+`;
+
+export const PaginationWrapper = styled.div`
+  text-align: center;
+  margin-top: 10px;
 `;

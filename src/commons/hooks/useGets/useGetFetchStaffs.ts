@@ -30,7 +30,7 @@ export const useGetFetchClassStaffs = (
       .then((response) => setStaffs(response.data.datas))
       .catch((error) => {
         alert(error.response.data.message);
-        navigate("/TemporaryLogin");
+        navigate("/");
       });
     setIsVisible(true);
     setSelect(true);
