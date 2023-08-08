@@ -1,4 +1,4 @@
-import ActiveTicketList from '../../../../components/units/tickets/issuedTicket/issue/activeTicketList';
+import ActiveTicketList from '../../../../components/units/tickets/centerTicket/issue/activeTicketList';
 
 const ActiveTicketListPage = () => {
     return (

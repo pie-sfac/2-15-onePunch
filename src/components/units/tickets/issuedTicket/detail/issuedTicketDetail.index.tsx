@@ -51,51 +51,72 @@ const IssuedTicketDetail = () => {
               <S.Ticket_Info key={issuedTicketDetail.id}>
                 <S.InnerBox>
                   <S.InfoTitle>기본 횟수</S.InfoTitle>
-
                   <S.StrongText>
-                    {issuedTicketDetail.defaultCount}회
+                    {issuedTicketDetail.defaultCount ? (
+                      <>{issuedTicketDetail.defaultCount}회</>
+                    ) : (
+                      "무제한"
+                    )}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>서비스 횟수</S.InfoTitle>
-
                   <S.StrongText>
-                    {issuedTicketDetail.serviceCount}회
+                    {issuedTicketDetail.defaultCount ? (
+                      <>{issuedTicketDetail.serviceCount}회</>
+                    ) : (
+                      "-"
+                    )}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>잔여 횟수</S.InfoTitle>
-
                   <S.StrongText>
-                    {issuedTicketDetail.remainingCount}회
+                    {issuedTicketDetail.defaultCount ? (
+                      <>{issuedTicketDetail.remainingCount}회</>
+                    ) : (
+                      "-"
+                    )}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>예약 가능 잔여 횟수</S.InfoTitle>
-
                   <S.StrongText>
-                    {issuedTicketDetail.availableReservationCount}회
+                    {issuedTicketDetail.defaultCount ? (
+                      <>{issuedTicketDetail.availableReservationCount}회</>
+                    ) : (
+                      "-"
+                    )}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>수강권 기간</S.InfoTitle>
-
                   <S.StrongText>
-                    {issuedTicketDetail.defaultTerm}
-                    {ConvertTermUnit(issuedTicketDetail.defaultTermUnit)}
+                    {issuedTicketDetail.defaultTerm ? (
+                      <>
+                        {issuedTicketDetail.defaultTerm}
+                        {ConvertTermUnit(issuedTicketDetail.defaultTermUnit)}
+                      </>
+                    ) : (
+                      "횟수 소진 시"
+                    )}
+                    {/* {issuedTicketDetail.defaultTerm}
+                    {ConvertTermUnit(issuedTicketDetail.defaultTermUnit)} */}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>유효 기간</S.InfoTitle>
-
                   <S.StrongText>
-                    {ConvertDate(issuedTicketDetail.startAt)} -
-                    {ConvertDate(issuedTicketDetail.endAt)}
+                    {ConvertDate(issuedTicketDetail.startAt)} -{" "}
+                    {issuedTicketDetail.endAt ? (
+                      <>{ConvertDate(issuedTicketDetail.endAt)}</>
+                    ) : (
+                      "횟수 소진 시"
+                    )}
                   </S.StrongText>
                 </S.InnerBox>
                 <S.InnerBox>
                   <S.InfoTitle>담당 강사</S.InfoTitle>
-
                   <S.StrongText>
                     {issuedTicketDetail.privateTutor.name}
                   </S.StrongText>

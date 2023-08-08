@@ -1,6 +1,6 @@
 import styled from "@emotion/styled";
 import { LeftOutlined, SmileOutlined } from "@ant-design/icons";
-
+import { DatePicker, Select } from "antd";
 export const IssuedTicketHeader = styled.header`
   display: flex;
   height: 50px;
@@ -59,10 +59,11 @@ export const Form = styled.form`
 `;
 
 export const Label = styled.label`
-  margin-top: 20px;
+  margin-top: 25px;
   margin-bottom: 5px;
   text-align: left;
   width: 97%;
+  font-size: 15px;
 `;
 export const Input = styled.input`
   width: 90%;
@@ -130,9 +131,9 @@ export const Button = styled.button`
   border-radius: 4px;
   padding: 10px 16px;
   text-align: center;
-  width: 100%;
+  width: 95%;
   font-size: 14px;
-  margin-top: 10px;
+  margin-top: 30px;
 `;
 
 export const Staffs = styled.button`
@@ -207,4 +208,30 @@ export const Id = styled.div`
 export const Phone = styled.div`
   color: #505050;
   font-weight: 400;
+`;
+export const DatePick = styled(DatePicker)`
+  color: #505050;
+  font-weight: 400;
+  width: 100%;
+  margin: 0 7px;
+`;
+
+export const DatePickerWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+`;
+
+export const FormSelect = styled(Select)`
+  width: 95%;
+`;
+
+export const GreyExplain = styled.p`
+  width: 95%;
+  padding: 3px 0 10px 0;
+  color: #aeaeae;
+  font-size: 10px;
+  font-weight: 400;
+  text-align: left;
 `;

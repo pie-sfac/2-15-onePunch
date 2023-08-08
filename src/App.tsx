@@ -32,7 +32,6 @@ import IssuedTicketListPage from "./pages/ticketPage/issuedTicket/list";
 import IssuedTicketDetailPage from "./pages/ticketPage/issuedTicket/detail";
 import ActiveTicketListPage from "./pages/ticketPage/centerTicket/activeTicket";
 import IssuePage from "./pages/ticketPage/issuedTicket/issue";
-import StaffsPage from "./pages/ticketPage/issuedTicket/staff";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -210,7 +209,7 @@ function App() {
             }
           />
           <Route
-            path="/tickets/ActiveTicketList"
+            path="/:memberId/tickets/ActiveTicketList"
             element={
               <PlainLayout>
                 <ActiveTicketListPage />
@@ -218,21 +217,14 @@ function App() {
             }
           />
           <Route
-            path="/tickets/:ticketId/issue"
+            path="/:memberId/tickets/:ticketId/issue"
             element={
               <PlainLayout>
                 <IssuePage />
               </PlainLayout>
             }
           />
-          <Route
-            path="/staffs"
-            element={
-              <PlainLayout>
-                <StaffsPage />
-              </PlainLayout>
-            }
-          />
+
           {/* 직원 관리 */}
 
           <Route
