@@ -35,22 +35,30 @@ export const useGetFetchMembers = () => {
 export const useGetFetchClassMembers = (
   setMembers: any,
   setIsVisible: any,
-  setSelect: any
+  setSelect: any,
+  currentPage: any
 ) => {
   const navigate = useNavigate();
+  const [totalMembers, setTotalMembers] = useState<number>(0);
+  const fetchPage = async (page: number) => {
+    try {
+      const response = await apiInstance.get(`/members?page=${page}&size=10`);
+      setMembers(response.data.datas);
+      setTotalMembers(response.data.meta.totalCount);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const openModalMember = async () => {
-    await apiInstance
-      .get("/members?page=1&size=10&sort=createdAt%2CDesc")
-      .then((response) => setMembers(response.data.datas))
-      .catch((error) => {
-        alert(error.response.data.message);
-        navigate("/TemporaryLogin");
-      });
+    fetchPage(currentPage);
     setIsVisible(true);
     setSelect(false);
   };
 
   return {
     openModalMember,
+    fetchPage,
+    totalMembers,
   };
 };

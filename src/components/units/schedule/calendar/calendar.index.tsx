@@ -13,18 +13,7 @@ import { useRecoilValue, useSetRecoilState } from "recoil";
 import { modalState } from "../../../../commons/stores";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-
-interface FullCalendarExtended extends FullCalendar {
-  getApi(): any;
-}
-
-interface Event {
-  tutor: boolean;
-  startAt: string;
-  endAt: string;
-  id: string;
-  type?: string;
-}
+import { FullCalendarExtended, Event } from "../../../../commons/types/types";
 
 export default function Calendar() {
   const navigate = useNavigate();
@@ -122,7 +111,6 @@ export default function Calendar() {
           })
         );
 
-        // Merge two arrays
         setArr([...counselingSchedules, ...privateSchedules]);
       } catch (error) {
         console.error(error);
