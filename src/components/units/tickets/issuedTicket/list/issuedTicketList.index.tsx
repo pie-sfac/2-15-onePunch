@@ -64,9 +64,9 @@ const IssuedTicketList = () => {
         setIssuedTickets(response.data.issuedTickets);
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error); 
       });
-  }, [showSuspendModal, showUnsuspendModal]);
+  }, [showSuspendModal, showUnsuspendModal, showCancelModal]);
 
   // issuedTicketInfo가 변경될 때마다 콘솔에 찍어보기
   // useEffect(() => {
