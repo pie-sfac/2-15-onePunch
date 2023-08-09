@@ -17,6 +17,7 @@ const RenderTickets: React.FC<RenderTicketsProps> = ({
         key={ticket.id}
         ticket={ticket}
         onClick={() => onTicketClick(ticket.id)}
+        isActive={ticket.isActive}
       />
     ))}
   </S.TicketList>
