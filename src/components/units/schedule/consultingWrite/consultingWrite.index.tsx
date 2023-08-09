@@ -9,25 +9,7 @@ import { usePutCounseling } from "../../../../commons/hooks/usePut/usePutCounsel
 import { useGetFetchStaffs } from "../../../../commons/hooks/useGets/useGetFetchStaffs";
 import { useGetFetchScheduleCounseling } from "../../../../commons/hooks/useGets/useGetFetchScheduleCounseling";
 import SubmitModal from "../../../commons/modal/modalConsultingSubmit/consultingSubmit.index";
-
-interface Staff {
-  id: string;
-  name: string;
-  phone: string;
-}
-interface InfoType {
-  counselor: {
-    id: string;
-    name: string;
-  };
-  client: {
-    name: string;
-    phone: string;
-  };
-  memo: string;
-  startAt: string;
-  endAt: string;
-}
+import { Staff, InfoType } from "../../../../commons/types/types";
 
 export default function ConsultingWrite(props: any) {
   const navigate = useNavigate();
