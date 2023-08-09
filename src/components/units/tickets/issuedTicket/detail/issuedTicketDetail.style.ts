@@ -34,6 +34,13 @@ export const AppbarTitle = styled.div``;
 
 export const Edit = styled.div``;
 
+export const InnerBox = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: left;
+  width: 100%;
+`;
 export const Ticket_Title = styled.div`
   font-size: 20px;
   font-style: normal;
@@ -70,13 +77,6 @@ export const Ticket_Info = styled.div`
   margin-top: 10px;
 `;
 
-export const InnerBox = styled.div`
-  display: flex;
-  flex-direction: row;
-  justify-content: left;
-  align-items: left;
-  width: 100%;
-`;
 
 export const InfoTitle = styled.p`
   font-size: 14px;

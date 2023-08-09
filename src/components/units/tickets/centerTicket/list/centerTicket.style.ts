@@ -48,13 +48,13 @@ export const Text = styled.div`
 `;
 
 /* 선택된 카테고리 */
-
 export const SellState = styled.div`
   color: var(--text-text-400, #aeaeae);
   text-align: center;
   font: 600 14px/144% "Pretendard", sans-serif;
   position: relative;
 `;
+
 export const Contents = styled.div`
   display: flex;
   flex-direction: column;
@@ -65,7 +65,7 @@ export const Contents = styled.div`
   top: 24px;
 `;
 
-export const Content = styled.div`
+export const Content = styled.div<{ isActive?: boolean }>`
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -74,21 +74,19 @@ export const Content = styled.div`
   flex-shrink: 0;
   position: relative;
 `;
-export const Title = styled.div`
-  color: var(--text-text-900, #1d1d1d);
+export const Title = styled.div<{ isActive?: boolean }>`
   text-align: left;
-  font: var(
-    --pretendard-pt-body-2-bold-14,
-    700 14px/144% "Pretendard",
-    sans-serif
-  );
+  font-size: 16px;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
+  color: ${(props) => (props.isActive ? "#1D1D1D" : "#AEAEAE")};
+
 `;
 
-export const Info = styled.div`
+export const Info = styled.div<{ isActive?: boolean }>`
   display: flex;
   flex-direction: row;
   gap: 8px;
@@ -96,18 +94,22 @@ export const Info = styled.div`
   justify-content: flex-start;
   flex-shrink: 0;
   position: relative;
+
+  color: ${(props) => (props.isActive ? "#1D1D1D" : "#AEAEAE")};
+  
 `;
-export const Text2 = styled.div`
-  color: var(--text-text-900, #1d1d1d);
+export const Text2 = styled.div<{ isActive?: boolean }>`
   text-align: left;
   font: 400 14px/144% "Pretendard", sans-serif;
   position: relative;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
+  color: ${(props) => (props.isActive ? "#1D1D1D" : "#AEAEAE")};
 `;
 export const Text1 = styled.div`
-  color: var(--text-text-400, #aeaeae);
+  color: #aeaeae;
   text-align: left;
   font: 400 14px/144% "Pretendard", sans-serif;
   position: relative;
@@ -117,21 +119,21 @@ export const Text1 = styled.div`
   justify-content: flex-start;
 `;
 
-export const Label2 = styled.div`
-  background: #ebf1ff;
+export const Label2 = styled.div<{ isActive?: boolean }>`
   border-radius: 4px;
   padding: 4px 8px;
+
+  background: ${(props) => (props.isActive ? "#ebf1ff" : "#E7E7E7")};
+  color: ${(props) => (props.isActive ? "#2d62ea" : "#AEAEAE")};
 `;
 
 export const Text8 = styled.div`
-  color: #2d62ea;
   text-align: right;
   font: 400 10px/128% "Pretendard", sans-serif;
 `;
-export const TicketImg = styled.img`
-`;
+export const TicketImg = styled.img``;
 
-export const Membership = styled.div`
+export const Membership = styled.div<{ isActive?: boolean }>`
   border-radius: 10px;
   border: 1px solid #e7e7e7;
   width: 304px;
@@ -139,6 +141,8 @@ export const Membership = styled.div`
   display: flex;
   justify-content: space-around;
   align-items: center;
+
+  background: ${(props) => (props.isActive ? "" : "#F4F4F4")};
 `;
 
 export const TicketImg2 = styled.svg`

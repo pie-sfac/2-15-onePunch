@@ -27,31 +27,32 @@ export interface TicketType {
 export interface TicketProps {
   ticket: TicketType;
   onClick: () => void;
+  isActive: boolean;
 }
 
 ///////////////////////////////////////
 // Ticket 컴포넌트
 ///////////////////////////////////////
-const Ticket: React.FC<TicketProps> = ({ ticket, onClick }) => (
-  <S.Membership onClick={onClick}>
+const Ticket: React.FC<TicketProps> = ({ ticket, onClick, isActive }) => (
+  <S.Membership onClick={onClick} isActive={isActive}>
     <S.Contents>
       <S.Content>
-        <S.Title>{ticket.title}</S.Title>
+        <S.Title isActive={isActive}>{ticket.title}</S.Title>
         <S.Info>
           <S.Text1>부여</S.Text1>
-          <S.Text2>{ticket.issuedTicketCount}건</S.Text2>
+          <S.Text2 isActive={isActive}>{ticket.issuedTicketCount}건</S.Text2>
         </S.Info>
       </S.Content>
       <S.Content>
         <S.Info>
           <S.Text1>수강권 횟수</S.Text1>
-          <S.Text2>
+          <S.Text2 isActive={isActive}>
             {ticket.defaultCount ? `${ticket.defaultCount}회` : "무제한"}
           </S.Text2>
         </S.Info>
         <S.Info>
           <S.Text1>수업 시간</S.Text1>
-          <S.Text2>
+          <S.Text2 isActive={isActive}>
             {ticket.bookableLessons.length > 0 &&
               ticket.bookableLessons[0].duration}
             분
@@ -59,7 +60,7 @@ const Ticket: React.FC<TicketProps> = ({ ticket, onClick }) => (
         </S.Info>
         <S.Info>
           <S.Text1>수강권 기간</S.Text1>
-          <S.Text2>
+          <S.Text2 isActive={isActive}>
             {ticket.defaultTerm
               ? `${ticket.defaultTerm}${ConvertTermUnit(
                   ticket.defaultTermUnit
@@ -71,11 +72,18 @@ const Ticket: React.FC<TicketProps> = ({ ticket, onClick }) => (
     </S.Contents>
 
     <S.Contents>
-      <S.Label2>
+      <S.Label2 isActive={isActive}>
         <S.Text8>{ConvertLessonType(ticket.lessonType)}</S.Text8>
       </S.Label2>
-
-      <S.TicketImg src="/images/icons/Tiket_ac.png" alt="Tiket_ac" />
+      {ticket.isActive ? (
+        <>
+          <S.TicketImg src="/images/icons/Tiket_ac.png" alt="Tiket_ac" />
+        </>
+      ) : (
+        <>
+          <S.TicketImg src="/images/icons/Tiket_dis.png" alt="Tiket_ac" />
+        </>
+      )}
     </S.Contents>
   </S.Membership>
 );
