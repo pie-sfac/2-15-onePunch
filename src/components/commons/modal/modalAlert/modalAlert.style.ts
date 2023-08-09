@@ -6,31 +6,25 @@ export const ModalBody = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: var(--dim-dim, rgba(40, 40, 40, 0.60));
+  background: var(--dim-dim, rgba(40, 40, 40, 0.6));
   width: 100%;
-  height: 640px;
+  height: 667px;
+  padding: 0;
+  margin: 0;
 `;
 
 export const ModalWrapper = styled.div`
-  box-sizing: border-box;
-  background: var(--bg-bg-wh, #ffffff);
+  background: #ffffff;
   border-radius: 10px;
-  border-style: solid;
-  border-color: var(--borderline-line-300, #cfcfcf);
-  border-width: 1px;
+  border-width: 1px solid #cfcfcf;
   padding: 40px 20px 16px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  justify-content: center;
   position: relative;
 `;
 // .ModalWrapper * {
 //   box-sizing: border-box;
 // }
 
-export const Icon = styled.svg`
+export const Icon = styled.img`
   flex-shrink: 0;
   position: absolute;
   right: 20px;

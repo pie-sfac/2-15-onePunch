@@ -78,7 +78,7 @@ export const BtnWrapper = styled.div`
   gap: 10px;
 `;
 
-export const NoBtn = styled.button`
+export const OutBtn = styled.button`
   background: #f4f4f4;
   border-radius: 4px;
   padding: 12px 16px;

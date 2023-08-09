@@ -34,7 +34,7 @@ const ModalConfirm: React.FC<ModalConfirmProps> = ({
             </S.Top>
 
             <S.BtnWrapper>
-              <S.NoBtn onClick={onCancel}>{cancelText}</S.NoBtn>
+              <S.OutBtn onClick={onCancel}>{cancelText}</S.OutBtn>
               <S.YesBtn onClick={onConfirm}>{confirmText}</S.YesBtn>
             </S.BtnWrapper>
           </S.Contents>
