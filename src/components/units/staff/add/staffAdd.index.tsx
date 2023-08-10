@@ -62,7 +62,7 @@ const StaffAdd = () => {
     try {
       const values = await form.validateFields();
 
-      // Step 1 휴대폰 번호 유효성 검사
+      // Step 1 휴대폰 번호 중복 검사
       if (current === 0) {
         apiInstance
           .post(`/staffs/validate/phone`, { phone: values.phone })
@@ -80,7 +80,7 @@ const StaffAdd = () => {
         return;
       }
 
-      // Step 2 아이디 유효성 검사
+      // Step 2 아이디 중복 검사
       if (current === 1) {
         apiInstance
           .post(`/staffs/validate/id`, { id: values.loginId })
