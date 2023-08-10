@@ -4,10 +4,8 @@ import GlobalStyles from "./commons/styles/global";
 import Calendar from "./pages/schedulePage/calendar";
 import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
-// import Tickets from "./components/units/tickets/centerTicket/test__centerTicket.index";
 import Login from "./components/units/login/login.index";
 import TemporaryLogin from "./pages/temporaryLoginPage/index";
-
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
 import CenterTicket from "./components/units/tickets/centerTicket/list/centerTicket.index";
@@ -27,7 +25,6 @@ import StaffRolesPage from "./pages/staffPage/roles";
 import MemberEdit from "./pages/memberPage/edit/index";
 import ConsultingEdit from "./pages/schedulePage/consultingEdit/index";
 import ClassEdit from "./pages/schedulePage/classEdit/index";
-import CenterHeader from "./components/commons/layout/centerHeader/centerHeader.index";
 import IssuedTicketListPage from "./pages/ticketPage/issuedTicket/list";
 import IssuedTicketDetailPage from "./pages/ticketPage/issuedTicket/detail";
 import ActiveTicketListPage from "./pages/ticketPage/centerTicket/activeTicket";
@@ -42,13 +39,6 @@ const MainLayout = ({ children }: any) => (
 );
 
 const PlainLayout = ({ children }: any) => <>{children}</>;
-const CenterLayout = ({ children }: any) => (
-  <>
-    <CenterHeader />
-    {children}
-    <LayoutFooter />
-  </>
-);
 
 function App() {
   return (
@@ -177,9 +167,9 @@ function App() {
           <Route
             path="/centerTicketPage"
             element={
-              <CenterLayout>
+              <MainLayout>
                 <CenterTicket />
-              </CenterLayout>
+              </MainLayout>
             }
           />
           <Route
@@ -230,9 +220,9 @@ function App() {
           <Route
             path="/staffPage/list"
             element={
-              <CenterLayout>
+              <MainLayout>
                 <StaffListPage />
-              </CenterLayout>
+              </MainLayout>
             }
           />
           <Route

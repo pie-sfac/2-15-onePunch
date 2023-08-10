@@ -1,5 +1,6 @@
+import { MenuOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Avatar } from "antd";
+import { Avatar, Drawer } from "antd";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -26,6 +27,7 @@ export const ProfileBox = styled.div`
   border-left: 1px solid #d9d9d9;
   border-right: 1px solid #d9d9d9;
   padding: 0px 6px;
+  margin-left: auto;
 `;
 
 export const AvatarOut = styled(Avatar)``;
@@ -41,4 +43,21 @@ export const State = styled.p`
   padding: 8px 6px;
   color: #4774eb;
   border-radius: 4px;
+`;
+
+// 햄버거 메뉴
+export const MenuIcon = styled(MenuOutlined)`
+  margin-left: 10px;
+`;
+export const HamburgerDrawer = styled(Drawer)`
+  padding-top: 50px;
+`;
+export const MenuList = styled.li`
+  text-align: left;
+  position: relative;
+  color: #000;
+  font-size: 15px;
+  font-style: normal;
+  padding: 15px 0;
+  list-style-type: none;
 `;
