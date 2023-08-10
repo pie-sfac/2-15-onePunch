@@ -1,9 +1,7 @@
-import { CheckSquareFilled, LeftOutlined } from "@ant-design/icons";
+import { LeftOutlined } from "@ant-design/icons";
 import styled from "@emotion/styled";
-import { Input, Checkbox } from "antd";
+import { Input } from "antd";
 import { Label } from "../../tickets/centerTicket/create/createTicketForm.style";
-import { FormCheckboxLabel } from "../../member/add/memberAdd.style";
-import FormCheckInput from "react-bootstrap/esm/FormCheckInput";
 import { CheckList } from "antd-mobile";
 
 export const Wrapper = styled.div``;
@@ -118,7 +116,7 @@ export const DoneWrapper = styled.div`
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 50px 0;
+  height: 667px;
 `;
 
 export const DoneTitle = styled.p`

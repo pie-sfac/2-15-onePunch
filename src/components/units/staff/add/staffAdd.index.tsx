@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import { Button, Steps } from "antd";
 import { useNavigate } from "react-router-dom";
 import apiInstance from "../../../../commons/apiInstance/apiInstance";
-import { divide } from "lodash";
 
 interface StaffCreateReq {
   loginId: string;
@@ -37,6 +36,8 @@ const StaffAdd = () => {
   });
   const [options, setOptions] = useState<roles[]>([]);
   const [isStaffResignation, setIsStaffResignation] = useState(false);
+  const [isAvailablePhone, setIsAvailablePhone] = useState(false);
+  const [isAvailableID, setIsAvailableID] = useState(false);
 
   const getRoles = () => {
     apiInstance
@@ -56,18 +57,55 @@ const StaffAdd = () => {
   useEffect(getRoles, []);
 
   const [form] = Form.useForm();
+
   const next = async () => {
     try {
       const values = await form.validateFields();
 
-      // If all fields are valid, update staffReq and proceed to next step
+      // Step 1 휴대폰 번호 유효성 검사
+      if (current === 0) {
+        apiInstance
+          .post(`/staffs/validate/phone`, { phone: values.phone })
+          .then((response) => {
+            if (response.data.available) {
+              setStaffReq({ ...staffReq, ...values });
+              setCurrent(current + 1);
+            } else {
+              message.error("이미 등록된 휴대폰 번호입니다.");
+            }
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+        return;
+      }
+
+      // Step 2 아이디 유효성 검사
+      if (current === 1) {
+        apiInstance
+          .post(`/staffs/validate/id`, { id: values.loginId })
+          .then((response) => {
+            if (response.data.available) {
+              setStaffReq({ ...staffReq, ...values });
+              setCurrent(current + 1);
+            } else {
+              message.error("이미 등록된 아이디입니다.");
+            }
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
+        return;
+      }
+
+      // 유효성 검사 없음
       setStaffReq({ ...staffReq, ...values });
       setCurrent(current + 1);
     } catch (error) {
       console.log(error);
-      // message.error("입력값을 확인해주세요");
     }
   };
+
   const steps = [
     {
       title: "직원 정보 입력",
@@ -191,7 +229,7 @@ const StaffAdd = () => {
       ),
     },
   ];
- 
+
   const prev = () => {
     setCurrent(current - 1);
   };
@@ -203,21 +241,6 @@ const StaffAdd = () => {
     alignItems: `center`,
     padding: `15px`,
   };
-  ///////////////
-  // option console 찍어보기
-  // const [checkboxStatus, setCheckboxStatus] = useState({
-  //   General: false,
-  //   Info: false,
-  //   Manager: false,
-  // });
-
-  // const handleCheckboxChange = (event: any) => {
-  //   setCheckboxStatus({
-  //     ...checkboxStatus,
-  //     [event.target.name]: event.target.checked,
-  //   });
-  // };
-  // console.log(checkboxStatus);
 
   // 완료 버튼 클릭 시 전송
   const handleSubmit = async (e: any) => {
@@ -245,6 +268,7 @@ const StaffAdd = () => {
         console.log(error);
       });
   };
+
   return (
     <>
       {isStaffResignation ? (
@@ -266,7 +290,14 @@ const StaffAdd = () => {
             <S.NoBtn onClick={() => navigate("/staffPage/list")}>
               나중에 할래요
             </S.NoBtn>
-            <S.YesBtn>연락처로 전달하기</S.YesBtn>
+            <S.YesBtn
+              onClick={() => {
+                alert("전달 완료");
+                navigate("/staffPage/list");
+              }}
+            >
+              연락처로 전달하기
+            </S.YesBtn>
           </S.DoneBtnWrapper>
         </S.DoneWrapper>
       ) : (
