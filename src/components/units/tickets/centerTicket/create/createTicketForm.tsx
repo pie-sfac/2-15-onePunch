@@ -9,8 +9,6 @@ import { useNavigate } from "react-router-dom";
 import ServiceCounter from "../serviceCounter/serviceCounter";
 const { Option } = Select;
 
-// import "./test__createTicket.css"
-
 // enum class 여쭤보기. (아래는 지금까지 알아낸 enum class)
 // termUnit: [MONTH, WEEK, YEAR, DAY]
 // lessonType: [DUET, TRIPLE, GROUP, SINGLE]
@@ -163,16 +161,12 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
         </S.OutBox>
       </S.Header>
       <S.Body>
-        <form className="create_form" onSubmit={handleSubmit}>
-          <div className="miniwrap">
-            <S.Label>수업 유형 </S.Label>
+        <S.Form onSubmit={handleSubmit}>
+          <S.FlexColumn>
+            <S.Label>수업 유형</S.Label>
             <S.Selector
-              id="lessonType"
-              // name="lessonType"
               value={ticketData.lessonType}
-              // onChange={handleSelectChange}
               onChange={(value: any) => handleSelectChange("lessonType", value)}
-              // required
             >
               <Option value="" disabled>
                 선택해 주세요
@@ -182,108 +176,108 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
               <Option value="TRIPLE">개인 수업 - 3:1</Option>
               <Option value="GROUP">그룹 수업</Option>
             </S.Selector>
-          </div>
-          <br />
-          <div className="miniwrap">
+          </S.FlexColumn>
+          <S.FlexColumn>
             <S.Label>수강권명</S.Label>
-            <S.Input
-              type="text"
+            <S.BorderInput
               name="title"
               value={ticketData.title}
               onChange={handleChange}
               placeholder="수강권명을 입력해 주세요(15자이내)"
-              className="text-field2"
             />
-          </div>
-          <br />
-          <div>
-            <S.Label htmlFor="defaultTerm">수강권 기간</S.Label>
-            <div className="miniwrap">
-              <S.TermWrapper>
-                <S.Input
-                  type="text"
-                  id="defaultTerm"
-                  name="defaultTerm"
-                  value={isUnlimitedPeriod ? "" : ticketData.defaultTerm || ""}
-                  onChange={handleChange}
-                  disabled={isUnlimitedPeriod}
-                  className="text-field2"
-                />
-                <S.Selector
-                  id="defaultTermUnit"
-                  // name="lessonType"
-                  value={ticketData.defaultTermUnit}
-                  // onChange={handleSelectChange}
-                  onChange={(value: any) =>
-                    handleSelectChange("defaultTermUnit", value)
-                  }
-                  disabled={isUnlimitedPeriod}
-                  // required
-                >
-                  <Option value="" disabled>
-                    기간 선택
-                  </Option>
-                  <Option value="DAY">일</Option>
-                  <Option value="WEEK">주</Option>
-                  <Option value="MONTH">개월</Option>
-                  <Option value="YEAR">년</Option>
-                </S.Selector>
-              </S.TermWrapper>
-              <S.FlexRow>
-                <S.BtnLabel>소진시 까지</S.BtnLabel>
-                <Switch
-                  disabled={isUnlimitedTimes}
-                  onChange={handleTogglePeriod}
-                />
-              </S.FlexRow>
-            </div>
-          </div>
-          <div className="miniwrap">
-            <S.Label>시간</S.Label>
-
-            <S.Input
-              type="number"
-              name="duration"
-              value={ticketData.duration}
-              onChange={handleChange}
-              className="text-field2"
-            />
-          </div>
-          <br />
-          <div className="miniwrap">
-            <S.Label>기본횟수</S.Label>
-            <S.Input
-              type="number"
-              name="defaultCount"
-              value={isUnlimitedTimes ? "" : ticketData.defaultCount || ""}
-              onChange={handleChange}
-              className="text-field2"
-              disabled={isUnlimitedTimes}
-            />
-            <S.FlexRow>
-              <S.BtnLabel>무제한</S.BtnLabel>
-              <Switch
+          </S.FlexColumn>
+          <S.FlexColumn>
+            <S.Label>수강권 기간</S.Label>
+            <S.TermWrapper>
+              <S.BorderInput
+                name="defaultTerm"
+                value={isUnlimitedPeriod ? "" : ticketData.defaultTerm || ""}
+                onChange={handleChange}
                 disabled={isUnlimitedPeriod}
-                onChange={handleToggleTimes}
               />
-            </S.FlexRow>
-          </div>
-          <br />
-          <div className="miniwrap">
-            <S.Label>서비스 횟수</S.Label>
-            <ServiceCounter
-              onDecrement={decrement}
-              onIncrement={increment}
-              onChange={handleCountChange}
-              value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
-              disabled={isUnlimitedTimes}
+              <S.Selector
+                value={ticketData.defaultTermUnit}
+                onChange={(value: any) =>
+                  handleSelectChange("defaultTermUnit", value)
+                }
+                disabled={isUnlimitedPeriod}
+                style={{ width: "40%" }}
+              >
+                <Option value="" disabled>
+                  기간 선택
+                </Option>
+                <Option value="DAY">일</Option>
+                <Option value="WEEK">주</Option>
+                <Option value="MONTH">개월</Option>
+                <Option value="YEAR">년</Option>
+              </S.Selector>
+            </S.TermWrapper>
+
+            <S.SwitchWrapper>
+              <S.UnlimitedPeriod isUnlimitedPeriod={isUnlimitedPeriod}>
+                소진시 까지
+              </S.UnlimitedPeriod>
+              <Switch
+                disabled={isUnlimitedTimes}
+                onChange={handleTogglePeriod}
+                size="small"
+              />
+            </S.SwitchWrapper>
+          </S.FlexColumn>
+          <S.FlexColumn>
+            <S.Label>시간</S.Label>
+            <S.UnitWrapper>
+              <S.Input
+                value={ticketData.duration}
+                onChange={handleChange}
+                name="duration"
+              />
+
+              <span>분</span>
+            </S.UnitWrapper>
+          </S.FlexColumn>
+          <S.FlexColumn>
+            <S.Label>기본횟수</S.Label>
+            <S.UnitWrapper disabled={isUnlimitedTimes}>
+              <S.Input
+                value={isUnlimitedTimes ? "" : ticketData.defaultCount || ""}
+                onChange={handleChange}
+                name="defaultCount"
+                disabled={isUnlimitedTimes}
+              />
+              <span>회</span>
+            </S.UnitWrapper>
+          </S.FlexColumn>
+
+          <S.SwitchWrapper>
+            <S.UnlimitedTimes isUnlimitedTimes={isUnlimitedTimes}>
+              무제한
+            </S.UnlimitedTimes>
+            <Switch
+              disabled={isUnlimitedPeriod}
+              onChange={handleToggleTimes}
+              size="small"
             />
-          </div>
-          <br />
-          <div>
-            <S.Button>저장</S.Button>
-          </div>
-        </form>
+          </S.SwitchWrapper>
+
+          <S.FlexColumn>
+            <S.Label>서비스 횟수</S.Label>
+            <S.GreyExplain>
+              서비스로 부여되는 횟수를 제한하여 설정할 수 있습니다.
+            </S.GreyExplain>
+            <div style={{ width: "100%" }}>
+              <ServiceCounter
+                onDecrement={decrement}
+                onIncrement={increment}
+                onChange={handleCountChange}
+                value={isUnlimitedTimes ? "" : ticketData.maxServiceCount || ""}
+                disabled={isUnlimitedTimes}
+              />
+            </div>
+          </S.FlexColumn>
+
+          <S.Button>저장</S.Button>
+        </S.Form>
       </S.Body>
     </>
   );
