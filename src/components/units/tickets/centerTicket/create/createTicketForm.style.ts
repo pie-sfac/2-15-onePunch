@@ -35,9 +35,6 @@ export const ServiceInput = styled.input`
 `;
 //
 
-
-export const Wrapper = styled.div``;
-
 export const Header = styled.header`
   display: flex;
   height: 50px;
@@ -61,7 +58,6 @@ export const OutBox = styled.div`
   display: flex;
   padding: 0px 10px;
 `;
-export const ClassTitle = styled.h1``;
 
 export const Appbar = styled.p`
   margin-left: 2vw;
@@ -76,29 +72,10 @@ export const Label = styled.label`
   font-size: 15px;
 `;
 
-export const Box = styled.div`
-  border: 1px solid #dbdbdb;
-  background-color: #f4f4f4;
-  border-radius: 10px;
-  display: flex;
-  width: fit-content;
-  align-items: center;
-  justify-content: center;
-  padding: 9px 8px;
-  margin-top: 3vh;
-  white-space: nowrap;
-  overflow: hidden;
-  cursor: pointer;
-`;
-
-export const Footer = styled.footer`
-  padding: 20px;
-`;
-
 export const Button = styled.button`
   width: 100%;
   padding: 12px 16px;
-  background-color: #2D62EA;
+  background-color: #2d62ea;
   color: white;
   font-size: 14px;
   border-radius: 6px;
@@ -111,9 +88,9 @@ export const Selector = styled(Select)`
   margin: 0;
   padding: 0;
   & .ant-select-selector {
-    height: 40px !important; // 원하는 높이로 설정하세요
+    height: 40px !important; 
     display: flex !important;
-    align-items: center !important; // 가운데 정렬
+    align-items: center !important; 
 `;
 
 export const BorderInput = styled.input`
@@ -164,7 +141,6 @@ export const TermWrapper = styled.div`
   gap: 5px;
 `;
 
-//
 export const Form = styled.form`
   width: 90%;
   display: flex;
@@ -192,7 +168,6 @@ export const GreyExplain = styled.p`
 
 export const UnitWrapper = styled.div<{ disabled?: boolean }>`
   width: 90%;
-
   display: flex;
   flex-direction: row;
   padding: 0px 10px;
@@ -209,9 +184,6 @@ export const UnitWrapper = styled.div<{ disabled?: boolean }>`
 
   background: ${(props) => (props.disabled ? "#F4F4F4" : "")};
 `;
-export const UnitText = styled.span`
-  margin-left: 5px; // 오른쪽에 여백을 추가하여 "분" 텍스트와의 간격을 설정합니다.
-`;
 
 export const Input = styled.input`
   width: 90%;
@@ -222,7 +194,7 @@ export const Input = styled.input`
   border: none;
 
   &:focus {
-    outline: none; /* 포커스된 상태에서 브라우저 기본 아웃라인 제거 */
-    border-color: #ccc; /* 포커스된 상태에서도 기본 색상 유지 */
+    outline: none;
+    border-color: #ccc;
   }
 `;

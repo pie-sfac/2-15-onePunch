@@ -1,15 +1,12 @@
 import { useEffect, useState } from "react";
 import * as S from "./createTicketForm.style";
-// import { Option } from "antd/es/mentions";
-// import { Select } from 'antd';
-import { Button, Select, Space, Switch } from "antd";
+import { Select, Switch } from "antd";
 import { useRecoilState } from "recoil";
 import { maxServiceCountState } from "../../../../../commons/stores/index";
 import { useNavigate } from "react-router-dom";
 import ServiceCounter from "../serviceCounter/serviceCounter";
 const { Option } = Select;
 
-// enum class 여쭤보기. (아래는 지금까지 알아낸 enum class)
 // termUnit: [MONTH, WEEK, YEAR, DAY]
 // lessonType: [DUET, TRIPLE, GROUP, SINGLE]
 export interface CreateTicketType {
