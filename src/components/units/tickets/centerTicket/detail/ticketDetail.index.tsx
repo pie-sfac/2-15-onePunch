@@ -87,7 +87,7 @@ const TicketDetail: React.FC = () => {
       label: "편집",
       key: "0",
       onClick: () => {
-        console.log("편집");
+        navigate(`/centerTicketPage/${ticketDetail.id}/edit`);
       },
     },
     {

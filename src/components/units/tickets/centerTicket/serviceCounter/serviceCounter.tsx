@@ -1,4 +1,3 @@
-// ControlWrapper.tsx
 import React from "react";
 import * as S from "../create/createTicketForm.style";
 
