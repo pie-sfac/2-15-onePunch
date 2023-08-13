@@ -93,7 +93,7 @@ export const Selector = styled(Select)`
     align-items: center !important; 
 `;
 
-export const BorderInput = styled.input`
+export const BorderInput = styled.input<{ disabled?: boolean }>`
   width: 90%;
   border-radius: 4px;
   border: 1px solid #cfcfcf;
@@ -166,7 +166,10 @@ export const GreyExplain = styled.p`
   text-align: left;
 `;
 
-export const UnitWrapper = styled.div<{ disabled?: boolean }>`
+export const UnitWrapper = styled.div<{
+  disabled?: boolean;
+  isEditMode?: boolean;
+}>`
   width: 90%;
   display: flex;
   flex-direction: row;
@@ -182,10 +185,10 @@ export const UnitWrapper = styled.div<{ disabled?: boolean }>`
   font-style: normal;
   font-weight: 400;
 
-  background: ${(props) => (props.disabled ? "#F4F4F4" : "")};
+  background: ${(props) => (props.disabled || props.isEditMode ? "#F4F4F4" : "")};
 `;
 
-export const Input = styled.input`
+export const Input = styled.input<{ isEditMode?: boolean }>`
   width: 90%;
   border-radius: 4px;
   font-size: 14px;

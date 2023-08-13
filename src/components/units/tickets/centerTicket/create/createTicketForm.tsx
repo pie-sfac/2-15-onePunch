@@ -7,25 +7,32 @@ import { useNavigate } from "react-router-dom";
 import ServiceCounter from "../serviceCounter/serviceCounter";
 const { Option } = Select;
 
-// termUnit: [MONTH, WEEK, YEAR, DAY]
-// lessonType: [DUET, TRIPLE, GROUP, SINGLE]
 export interface CreateTicketType {
-  lessonType: string; //수업 유형
-  title: string; // 수강권명
-  defaultTerm: number | null; //수강권 기간
-  defaultTermUnit: string | null; //기간 단위
-  duration: number; // 시간
-  defaultCount: number | null; // 기본 횟수
-  maxServiceCount: number | null; // 서비스 횟수
-
+  lessonType: string;
+  title: string;
+  defaultTerm: number | null;
+  defaultTermUnit: string | null;
+  duration: number;
+  defaultCount: number | null;
+  maxServiceCount: number | null;
   dailyCountLimit: number;
 }
-
-interface CreateTicketProps {
-  onSubmit: (data: CreateTicketType) => void;
+export interface EditTicketType {
+  defaultCount: number;
+  defaultTerm: number;
+  defaultTermUnit: string;
+  maxServiceCount: number;
 }
 
-const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
+interface CreateTicketFormProps {
+  onSubmit: (data: CreateTicketType | EditTicketType) => void;
+  isEditMode?: boolean; // 수정 모드인지 아닌지를 나타내는 선택적 prop
+}
+
+const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
+  onSubmit,
+  isEditMode,
+}) => {
   const navigate = useNavigate();
   const [ticketData, setTicketData] = useState<CreateTicketType>({
     lessonType: "",
@@ -67,16 +74,8 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     console.log(ticketData);
   }, [ticketData.lessonType, ticketData.defaultTermUnit]);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onSubmit(ticketData);
-  };
-
-  /////////////////////////////////////////
-  // toggle 버튼 클릭 시(소진시까지, 무제한)
-  /////////////////////////////////////////
   // 소진시까지(기간)
-  const handleTogglePeriod = (event: any) => {
+  const handleTogglePeriod = () => {
     // event.preventDefault();
     setIsUnlimitedPeriod(!isUnlimitedPeriod);
 
@@ -89,14 +88,14 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     } else {
       setTicketData((prevData) => ({
         ...prevData,
-        defaultTerm: 0, // reset to 0 when it's not unlimited
+        defaultTerm: 0,
         defaultTermUnit: "",
       }));
     }
   };
 
-  ///handleToggleTimes는 아직 연결 안함
-  const handleToggleTimes = (event: any) => {
+  // 무제한
+  const handleToggleTimes = () => {
     // event.preventDefault();
     setIsUnlimitedTimes(!isUnlimitedTimes);
 
@@ -115,6 +114,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     }
   };
 
+  // 서비스 횟수 카운터
   const [maxServiceCount, setMaxServiceCount] =
     useRecoilState(maxServiceCountState);
   const increment = () => {
@@ -149,6 +149,20 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
     }));
     console.log(newCount);
   };
+
+  // 폼 제출
+  const handleSubmit = (e: React.FormEvent) => {
+    if (isEditMode) {
+      e.preventDefault();
+      console.log("IsEditMode !!!!");
+      console.log(e);
+      onSubmit(ticketData);
+    } else {
+      e.preventDefault();
+      onSubmit(ticketData);
+    }
+  };
+
   return (
     <>
       <S.Header>
@@ -164,6 +178,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
             <S.Selector
               value={ticketData.lessonType}
               onChange={(value: any) => handleSelectChange("lessonType", value)}
+              disabled={isEditMode}
             >
               <Option value="" disabled>
                 선택해 주세요
@@ -181,6 +196,7 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
               value={ticketData.title}
               onChange={handleChange}
               placeholder="수강권명을 입력해 주세요(15자이내)"
+              disabled={isEditMode}
             />
           </S.FlexColumn>
           <S.FlexColumn>
@@ -223,11 +239,12 @@ const CreateTicketForm: React.FC<CreateTicketProps> = ({ onSubmit }) => {
           </S.FlexColumn>
           <S.FlexColumn>
             <S.Label>시간</S.Label>
-            <S.UnitWrapper>
+            <S.UnitWrapper isEditMode={isEditMode}>
               <S.Input
                 value={ticketData.duration}
                 onChange={handleChange}
                 name="duration"
+                disabled={isEditMode}
               />
 
               <span>분</span>

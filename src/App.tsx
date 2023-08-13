@@ -29,6 +29,7 @@ import IssuedTicketListPage from "./pages/ticketPage/issuedTicket/list";
 import IssuedTicketDetailPage from "./pages/ticketPage/issuedTicket/detail";
 import ActiveTicketListPage from "./pages/ticketPage/centerTicket/activeTicket";
 import IssuePage from "./pages/ticketPage/issuedTicket/issue";
+import TicketEditPage from "./pages/ticketPage/centerTicket/edit";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -180,7 +181,14 @@ function App() {
             path="/centerTicketPage/ticketDetail/:id"
             element={<TicketDetailPage />}
           />
-
+          <Route
+            path="/centerTicketPage/:ticketId/edit"
+            element={
+              <PlainLayout>
+                <TicketEditPage />
+              </PlainLayout>
+            }
+          />
           {/* IssuedTicket */}
           <Route
             path="/members/:memberId/issued"
