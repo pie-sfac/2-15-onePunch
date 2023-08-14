@@ -30,6 +30,7 @@ import IssuedTicketDetailPage from "./pages/ticketPage/issuedTicket/detail";
 import ActiveTicketListPage from "./pages/ticketPage/centerTicket/activeTicket";
 import IssuePage from "./pages/ticketPage/issuedTicket/issue";
 import TicketEditPage from "./pages/ticketPage/centerTicket/edit";
+import IssuedHistoryPage from "./pages/ticketPage/centerTicket/issuedHistory";
 
 const MainLayout = ({ children }: any) => (
   <>
@@ -186,6 +187,14 @@ function App() {
             element={
               <PlainLayout>
                 <TicketEditPage />
+              </PlainLayout>
+            }
+          />
+          <Route
+            path="/centerTicketPage/:ticketId/issuedHistory"
+            element={
+              <PlainLayout>
+                <IssuedHistoryPage />
               </PlainLayout>
             }
           />
