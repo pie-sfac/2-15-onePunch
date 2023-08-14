@@ -134,10 +134,14 @@ const TicketDetail: React.FC = () => {
           <S.InfoWrapper>
             <S.FlexRow>
               <S.Title>수강권 내용</S.Title>
-              <S.Issued>
+              <S.Issued
+                onClick={() =>
+                  navigate(`/centerTicketPage/${ticketDetail.id}/issuedHistory`)
+                }
+              >
                 수강권 부여내역
                 <div>
-                  <img src="/images/icons/Arrowmore_24px.png" alt="" />
+                  <img src="/images/icons/Arrowmore_24px.png" alt="Arrowmore_24px" />
                 </div>
               </S.Issued>
             </S.FlexRow>
