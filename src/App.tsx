@@ -49,7 +49,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route
-            path="/"
+            path="/TemporaryLogin"
             element={
               <PlainLayout>
                 <TemporaryLogin />
@@ -157,7 +157,7 @@ function App() {
           />
 
           <Route
-            path="/LoginPage"
+            path="/"
             element={
               <PlainLayout>
                 <Login />
