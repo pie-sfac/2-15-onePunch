@@ -68,6 +68,7 @@ export const Message = styled.div`
   font-size: 14px;
   font-weight: 400;
   line-height: 144%;
+  white-space: pre-line;
 `;
 
 export const BtnWrapper = styled.div`
