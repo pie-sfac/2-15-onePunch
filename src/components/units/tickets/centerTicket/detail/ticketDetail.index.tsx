@@ -5,7 +5,7 @@ import apiInstance from "../../../../../commons/apiInstance/apiInstance";
 import { TicketType } from "../Ticket/Ticket";
 import ModalConfirm from "../../../../commons/modal/modalConfirm/modalConfirm.index";
 import { MoreOutlined } from "@ant-design/icons";
-import { Dropdown, Menu, MenuProps, Space } from "antd";
+import { Dropdown, MenuProps, Space } from "antd";
 import ConvertTermUnit from "../../../../commons/converter/convertTermUnit";
 import ConvertLessonType from "../../../../commons/converter/convertLessonType";
 import ModalAlert from "../../../../commons/modal/modalAlert/modalAlert.index";
@@ -20,6 +20,9 @@ const TicketDetail: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
+  const [cannotDelete, setCannotDelete] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [showActivateTicketModal, setShowActivateTicketModal] = useState(false);
 
   // 티켓 상세 정보 가져옴
   const fetchTicketDetail = useCallback(async () => {
@@ -63,6 +66,7 @@ const TicketDetail: React.FC = () => {
     // alert("취소되었습니다.");
     setShowModal(false); // 취소버튼 클릭 시 모달을 숨기게 설정
     setShowDeleteModal(false);
+    setShowActivateTicketModal(false);
   };
 
   const handleDelete = async () => {
@@ -72,10 +76,23 @@ const TicketDetail: React.FC = () => {
       await apiInstance.delete("/tickets/" + ticketId);
       setShowDoneDeleteModal(true);
     } catch (error) {
+      setCannotDelete(true);
       console.error(error);
     }
     console.log("수강권 삭제됐음");
     setShowDeleteModal(false);
+  };
+
+  const handleActivate = async () => {
+    try {
+      await apiInstance.post("/tickets/" + ticketId + "/activate");
+      fetchTicketDetail();
+    } catch (error) {
+      console.error(error);
+    }
+    console.log("수강권 활성화 됐나");
+    console.log(ticketDetail.isActive);
+    setShowActivateTicketModal(false); // 확인버튼 클릭 시 모달을 숨기게 설정
   };
 
   // more 메뉴 관리
@@ -92,13 +109,24 @@ const TicketDetail: React.FC = () => {
       },
     },
     {
-      label: "판매 종료",
+      label: isActive ? "판매 종료" : "수강권 활성화",
       key: "1",
+      // onClick: () => {
+      //   setShowModal(true);
+      // },
       onClick: () => {
-        setShowModal(true);
+        if (isActive) {
+          // 판매를 종료하는 로직
+          setShowModal(true);
+        } else {
+          // 수강권을 활성화하는 로직
+          // activeTicket();
+          setShowActivateTicketModal(true);
+        }
+        // 판매 종료 상태를 토글
+        setIsActive(!isActive);
       },
     },
-
     {
       label: "수강권 삭제",
       key: "3",
@@ -113,7 +141,11 @@ const TicketDetail: React.FC = () => {
       <div
         style={{
           display:
-            showDeleteModal || showModal || showDoneDeleteModal
+            showDeleteModal ||
+            showModal ||
+            showDoneDeleteModal ||
+            cannotDelete ||
+            showActivateTicketModal
               ? "none"
               : "block",
         }}
@@ -204,7 +236,8 @@ const TicketDetail: React.FC = () => {
         {showModal && (
           <ModalConfirm
             title="수강권 판매 종료"
-            message="해당 수강권을 판매 종료하시겠습니까? 새로운 회원에게 부여할 수 없습니다."
+            message="해당 수강권을 판매 종료하시겠습니까? 
+            새로운 회원에게 부여할 수 없습니다."
             confirmText="확인"
             cancelText="취소"
             onConfirm={handleConfirm}
@@ -225,6 +258,18 @@ const TicketDetail: React.FC = () => {
         )}
       </>
       <>
+        {showActivateTicketModal && (
+          <ModalConfirm
+            title="수강권 활성화"
+            message="해당 수강권을 활성화 처리하시겠습니까?"
+            confirmText="확인"
+            cancelText="취소"
+            onConfirm={handleActivate}
+            onCancel={handleCancel}
+          />
+        )}
+      </>
+      <>
         {showDoneDeleteModal && (
           <ModalAlert
             title="수강권 삭제 완료"
@@ -236,6 +281,25 @@ const TicketDetail: React.FC = () => {
             }}
             onOut={() => {
               setShowDoneDeleteModal(false);
+              false;
+            }}
+          />
+        )}
+      </>
+      <>
+        {cannotDelete && (
+          <ModalAlert
+            title="삭제 불가"
+            message="회원에게 부여 내역이 있는 수강권은 
+            삭제할 수 없습니다.
+            ‘판매 종료'로 진행해 주세요."
+            confirmText="확인"
+            onConfirm={() => {
+              setCannotDelete(false);
+              navigate(-1);
+            }}
+            onOut={() => {
+              setCannotDelete(false);
               false;
             }}
           />
