@@ -21,7 +21,6 @@ const TicketDetail: React.FC = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
   const [cannotDelete, setCannotDelete] = useState(false);
-  const [isActive, setIsActive] = useState(false);
   const [showActivateTicketModal, setShowActivateTicketModal] = useState(false);
 
   // 티켓 상세 정보 가져옴
@@ -109,22 +108,19 @@ const TicketDetail: React.FC = () => {
       },
     },
     {
-      label: isActive ? "판매 종료" : "수강권 활성화",
+      label: ticketDetail.isActive ? "판매 종료" : "수강권 활성화",
       key: "1",
       // onClick: () => {
       //   setShowModal(true);
       // },
       onClick: () => {
-        if (isActive) {
+        if (ticketDetail.isActive) {
           // 판매를 종료하는 로직
           setShowModal(true);
         } else {
           // 수강권을 활성화하는 로직
-          // activeTicket();
           setShowActivateTicketModal(true);
         }
-        // 판매 종료 상태를 토글
-        setIsActive(!isActive);
       },
     },
     {
