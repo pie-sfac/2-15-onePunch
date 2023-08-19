@@ -8,6 +8,7 @@ import { MoreOutlined } from "@ant-design/icons";
 import { Dropdown, Menu, MenuProps, Space } from "antd";
 import ConvertTermUnit from "../../../../commons/converter/convertTermUnit";
 import ConvertLessonType from "../../../../commons/converter/convertLessonType";
+import ModalAlert from "../../../../commons/modal/modalAlert/modalAlert.index";
 
 const TicketDetail: React.FC = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const TicketDetail: React.FC = () => {
   const [isMoreVert, setIsMoreVert] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showDoneDeleteModal, setShowDoneDeleteModal] = useState(false);
 
   // 티켓 상세 정보 가져옴
   const fetchTicketDetail = useCallback(async () => {
@@ -68,12 +70,11 @@ const TicketDetail: React.FC = () => {
 
     try {
       await apiInstance.delete("/tickets/" + ticketId);
-      navigate("/centerTicketPage");
+      setShowDoneDeleteModal(true);
     } catch (error) {
       console.error(error);
     }
     console.log("수강권 삭제됐음");
-    alert("삭제되었습니다");
     setShowDeleteModal(false);
   };
 
@@ -109,7 +110,14 @@ const TicketDetail: React.FC = () => {
 
   return (
     <>
-      <div style={{ display: showDeleteModal || showModal ? "none" : "block" }}>
+      <div
+        style={{
+          display:
+            showDeleteModal || showModal || showDoneDeleteModal
+              ? "none"
+              : "block",
+        }}
+      >
         <S.TicketDetailHeader>
           <S.LeftOut onClick={() => navigate(-1)} />
           <S.Appbar>수강권 상세</S.Appbar>
@@ -141,7 +149,10 @@ const TicketDetail: React.FC = () => {
               >
                 수강권 부여내역
                 <div>
-                  <img src="/images/icons/Arrowmore_24px.png" alt="Arrowmore_24px" />
+                  <img
+                    src="/images/icons/Arrowmore_24px.png"
+                    alt="Arrowmore_24px"
+                  />
                 </div>
               </S.Issued>
             </S.FlexRow>
@@ -210,6 +221,23 @@ const TicketDetail: React.FC = () => {
             cancelText="취소"
             onConfirm={handleDelete}
             onCancel={handleCancel}
+          />
+        )}
+      </>
+      <>
+        {showDoneDeleteModal && (
+          <ModalAlert
+            title="수강권 삭제 완료"
+            message=""
+            confirmText="확인"
+            onConfirm={() => {
+              setShowDoneDeleteModal(false);
+              navigate(`/centerTicketPage`);
+            }}
+            onOut={() => {
+              setShowDoneDeleteModal(false);
+              false;
+            }}
           />
         )}
       </>
