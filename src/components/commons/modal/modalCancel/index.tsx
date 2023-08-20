@@ -2,11 +2,7 @@
 
 import * as S from "./style";
 
-export default function CancelModal(
-  isVisible: any,
-  setIsVisible: any,
-  onClickCancel: any
-) {
+export default function CancelModal(setIsVisible: any, onClickCancel: any) {
   return (
     <S.ModalWrapper>
       <S.ModalTitle>수업 일정 취소</S.ModalTitle>
