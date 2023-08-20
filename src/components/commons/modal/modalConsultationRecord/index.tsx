@@ -1,7 +1,6 @@
 import * as S from "./style";
 
 export default function ConsultationRecordModal(
-  isVisible: any,
   setIsVisible: any,
   setMemo: any
 ) {
