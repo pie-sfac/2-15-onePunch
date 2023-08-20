@@ -1,15 +1,15 @@
 import axios from "axios";
 
 const apiInstance = axios.create({
-  baseURL: "https://223.130.161.221/api/v1",
+  baseURL: "http://223.130.161.221/api/v1",
 });
 
 export const refreshingToken = axios.create({
-  baseURL: "https://223.130.161.221/api/v1",
+  baseURL: "http://223.130.161.221/api/v1",
 });
 
 export const apiLogin = axios.create({
-  baseURL: "https://223.130.161.221/api/v1",
+  baseURL: "http://223.130.161.221/api/v1",
 });
 
 apiInstance.interceptors.request.use(
