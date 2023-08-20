@@ -4,7 +4,7 @@ import GlobalStyles from "./commons/styles/global";
 import Calendar from "./pages/schedulePage/calendar";
 import ClassWrite from "./pages/schedulePage/classWrite";
 import ConsultingWrite from "./pages/schedulePage/consultingWrite";
-import Login from "./components/units/login/login.index";
+import Login from "./components/units/temporaryLogin/temporaryLogin.index";
 import TemporaryLogin from "./pages/temporaryLoginPage/index";
 import LayoutHeader from "./components/commons/layout/header/LayoutHeader.index";
 import LayoutFooter from "./components/commons/layout/footer/LayoutFooter.index";
