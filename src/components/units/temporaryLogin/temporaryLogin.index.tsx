@@ -16,7 +16,7 @@ export default function LoginNewPage() {
       const basicAuth = "Basic " + btoa(username + ":" + password);
 
       const response = await axios.post(
-        "https://223.130.161.221/api/v1/admins/login",
+        "http://223.130.161.221/api/v1/admins/login",
         {
           username: username,
           password: password,
