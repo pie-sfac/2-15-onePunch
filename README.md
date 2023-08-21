@@ -7,6 +7,10 @@
 
 ### 🚀 배포링크
  [https://one-punch-client.vercel.app](https://one-punch-client.vercel.app)
+```bash
+아이디 : team15
+비밀번호 :team15!!
+```
 
  <br />
 
@@ -57,11 +61,6 @@
 ```bash
 npm i
 npm run dev
-```
-
-```bash
-아이디 : team15
-비밀번호 :team15!!
 ```
 <br/>
 
