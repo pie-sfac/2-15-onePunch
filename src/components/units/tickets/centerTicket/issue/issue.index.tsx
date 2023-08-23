@@ -65,12 +65,9 @@ const Issue = () => {
     apiInstance
       .get(`/tickets/${ticketId}`)
       .then((response) => {
-        console.log(response.data);
         setTicketDetail(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [ticketId]);
 
   // 직원 목록 가져오기
@@ -78,13 +75,10 @@ const Issue = () => {
     apiInstance
       .get(`/staffs`)
       .then((response) => {
-        console.log(response.data.datas);
         setStaffs(response.data.datas);
         // setShowStaffs(true);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   // 직원 목록을 option으로 넣기
@@ -95,11 +89,9 @@ const Issue = () => {
 
   // start - end date 선택 설정
   const onSelectStartDate: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
     setStartAt(dateString);
   };
   const onSelectEndDate: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
     setEndAt(dateString);
   };
 
@@ -113,18 +105,13 @@ const Issue = () => {
       endAt: endAt,
     };
     event.preventDefault();
-    console.log(formData);
 
     apiInstance
       .post(`/tickets/${ticketId}/issue`, formData)
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.message);
         setShowModal(true);
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   };
 
   return (

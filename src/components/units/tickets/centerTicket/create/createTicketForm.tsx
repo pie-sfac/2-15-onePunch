@@ -69,10 +69,7 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
 
   //option값 선택시 콘솔찍기
   //createTicket 완료 되면 주석 처리||삭제
-  useEffect(() => {
-    console.log("ticketData");
-    console.log(ticketData);
-  }, [ticketData.lessonType, ticketData.defaultTermUnit]);
+  useEffect(() => {}, [ticketData.lessonType, ticketData.defaultTermUnit]);
 
   // 소진시까지(기간)
   const handleTogglePeriod = () => {
@@ -147,15 +144,13 @@ const CreateTicketForm: React.FC<CreateTicketFormProps> = ({
       ...prevData,
       maxServiceCount: newCount,
     }));
-    console.log(newCount);
   };
 
   // 폼 제출
   const handleSubmit = (e: React.FormEvent) => {
     if (isEditMode) {
       e.preventDefault();
-      console.log("IsEditMode !!!!");
-      console.log(e);
+
       onSubmit(ticketData);
     } else {
       e.preventDefault();

@@ -14,12 +14,9 @@ const ActiveTicketList = () => {
     apiInstance
       .get(`/tickets`)
       .then((response) => {
-        console.log(response.data.tickets);
         setTickets(response.data.tickets);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, []);
 
   // 판매중인 티켓만 필터링

@@ -14,16 +14,12 @@ const IssuedTicketDetail = () => {
     useState<IssuedTicket | null>(null);
   // issued ticket detail 가져오기
   useEffect(() => {
-    // console.log("ID from URL:", memberId);
     apiInstance
       .get(`/issued-tickets/${issuedTicketId}`)
       .then((response) => {
-        console.log(response.data);
         setIssuedTicketDetail(response.data);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [issuedTicketId]);
 
   return (

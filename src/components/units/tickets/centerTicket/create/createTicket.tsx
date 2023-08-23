@@ -24,10 +24,8 @@ const CreateTicket: React.FC = () => {
   const handleSubmit = (data: CreateTicketType | EditTicketType) => {
     createTicket(data).then((createdTicket) => {
       if (createdTicket) {
-        // console.log('티겟 생성 완료: ', createdTicket);
         navigate("/centerTicketPage");
       } else {
-        console.log("티켓 생성 실패");
       }
     });
   };

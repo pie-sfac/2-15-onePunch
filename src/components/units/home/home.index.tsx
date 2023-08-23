@@ -48,7 +48,6 @@ export default function Home() {
     try {
       const response = await apiInstance.get(`/me/summary`);
       setHomeDetails(response.data);
-      console.log(response.data.mySchedule.counselingCount);
       setTotal(
         response.data.mySchedule.counselingCount +
           response.data.mySchedule.lessonCount
@@ -65,7 +64,6 @@ export default function Home() {
       setSearchExecuted(true);
       try {
         const response = await apiInstance.get(`/search?query=${search}`);
-        console.log(members.length);
         setMembers(response.data.members);
       } catch (error: any) {
         console.error(error.response.data.message);
@@ -77,7 +75,6 @@ export default function Home() {
     const target = event.currentTarget;
     const memberId = target.id;
     navigate(`/memberPage/memberDetail/${memberId}`);
-    console.log(memberId);
   };
 
   const scheduleClick = () => {

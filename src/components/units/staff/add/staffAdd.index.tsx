@@ -43,16 +43,10 @@ const StaffAdd = () => {
     apiInstance
       .get("/roles")
       .then((response) => {
-        // console.log(response.data);
-        // console.log(response.data.roles);
         setOptions(response.data.roles);
       })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        console.log("끝");
-      });
+      .catch((error) => {})
+      .finally(() => {});
   };
   useEffect(getRoles, []);
 
@@ -74,9 +68,7 @@ const StaffAdd = () => {
               message.error("이미 등록된 휴대폰 번호입니다.");
             }
           })
-          .catch((error: any) => {
-            console.log(error);
-          });
+          .catch((error: any) => {});
         return;
       }
 
@@ -92,18 +84,14 @@ const StaffAdd = () => {
               message.error("이미 등록된 아이디입니다.");
             }
           })
-          .catch((error: any) => {
-            console.log(error);
-          });
+          .catch((error: any) => {});
         return;
       }
 
       // 유효성 검사 없음
       setStaffReq({ ...staffReq, ...values });
       setCurrent(current + 1);
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
 
   const steps = [
@@ -202,7 +190,6 @@ const StaffAdd = () => {
             style={{ width: "100%" }}
             // 일반 직원 선택 시 빈 배열 넣기
             onChange={(value) => {
-              console.log(value);
               {
                 value.includes(0)
                   ? setStaffReq({ ...staffReq, roles: [] })
@@ -245,7 +232,6 @@ const StaffAdd = () => {
   // 완료 버튼 클릭 시 전송
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    console.log(staffReq);
     setIsStaffResignation(true);
 
     apiInstance
@@ -257,16 +243,12 @@ const StaffAdd = () => {
         roles: staffReq.roles,
       })
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.message);
         // alert(response.data.message);
         setIsStaffResignation(true);
 
         // navigate("/staffPage/list");
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   };
 
   return (
