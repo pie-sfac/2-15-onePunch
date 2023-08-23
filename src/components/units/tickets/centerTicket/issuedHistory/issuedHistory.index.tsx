@@ -38,9 +38,7 @@ const IssuedHistory = () => {
         setIssuedInfo(info);
         setTotalCount(response.data.meta.totalCount);
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   }, []);
 
   return (
@@ -61,7 +59,7 @@ const IssuedHistory = () => {
               <S.Text>{info.tutorName}</S.Text>
               <S.Text>잔여 {info.remainingTimes}회</S.Text>
               <S.Text>
-                {ConvertDate(info.startAt)} <br/> - {ConvertDate(info.endAt)}
+                {ConvertDate(info.startAt)} <br /> - {ConvertDate(info.endAt)}
               </S.Text>
             </S.MemBox>
           ))}

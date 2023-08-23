@@ -20,14 +20,8 @@ const EditTicket = ({ ticketId }: EditTicketProps) => {
 
     apiInstance
       .put(`/tickets/${ticketId}`, requestBody)
-      .then((response) => {
-        console.log(requestBody);
-        console.log("Ticket updated successfully");
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log("Error updating ticket", error);
-      });
+      .then((response) => {})
+      .catch((error) => {});
   };
 
   return (

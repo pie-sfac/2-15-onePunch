@@ -60,75 +60,48 @@ const IssuedTicketList = () => {
     apiInstance
       .get(`/members/${memberId}/issued-tickets`)
       .then((response) => {
-        console.log(response.data.issuedTickets);
         setIssuedTickets(response.data.issuedTickets);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch((error) => {});
   }, [showSuspendModal, showUnsuspendModal, showCancelModal]);
-
-  // issuedTicketInfo가 변경될 때마다 콘솔에 찍어보기
-  // useEffect(() => {
-  //   console.log("issuedTicketInfo", issuedTickets);
-  // }, [issuedTickets]);
 
   // 수강권 일시 중단
   const handleSuspend = (issuedTicketId: number) => {
-    // console.log("handleSuspension");
-    console.log(issuedTicketId);
-
     apiInstance
       .post(`/issued-tickets/${issuedTicketId}/suspend`, issuedTicketId)
       .then((response) => {
-        console.log(response.data);
         setIsSuspended(true);
         setShowSuspendModal(false);
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   };
 
   // 수강권 재진행
   const handleUnsuspend = (issuedTicketId: number) => {
-    console.log(issuedTicketId);
-
     apiInstance
       .post(`/issued-tickets/${issuedTicketId}/unsuspend`, issuedTicketId)
       .then((response) => {
-        console.log(response.data);
         setIsSuspended(false);
         setShowUnsuspendModal(false);
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   };
 
   // 수강권 환불
   const handleCancel = (issuedTicketId: any) => {
-    console.log(issuedTicketId);
-
     apiInstance
       .post(`/issued-tickets/${issuedTicketId}/refund`, issuedTicketId)
       .then((response) => {
-        console.log(response.data);
         setIsCanceled(true);
         setShowCancelModal(false);
       })
-      .catch((error: any) => {
-        console.log(error);
-      });
+      .catch((error: any) => {});
   };
 
   // 수강권 양도
-  const handleTransfer = () => {
-    console.log("handleTransfer");
-  };
+  const handleTransfer = () => {};
 
   const handleIssuedTicketDetail = (issuedTicketId: any) => {
-    // console.log(issuedTicketId.target.key);
     navigate(`/issued-tickets/${issuedTicketId}`);
   };
 

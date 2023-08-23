@@ -28,8 +28,6 @@ const TicketDetail: React.FC = () => {
     try {
       const response = await apiInstance.get("/tickets/" + ticketId);
       setTicketDetail(response.data);
-      console.log("response.data");
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -37,10 +35,7 @@ const TicketDetail: React.FC = () => {
 
   useEffect(() => {
     if (!isNaN(ticketId)) {
-      console.log("fetchTicketDetail실행됨");
       fetchTicketDetail();
-      // console.log("ticketDetail");
-      // console.log(ticketDetail);
     }
   }, [id, ticketId, fetchTicketDetail]);
   if (!ticketDetail) {
@@ -56,8 +51,7 @@ const TicketDetail: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log("판매중지됐나");
-    console.log(ticketDetail.isActive);
+
     setShowModal(false); // 확인버튼 클릭 시 모달을 숨기게 설정
   };
 
@@ -69,8 +63,6 @@ const TicketDetail: React.FC = () => {
   };
 
   const handleDelete = async () => {
-    console.log("수강권 삭제합니다");
-
     try {
       await apiInstance.delete("/tickets/" + ticketId);
       setShowDoneDeleteModal(true);
@@ -78,7 +70,7 @@ const TicketDetail: React.FC = () => {
       setCannotDelete(true);
       console.error(error);
     }
-    console.log("수강권 삭제됐음");
+
     setShowDeleteModal(false);
   };
 
@@ -89,8 +81,7 @@ const TicketDetail: React.FC = () => {
     } catch (error) {
       console.error(error);
     }
-    console.log("수강권 활성화 됐나");
-    console.log(ticketDetail.isActive);
+
     setShowActivateTicketModal(false); // 확인버튼 클릭 시 모달을 숨기게 설정
   };
 

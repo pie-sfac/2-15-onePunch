@@ -13,7 +13,7 @@ const getTickets = async (): Promise<TicketType[]> => {
   try {
     const response = await apiInstance.get("/tickets");
     const tickets: TicketType[] = response.data.tickets; // 수정된 부분
-    console.log(tickets);
+
     return tickets;
   } catch (error) {
     console.error(error);
@@ -30,11 +30,7 @@ const CenterTicket: React.FC = () => {
 
   // 티켓 상세보기
   const ticketDetailHandler = async (id: number): Promise<any> => {
-    console.log("id: ", id);
     try {
-      // const response = await apiInstance.get("/tickets/" + id);
-      // const ticketDetail = response.data;
-      // console.log(ticketDetail);
       navigate(`/centerTicketPage/ticketDetail/${id}`);
     } catch (error) {
       console.error(error);

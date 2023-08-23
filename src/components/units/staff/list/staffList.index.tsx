@@ -27,7 +27,6 @@ const StaffList = () => {
 
   // 직원 상세보기
   const staffDetailHandler = async (id: number): Promise<any> => {
-    console.log("id: ", id);
     try {
       navigate(`/staffPage/detail/${id}`);
     } catch (error) {
@@ -41,8 +40,6 @@ const StaffList = () => {
       const response = await apiInstance.get(
         `/staffs?page=1&sort=createdAt%2CDesc`
       );
-      // console.log(response.data);
-      // console.log(response.data.datas);
       setStaffs(response.data.datas);
       setTotalStaffs(response.data.meta.totalCount);
       setIsLoading(false);

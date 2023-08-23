@@ -25,7 +25,6 @@ export default function LayoutHeader(): JSX.Element {
   const onClickLogOut = async () => {
     try {
       const response = await apiInstance.post(`/logout`);
-      console.log(response);
     } catch (error: any) {
       alert(error.response.data.message);
     }

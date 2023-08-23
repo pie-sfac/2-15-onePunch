@@ -88,7 +88,6 @@ const StaffDetail: React.FC = () => {
       .get("/staffs/" + staffId)
       .then((response) => {
         setStaffDetail(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         setError(error);
@@ -109,8 +108,6 @@ const StaffDetail: React.FC = () => {
   // 직원 정보 수정 핸들러
   /////////////////////////////////////
   const HandleInfoEdit = () => {
-    // console.log("click handle profile edit")
-    console.log(staffId);
     navigate(`/staffPage/detail/${staffId}/edit`);
   };
 
@@ -118,7 +115,6 @@ const StaffDetail: React.FC = () => {
   //직원 퇴사 처리 핸들러
   /////////////////////////////////////
   const handleStaffResignation = () => {
-    console.log("handleStaffResignation");
     setIsResignationModalVisible(true);
     setIsModalOpen(true);
   };
@@ -128,8 +124,6 @@ const StaffDetail: React.FC = () => {
       .post(`/staffs/${staffId}/resign`)
       .then((response) => {
         setStaffDetail(response.data);
-        console.log(response.data);
-        console.log(response.data.message);
       })
       .catch((error) => {
         setError(error);
@@ -142,19 +136,16 @@ const StaffDetail: React.FC = () => {
     setIsResignationModalVisible(false);
     setIsModalOpen(false);
     navigate(0);
-    console.log("퇴사 처리되었습니다.");
   };
   const handleCancel = () => {
     setIsResignationModalVisible(false);
     setIsModalOpen(false);
-    console.log("취소하셨습니다.");
   };
 
   /////////////////////////////////////
   // 비밀번호 초기화 핸들러
   /////////////////////////////////////
   const handleResetPassword = () => {
-    console.log("handleResetPassword");
     setIsChangePwModalVisible(true);
     setIsModalOpen(true);
   };
@@ -162,32 +153,28 @@ const StaffDetail: React.FC = () => {
     setIsChangePwModalVisible(false);
     setIsModalOpen(false);
     setIsDoneChangePw(true);
-    console.log("비밀번호가 초기화되었스비다");
   };
 
   const handleCancelChangePw = () => {
     setIsChangePwModalVisible(false);
     setIsModalOpen(false);
-    console.log("취소하셨습니다.");
   };
 
   /////////////////////////////////////
   // 직원 역할 및 할당 가능 역할 조회 | 직원 역할 변경
   /////////////////////////////////////
   const handleChangeRole = () => {
-    console.log("handleChangeRole.");
     apiInstance
       .get(`/staffs/${staffId}/change-role`)
       .then((response) => {
         // setStaffDetail(response.data);
-        console.log(response.data);
+
         const data = response.data;
-        // console.log(response.data.message);
+
         setRoles(data);
         data.currentRoleIds.forEach((id: any) => {
           const role = data.roles.find((role: any) => role.id === id);
           if (role) {
-            console.log(role.name);
           }
         });
         navigate(`/staffPage/roles/${staffId}`);

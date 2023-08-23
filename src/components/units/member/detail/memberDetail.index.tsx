@@ -39,21 +39,23 @@ export default function memberDetail() {
           <S.Body>
             <S.MemberWrapper>
               <S.MemberTitleWrapper>
-              <S.MemberTitle>회원 정보</S.MemberTitle>
-              <S.TicketMsgBox>
-                <S.TicketBox onClick={() => navigate(`/members/${memberId}/issued`)}>
-                  <S.TicketIcon
-                    src="/images/icons/Document_24px.png"
-                    alt="Document_24px"
-                  />
-                </S.TicketBox>
-                <S.MsgBox onClick={() => console.log('알림메세지')}>
-                  <S.MsgIcon
-                    src="/images/icons/Message_24px.png"
-                    alt="Message_24px"
-                  />
-                </S.MsgBox>
-              </S.TicketMsgBox>
+                <S.MemberTitle>회원 정보</S.MemberTitle>
+                <S.TicketMsgBox>
+                  <S.TicketBox
+                    onClick={() => navigate(`/members/${memberId}/issued`)}
+                  >
+                    <S.TicketIcon
+                      src="/images/icons/Document_24px.png"
+                      alt="Document_24px"
+                    />
+                  </S.TicketBox>
+                  <S.MsgBox>
+                    <S.MsgIcon
+                      src="/images/icons/Message_24px.png"
+                      alt="Message_24px"
+                    />
+                  </S.MsgBox>
+                </S.TicketMsgBox>
               </S.MemberTitleWrapper>
               <S.PMBox>
                 <S.PMIBox>

@@ -23,7 +23,6 @@ const StaffEdit: React.FC = () => {
       .get("/staffs/" + staffId)
       .then((response) => {
         setStaffInfo(response.data);
-        console.log(response.data);
 
         setName(response.data.name);
         setPhone(response.data.phone);
@@ -46,7 +45,6 @@ const StaffEdit: React.FC = () => {
 
   const handleInputChange = (event: any, setter: (val: string) => void) => {
     setter(event.target.value);
-    // console.log(event.target.value);
   };
 
   // 수정 후 저장
@@ -57,8 +55,6 @@ const StaffEdit: React.FC = () => {
         phone: phone,
       })
       .then((response) => {
-        console.log(response.data);
-        console.log(response.data.message);
         alert(response.data.message);
 
         setStaffInfo((prevInfo) => {

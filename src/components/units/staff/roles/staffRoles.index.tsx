@@ -12,7 +12,7 @@ interface AssignableRoles {
 
 const StaffRoles: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  console.log(id);
+
   const staffId = parseInt(id!);
   const [rolesData, setRolesData] = useState<AssignableRoles | null>(null);
   const [checkedRoles, setCheckedRoles] = useState<number[]>([]);
@@ -25,17 +25,13 @@ const StaffRoles: React.FC = () => {
       .get(`/staffs/${staffId}/change-role`)
       .then((response) => {
         // setStaffDetail(response.data);
-        console.log(response.data);
+
         const data = response.data;
         setRolesData(data);
         setCheckedRoles(data.currentRoleIds);
       })
-      .catch((error) => {
-        console.log(error);
-      })
-      .finally(() => {
-        console.log("끝");
-      });
+      .catch((error) => {})
+      .finally(() => {});
   }, []);
 
   // 클릭 시 checkedRoles 업데이트
@@ -53,12 +49,10 @@ const StaffRoles: React.FC = () => {
   // 폼 전송
   const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(checkedRoles);
+
     apiInstance
       .post(`/staffs/${staffId}/change-role`, { roleIds: checkedRoles })
-      .then((response) => {
-        console.log(response.data);
-      });
+      .then((response) => {});
   };
 
   return (
