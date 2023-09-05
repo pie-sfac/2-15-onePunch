@@ -8,7 +8,7 @@
  [https://one-punch-client.vercel.app](https://one-punch-client.vercel.app)
 
  백엔드 API가 종료되어 현재는 사용이 불가능합니다.
- 
+
 ```bash
 아이디 : team15
 비밀번호 :team15!!
@@ -173,6 +173,10 @@ npm run dev
 
 <br/>
 
+***
+
+<br/>
+
 #### 센터관리 - 직원 관리
 
 > - 직원을 생성, 조회, 수정, 권한 변경, 퇴사처리 할 수 있습니다.
@@ -186,6 +190,9 @@ npm run dev
 | ----------------- | ----------------- | 
 | ![_직원생성조회](https://github.com/pie-sfac/2-15-onePunch/assets/111485965/44505e67-2d21-4a58-bb56-34276c7d1441)       |  ![_직원수정권한변경퇴사](https://github.com/pie-sfac/2-15-onePunch/assets/111485965/4662a1a9-5de2-4a88-93d2-f1e2ff6917f7)            |
 
+<br/>
+
+***
 
 <br/>
 
@@ -204,6 +211,9 @@ npm run dev
 | ----------------- | ----------------- | 
 | ![_수강권생성조회](https://github.com/pie-sfac/2-15-onePunch/assets/111485965/fb951612-198a-432a-8c00-1cc3d7edae05)    |  ![_수강권판매종료삭제](https://github.com/pie-sfac/2-15-onePunch/assets/111485965/4531168c-03e6-45d6-8669-dd84be45f4c6)          |
 
+<br/>
+
+***
 
 <br/>
 
